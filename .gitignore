@@ -6,10 +6,6 @@ __pycache__/
 venv/
 dist/
 build/
-artifacts/generated/
-artifacts/checkpoints/
-artifacts/logs/
-artifacts/plots/
 *.parquet
 *.pt
 *.png
