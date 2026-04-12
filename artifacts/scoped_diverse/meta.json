@@ -1,0 +1,24 @@
+{
+  "benchmark_mode": "scoped_actions",
+  "label_mode": "guided_single_path",
+  "samples": 400,
+  "split_mode": "heldout_family",
+  "families": [
+    "b_first_a3_b1",
+    "trig_b_a2",
+    "trig_together_b_expand",
+    "a_first_b_last"
+  ],
+  "rows": 2000,
+  "train": 1000,
+  "val": 500,
+  "test": 500,
+  "action_vocab": {
+    "add_slice@root[0:2]::together": 0,
+    "expr@0::factor": 1,
+    "expr@0::trigsimp": 2,
+    "expr@1::expand": 3,
+    "expr@1::factor": 4,
+    "expr@2::factor": 5
+  }
+}

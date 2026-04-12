@@ -1,6 +1,6 @@
 # HyperKan: Verified Symbolic Rewrite Search
 
-This repo trains policy/value models for verified symbolic rewrite search. The original global-action benchmark worked end to end and showed **Static KAN > MLP** on verified solve rate; the initial HyperKAN underperformed, then a reduced-capacity recovered HyperKAN nearly matched Static KAN after ablations. The important follow-up result is that the global SymPy action semantics turned out too shallow for robust depth-4+ composition, so the main branch of the project has moved to **scoped actions**: `action = (site, op)`. Scoped smoke and medium guided benchmarks now train and evaluate end to end, but they are still too guided and too clean to separate Static KAN from recovered HyperKAN.
+This repo trains policy/value models for verified symbolic rewrite search. The original global-action benchmark worked end to end and showed **Static KAN > MLP** on verified solve rate; the initial HyperKAN underperformed, then a reduced-capacity recovered HyperKAN nearly matched Static KAN after ablations. The important follow-up result is that the global SymPy action semantics turned out too shallow for robust depth-4+ composition, so the main branch of the project has moved to **scoped actions**: `action = (site, op)`. Scoped smoke, medium, and diverse guided benchmarks now train and evaluate end to end, but the guided scoped tasks are still too clean to separate Static KAN from recovered HyperKAN by solve rate.
 
 ## What This Project Is
 
@@ -169,6 +169,37 @@ Results:
 
 Conclusion: the scoped benchmark is alive beyond the tiny smoke run, but guided `A3+B1` alone is still too clean to separate Static KAN and HyperKAN. The held-out coefficient split tests interpolation within one guided family, not full compositional generalization across scoped families. The next benchmark needs more scoped families and stricter verification, not just more rows from the same guided family.
 
+## Scoped Diverse Guided Benchmark
+
+The diverse guided benchmark adds action-order family diversity and uses a structural held-out-family split. It is still guided single-path data, not strict composed verification.
+
+Artifacts:
+
+- Dataset: `artifacts/scoped_diverse/`
+- Config: [configs/scoped_diverse.yaml](configs/scoped_diverse.yaml)
+- Checkpoints: `artifacts/scoped_diverse_checkpoints/`
+
+Dataset:
+
+- `400` guided trajectories
+- `2000` rows
+- `4` action-order families: `b_first_a3_b1`, `trig_b_a2`, `trig_together_b_expand`, `a_first_b_last`
+- Split: `heldout_family`
+- Train families: `a_first_b_last`, `b_first_a3_b1`
+- Validation family: `trig_b_a2`
+- Test family: `trig_together_b_expand`
+- `400` non-terminal held-out test attempts
+- `6` scoped actions
+
+Training did show a harder generalization signal: both models fit train quickly while validation loss rose on the held-out validation family. Search still saturated on the held-out test family:
+
+| Model | Beam 4 held-out test solves | Beam 1 held-out test solves |
+|---|---:|---:|
+| Static KAN | 400/400 | 400/400 |
+| HyperKAN | 400/400 | 400/400 |
+
+Conclusion: adding action-order families is a useful next benchmark step, but these variants are still too templated. The current diverse guided split creates validation-loss pressure but does not yet create solve-rate pressure, even with greedy scoped search.
+
 ## One Guided Scoped Trajectory
 
 <details>
@@ -224,17 +255,19 @@ Proven:
 - Verified search metrics can diverge from supervised validation loss.
 - Scoped action infrastructure works end to end: dataset generation, training, checkpointing, and scoped beam eval.
 - Guided scoped depth-4 trajectories can be trained and solved.
+- A held-out-family guided scoped split can be built, trained, and evaluated.
 
 Not yet proven:
 
 - Robust strict depth-4+ density under scoped verification.
 - Shortest-action multi-label tie recovery for composed scoped cases.
 - A scoped benchmark that cleanly separates Static KAN and HyperKAN.
-- That guided `A3+B1` performance transfers to less templated or stricter scoped families.
+- That guided action-order variants are hard enough to test compositional scoped reasoning.
+- That guided scoped performance transfers to less templated or stricter scoped families.
 
 ## Next Steps
 
-- Add more scoped families, not just more rows.
+- Add structurally different scoped families, not just action-order variants or more rows.
 - Restore strict composed verification.
 - Recover shortest-action ties for accepted scoped rows.
 - Use structurally harder held-out splits.
@@ -260,6 +293,12 @@ python3 scripts/build_scoped_smoke_dataset.py \
   --samples 200 \
   --split-mode heldout_coeff \
   --output-dir artifacts/scoped_medium
+
+python3 scripts/build_scoped_smoke_dataset.py \
+  --samples 400 \
+  --split-mode heldout_family \
+  --families b_first_a3_b1 trig_b_a2 trig_together_b_expand a_first_b_last \
+  --output-dir artifacts/scoped_diverse
 ```
 
 Train scoped models:
@@ -284,6 +323,16 @@ python3 -m train.run_experiment \
   --config configs/scoped_medium.yaml \
   --model-type hyperkan \
   --output-dir artifacts/scoped_medium_checkpoints
+
+python3 -m train.run_experiment \
+  --config configs/scoped_diverse.yaml \
+  --model-type static_kan \
+  --output-dir artifacts/scoped_diverse_checkpoints
+
+python3 -m train.run_experiment \
+  --config configs/scoped_diverse.yaml \
+  --model-type hyperkan \
+  --output-dir artifacts/scoped_diverse_checkpoints
 ```
 
 Run scoped eval:
@@ -302,6 +351,22 @@ python3 -m eval.run_scoped_smoke_eval \
   --checkpoint artifacts/scoped_medium_checkpoints/hyperkan/best.pt \
   --action-vocab artifacts/scoped_medium/scoped_action_vocab.json \
   --output artifacts/scoped_medium_checkpoints/hyperkan/scoped_medium_eval.json \
+  --beam-width 4 \
+  --max-steps 4
+
+python3 -m eval.run_scoped_smoke_eval \
+  --dataset artifacts/scoped_diverse/test.parquet \
+  --checkpoint artifacts/scoped_diverse_checkpoints/static_kan/best.pt \
+  --action-vocab artifacts/scoped_diverse/scoped_action_vocab.json \
+  --output artifacts/scoped_diverse_checkpoints/static_kan/scoped_diverse_eval.json \
+  --beam-width 4 \
+  --max-steps 4
+
+python3 -m eval.run_scoped_smoke_eval \
+  --dataset artifacts/scoped_diverse/test.parquet \
+  --checkpoint artifacts/scoped_diverse_checkpoints/hyperkan/best.pt \
+  --action-vocab artifacts/scoped_diverse/scoped_action_vocab.json \
+  --output artifacts/scoped_diverse_checkpoints/hyperkan/scoped_diverse_eval.json \
   --beam-width 4 \
   --max-steps 4
 ```
