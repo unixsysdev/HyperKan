@@ -168,7 +168,7 @@ def shortest_actions_to_goal(state_str: str, goal_str: str, max_steps: int) -> t
         return 0, ()
 
     queue: deque[tuple[str, int, str | None]] = deque([(state_str, 0, None)])
-    visited = {state_struct}
+    visited_depths: dict[tuple[str, str | None], int] = {(state_struct, None): 0}
     shortest_depth: int | None = None
     shortest_first_actions: set[str] = set()
 
@@ -197,10 +197,13 @@ def shortest_actions_to_goal(state_str: str, goal_str: str, max_steps: int) -> t
                     shortest_first_actions.add(root_action)
                 continue
 
-            if next_struct in visited:
+            state_key = (next_struct, root_action)
+            next_depth = depth + 1
+            best_depth = visited_depths.get(state_key)
+            if best_depth is not None and best_depth <= next_depth:
                 continue
-            visited.add(next_struct)
-            queue.append((next_expr, depth + 1, root_action))
+            visited_depths[state_key] = next_depth
+            queue.append((next_expr, next_depth, root_action))
 
     if shortest_depth is None:
         return None, ()

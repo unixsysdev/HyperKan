@@ -19,6 +19,8 @@ def evaluate_dataset(
     beam_width: int,
     max_steps: int,
     max_length: int,
+    value_weight: float,
+    revisit_penalty: float,
     device: torch.device,
 ) -> dict[str, float]:
     solved = 0
@@ -37,6 +39,8 @@ def evaluate_dataset(
             beam_width=beam_width,
             max_steps=max_steps,
             max_length=max_length,
+            value_weight=value_weight,
+            revisit_penalty=revisit_penalty,
             device=device,
         )
         if outcome["success"]:
@@ -53,9 +57,11 @@ def main() -> None:
     parser.add_argument("--dataset", type=Path, required=True)
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--output", type=Path, default=Path("artifacts/logs/verified_eval.json"))
-    parser.add_argument("--beam-width", type=int, default=4)
-    parser.add_argument("--max-steps", type=int, default=8)
-    parser.add_argument("--max-length", type=int, default=256)
+    parser.add_argument("--beam-width", type=int, default=None)
+    parser.add_argument("--max-steps", type=int, default=None)
+    parser.add_argument("--max-length", type=int, default=None)
+    parser.add_argument("--value-weight", type=float, default=None)
+    parser.add_argument("--revisit-penalty", type=float, default=None)
     args = parser.parse_args()
 
     payload = torch.load(args.checkpoint, map_location="cpu")
@@ -63,6 +69,7 @@ def main() -> None:
     tokenizer = SReprTokenizer.load(payload["tokenizer_path"])
     config["model"]["vocab_size"] = tokenizer.vocab_size
     config["model"]["pad_id"] = tokenizer.pad_id
+    search_cfg = config.get("search", {})
     model = create_model(payload["model_type"], config)
     model.load_state_dict(payload["state_dict"])
     model.eval()
@@ -74,9 +81,11 @@ def main() -> None:
         model=model,
         tokenizer=tokenizer,
         frame=frame,
-        beam_width=args.beam_width,
-        max_steps=args.max_steps,
-        max_length=args.max_length,
+        beam_width=args.beam_width if args.beam_width is not None else search_cfg.get("beam_width", 4),
+        max_steps=args.max_steps if args.max_steps is not None else search_cfg.get("max_steps", 8),
+        max_length=args.max_length if args.max_length is not None else config["data"].get("max_length", 256),
+        value_weight=args.value_weight if args.value_weight is not None else search_cfg.get("value_weight", 0.5),
+        revisit_penalty=args.revisit_penalty if args.revisit_penalty is not None else search_cfg.get("revisit_penalty", 1.5),
         device=device,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)

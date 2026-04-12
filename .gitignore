@@ -14,3 +14,6 @@ build/
 *.png
 !docs/*.png
 
+# Benchmark outputs (keep local; do not commit)
+artifacts/shallow_benchmark*/
+artifacts/shallow_benchmark_parallel*/

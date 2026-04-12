@@ -15,7 +15,14 @@ Three policy heads are compared:
 
 ## Headline result
 
-On a 274-problem verified test set, Static KAN achieved the best solve rate at **59.5%**, outperforming both MLP (53.6%) and HyperKAN (54.0%). HyperKAN achieved the best supervised validation loss (0.0122 BCE) but did not convert that advantage into better beam-search solving.
+On the full 274-problem verified test set (beam width 4, max 8 steps), **Static KAN** achieves the best solve rate at **59.5% (163/274)**, outperforming **MLP** at **53.6% (147/274)** and **HyperKAN** at **54.0% (148/274)**.
+
+The benchmark is now effectively a **depth-3 benchmark**: depth-2 is saturated (all models solve **147/147** depth-2 problems), and nearly all separation happens at depth-3:
+- **MLP:** **0/127** depth-3 solves
+- **Static KAN:** **16/127** depth-3 solves
+- **HyperKAN:** **1/127** depth-3 solves
+
+HyperKAN still achieves the lowest supervised validation action loss (best `val_action_loss` ≈ **0.0122** vs ≈ **0.0169** for MLP/static), but that advantage does **not** translate into verified search performance. On this benchmark, HyperKAN is currently misaligned with the search objective (or overfitting the supervised labels).
 
 ## Phase plan
 
@@ -29,7 +36,9 @@ On a 274-problem verified test set, Static KAN achieved the best solve rate at *
 
 **Dataset:** 2206 rows, curated motif families, depth 2–3, random 70/15/15 split after exact shortest-path BFS acceptance.  
 **Training:** 20 epochs, batch 128, AdamW lr=1e-3, ROCm 7.2, Strix Halo.  
-**Eval:** beam-search width 4, max 8 steps, verified by SymPy, **full test set (274 non-terminal problems)**.
+**Eval:** greedy (beam=1) and beam-search (beam width 4), max 8 steps, verified by SymPy, **full test set (274 non-terminal problems)**.
+
+Metrics and plots below are rendered from `artifacts/shallow_benchmark_parallel/summary.json`.
 
 ### Model comparison
 
@@ -37,28 +46,37 @@ On a 274-problem verified test set, Static KAN achieved the best solve rate at *
 
 *Full test set, 274 problems.*
 
-Static KAN solves **59.5% (163/274)** of test problems vs 53.6% (147/274) for MLP and 54.0% (148/274) for HyperKAN. Static KAN also uses more solved steps on average (2.28 vs 2.00), consistent with solving cases that require longer trajectories. HyperKAN achieves the lowest supervised loss (0.0122 BCE) but does not convert that into verified search performance.
+Overall, Static KAN solves **59.5% (163/274)** of test problems vs **53.6% (147/274)** for MLP and **54.0% (148/274)** for HyperKAN. The entire separation comes from depth-3: Static KAN is the only model with meaningful depth-3 performance (**16/127**).
 
 **What this means:**
-- Static KAN outperforms MLP on end-to-end verified search — a real architecture result on this benchmark
-- HyperKAN improves label fit but not search behavior — a useful negative, not a failure
-- The goal-conditioned routing in HyperKAN is visible in the spline plots but has not yet translated into better solve rates at depth 2–3
+- Static KAN outperforms both baselines on the only nontrivial slice of this benchmark (depth-3).
+- HyperKAN improves supervised label fit (`val_action_loss`) but not verified search behavior: loss/search mismatch is real here.
 
 ### Solve rate by depth
 
 ![Solve rate by depth](docs/solve_rate_by_depth.png)
 
-*Depth breakdown on a 15-problem labeled sample from the test set.*
+*Full test set depth breakdown (beam search).*
 
-All models solve depth-2 problems perfectly on this sample. The separation appears at depth 3 — only static KAN solves any depth-3 cases here. This is where the architecture difference lives, but the sample is small and this should not be read as a robust depth-3 claim.
+Depth-2 is saturated for all models (147/147). Depth-3 is the discriminator: Static KAN solves 16/127, HyperKAN 1/127, MLP 0/127.
 
 ### Solve rate by motif family
 
 ![Solve rate by family](docs/solve_rate_by_family.png)
 
-*Family breakdown on the same evaluable subset. Some families have very few examples — treat 0% and 100% bars with caution.*
+*Full test set family breakdown (beam search).*
 
-All models handle `poly_trig_to_factored`, `rat_partial_trig_to_together`, and `rat_three_partial_trig_to_together` well on this sample. The hard family is `rat_three_partial_trig_to_expanded` — zero solve rate across all models. This requires multi-step rational expansion at depth 3; the current dataset and training are not sufficient.
+Depth-3 hardness concentrates in `rat_three_partial_trig_to_expanded` (0% across all models). Static KAN’s gains come primarily from `rat_partial_trig_to_expanded`, where it solves a meaningful slice that MLP and HyperKAN largely miss.
+
+### Greedy vs beam search
+
+![Greedy vs beam](docs/greedy_vs_beam.png)
+
+Beam search rescues some additional solves for MLP and Static KAN, but almost none for HyperKAN (already near its beam score under greedy on this benchmark).
+
+![Beam rescue](docs/rescue.png)
+
+Static KAN gets the largest beam-rescue delta; HyperKAN gets almost none.
 
 ---
 
@@ -122,6 +140,14 @@ Different optimal actions tend to activate different spline templates in HyperKA
 
 The hypernetwork in HyperKAN generates spline mixture weights from the goal embedding at inference time. The four plots below probe whether this routing is meaningfully goal-conditioned. HyperKAN shows clear goal- and family-dependent routing patterns, but on the current benchmark those routing differences are more visible across goals and families than across steps within a single solved trajectory.
 
+## Why HyperKAN may not win yet
+
+HyperKAN’s extra capacity is real (the routing plots show it), but the current evidence says it is **not translating into verified search performance**. Plausible reasons:
+- **Shallow + templated data:** depth-2 is saturated and depth-3 is small (127 rows). Goal-conditioning may simply be unnecessary at this difficulty.
+- **Train/search objective mismatch:** the policy is trained with multi-label BCE over all shortest first actions, but inference uses softmax-normalized logits inside beam search. Those imply different decision geometry and calibration pressures.
+- **Search scoring sensitivity:** small miscalibration in logits can dominate beam ranking even if BCE improves.
+- **Stability/regularization:** the hypernetwork may increase variance and overfit label correlations in a small benchmark, while a static KAN provides a simpler inductive bias that generalizes better here.
+
 ### Same state, different goals
 
 ![Same state, different goals](docs/hyperkan_same_state_diff_goals.png)
@@ -161,24 +187,26 @@ For this solved trajectory, routing stays largely stable across steps — Layer 
 | Claim | Status |
 |-------|--------|
 | End-to-end pipeline works on ROCm 7.2 | ✓ proven |
-| Static KAN > MLP on verified solve rate | ✓ real result on this benchmark (59.5% vs 53.6%) |
+| Static KAN is the best head on verified solve rate | ✓ on this benchmark (59.5% vs 53.6% / 54.0%) |
 | HyperKAN > static KAN on verified solve rate | ✗ not demonstrated |
 | HyperKAN learns goal-conditioned spline routing | ✓ visible in spline plots |
-| Goal-conditioned routing improves search at depth 2–3 | ✗ not on current data |
+| Goal-conditioned routing improves search at depth 3 | ✗ not on current data (1/127) |
+| Depth-2 is a useful discriminator | ✗ saturated (147/147 for all models) |
+| Depth-3 is the discriminator | ✓ (MLP 0/127, static 16/127, hyper 1/127) |
 
 ## Limitations
 
 - Dataset is currently depth 2–3 only; depth 4–6 behavior is unknown
 - Motif library is narrow (7 families, polynomial and rational forms only)
-- Depth and family breakdown plots use small subsets — not the full test set
-- HyperKAN routing is active but sparse; the hypernetwork has not been trained with enough depth pressure to make goal-conditioning useful
-- 163/274 vs 147/274 is a real difference but not a large margin; results should be confirmed at scale
+- HyperKAN routing is active but sparse; on this benchmark it does not improve depth-3 solving despite improved supervised loss
+- The hardest family (`rat_three_partial_trig_to_expanded`) is unsolved by all models, suggesting the benchmark still lacks enough depth pressure
 
 ## Next steps
 
-- Expand motif library to depth 4–6
-- Scale to 10k–20k rows
-- Re-evaluate HyperKAN under deeper search pressure before drawing architectural conclusions
+- Promote Static KAN as the baseline head to beat
+- Focus dataset work on depth 3+ (depth-2 is saturated)
+- Build validated depth-4+ exact-form families (deep-chain synthesis) before spending more complexity budget on HyperKAN
+- Scale to 10k–20k rows only after depth-4+ examples exist and the benchmark is no longer effectively “depth-3 only”
 - Promote to H200/B200 only if local gains hold and depth scaling confirms the result
 
 ---
