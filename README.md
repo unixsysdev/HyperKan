@@ -1,4 +1,4 @@
-# HyperKan / Mathy: Verified Symbolic Rewrite Search
+# HyperKan: Verified Symbolic Rewrite Search
 
 This repo trains policy/value models for verified symbolic rewrite search. The original global-action benchmark worked end to end and showed **Static KAN > MLP** on verified solve rate; the initial HyperKAN underperformed, then a reduced-capacity recovered HyperKAN nearly matched Static KAN after ablations. The important follow-up result is that the global SymPy action semantics turned out too shallow for robust depth-4+ composition, so the main branch of the project has moved to **scoped actions**: `action = (site, op)`. Scoped smoke and medium guided benchmarks now train and evaluate end to end, but they are still too guided and too clean to separate Static KAN from recovered HyperKAN.
 
@@ -6,10 +6,10 @@ This repo trains policy/value models for verified symbolic rewrite search. The o
 
 The task is goal-directed symbolic rewriting with formal execution:
 
-- A model reads a current expression and an exact target form.
+- A model reads a current expression and a target form.
 - The policy predicts rewrite actions.
 - SymPy executes the selected rewrite.
-- Search verifies whether the exact target form is reached.
+- Search checks whether the target form is reached.
 
 There are now two benchmark modes:
 
@@ -50,9 +50,7 @@ The plots below are from the earlier global-action runs. They remain useful hist
 
 ## HyperKAN Recovery
 
-The HyperKAN recovery branch tested whether the initial HyperKAN underperformance was a capacity/routing issue rather than a fundamental failure.
-
-The best recovery variant was the reduced-capacity HyperKAN:
+The recovery branch tested whether the initial HyperKAN underperformance was a capacity/routing issue rather than a fundamental failure. The best variant was the reduced-capacity HyperKAN:
 
 - Variant: `small_hyper`
 - Key change: `hyper_hidden_dim = 64`
@@ -63,7 +61,7 @@ Search-temperature calibration did not close the remaining gap. Longer training 
 
 Main takeaway: **search-based checkpoint selection matters**. Supervised validation loss is not sufficient for model selection in this setup.
 
-See [docs/hyperkan_recovery_results.md](docs/hyperkan_recovery_results.md) and `results/hyperkan_recovery/` for the recovery details.
+See [docs/hyperkan_recovery_results.md](docs/hyperkan_recovery_results.md) and `results/hyperkan_recovery/` for details.
 
 ## Why We Moved Away From Global Actions
 
@@ -112,7 +110,7 @@ Current scoped verification state:
 - Strict single-block scoped verification works:
   - block A verifies at depth `3`
   - block B verifies at depth `2`
-- Strict composed verification is still hard.
+- Strict composed verification is not yet tractable enough for dataset-scale use.
 - Guided first-path composition succeeds for `A3+B1` at scoped depth `4`.
 - Strict composed verification and shortest-action tie recovery are still open.
 
@@ -142,7 +140,7 @@ Results:
 | Static KAN | 16/16 |
 | HyperKAN | 16/16 |
 
-Conclusion: the scoped dataset, tokenizer, model head, training loop, and scoped beam inference path work end to end. This is a smoke milestone, not a final benchmark result.
+Conclusion: the scoped data, model head, training loop, and beam inference path work end to end. This is a smoke milestone, not a final benchmark result.
 
 ## Scoped Medium Guided Benchmark
 
@@ -169,18 +167,18 @@ Results:
 | Static KAN | 48/48 |
 | HyperKAN | 48/48 |
 
-Conclusion: the scoped benchmark is alive beyond the tiny smoke run, but guided `A3+B1` alone is still too clean to separate Static KAN and HyperKAN. The next benchmark needs more scoped families and stricter verification, not just more rows from the same guided family.
+Conclusion: the scoped benchmark is alive beyond the tiny smoke run, but guided `A3+B1` alone is still too clean to separate Static KAN and HyperKAN. The held-out coefficient split tests interpolation within one guided family, not full compositional generalization across scoped families. The next benchmark needs more scoped families and stricter verification, not just more rows from the same guided family.
 
 ## One Guided Scoped Trajectory
 
-This is a real trajectory from `artifacts/scoped_medium/test.parquet`:
+<details>
+<summary>Guided depth-4 A3+B1 trajectory from artifacts/scoped_medium/test.parquet</summary>
+
+Metadata:
 
 - `trajectory_id = scoped_smoke_10`
 - `parameter_key = 4_4_1_2_1_4_5_7`
 - family: guided scoped `A3+B1`
-
-<details>
-<summary>Show the guided depth-4 scoped trajectory</summary>
 
 ```text
 distance 4
@@ -229,7 +227,7 @@ Proven:
 
 Not yet proven:
 
-- Robust strict depth-4+ density under scoped exact verification.
+- Robust strict depth-4+ density under scoped verification.
 - Shortest-action multi-label tie recovery for composed scoped cases.
 - A scoped benchmark that cleanly separates Static KAN and HyperKAN.
 - That guided `A3+B1` performance transfers to less templated or stricter scoped families.
