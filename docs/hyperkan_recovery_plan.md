@@ -43,3 +43,23 @@ Outputs:
 - `artifacts/hyperkan_recovery/<variant>/...` per-variant benchmark summaries and status
 - `artifacts/checkpoints_recovery/<variant>/hyperkan/best.pt` for trained variants
 
+## Optional: Beam Challenge Set (Speed)
+
+Full 274-row beam eval is expensive. For fast iteration on beam behavior, build a fixed “challenge set” from previously failed rows and evaluate only that subset.
+
+Workflow:
+
+1. Run one beam pass with row outputs enabled:
+
+```bash
+python3 scripts/run_shallow_benchmark_worker.py --dataset artifacts/generated/test.parquet --output-dir artifacts/tmp_rows --model hyperkan --mode beam --checkpoint artifacts/checkpoints/hyperkan/best.pt --write-rows
+```
+
+2. Build a deterministic depth-3 failure challenge set (e.g. 80 rows):
+
+```bash
+python3 scripts/build_beam_challenge_set.py --dataset artifacts/generated/test.parquet --rows-json artifacts/tmp_rows/hyperkan_beam_rows.json --output artifacts/generated/test_depth3_fail_challenge.parquet --depth 3 --limit 80 --seed 17
+```
+
+3. Beam-eval checkpoints against that challenge set by passing `--dataset artifacts/generated/test_depth3_fail_challenge.parquet`.
+
