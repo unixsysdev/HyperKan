@@ -1,0 +1,38 @@
+seed: 17
+
+data:
+  train_path: artifacts/generated/train.parquet
+  val_path: artifacts/generated/val.parquet
+  test_path: artifacts/generated/test.parquet
+  max_length: 256
+
+model:
+  vocab_size: 4096
+  pad_id: 0
+  embed_dim: 128
+  hidden_dim: 256
+  encoder_layers: 2
+  dropout: 0.0
+  num_actions: 6
+  kan_hidden_dim: 128
+  spline_points: 16
+  spline_basis_dim: 8
+  spline_templates: 4
+  hyper_hidden_dim: 64
+
+train:
+  lr: 0.001
+  weight_decay: 0.01
+  batch_size: 128
+  max_epochs: 20
+  value_loss_weight: 0.3
+  entropy_weight: 0.05
+  mixture_entropy_weight: 0.0
+  grad_clip_norm: 1.0
+
+search:
+  beam_width: 4
+  max_steps: 8
+  value_weight: 0.5
+  revisit_penalty: 1.5
+

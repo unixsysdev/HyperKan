@@ -132,6 +132,7 @@ This confirms the hypernetwork responds to goal identity rather than state alone
 
 - Promote Static KAN as the baseline head to beat
 - Focus dataset work on depth 3+ (depth-2 is saturated)
+- Run a small, disciplined HyperKAN recovery sweep before deeper chains: see [docs/hyperkan_recovery_plan.md](docs/hyperkan_recovery_plan.md)
 - Build validated depth-4+ exact-form families (deep-chain synthesis) before spending more complexity budget on HyperKAN
 - Scale to 10k–20k rows only after depth-4+ examples exist and the benchmark is no longer effectively “depth-3 only”
 - Promote to H200/B200 only if local gains hold and depth scaling confirms the result

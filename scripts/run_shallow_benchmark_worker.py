@@ -20,6 +20,8 @@ def main() -> None:
     parser.add_argument("--mode", choices=("greedy", "beam"), required=True)
     parser.add_argument("--progress-every", type=int, default=25)
     parser.add_argument("--write-rows", action="store_true")
+    parser.add_argument("--checkpoint", type=Path, default=None, help="Override checkpoint path (for sweeps)")
+    parser.add_argument("--policy-temperature", type=float, default=None, help="Override search softmax temperature")
     args = parser.parse_args()
 
     os.environ.setdefault("OMP_NUM_THREADS", "1")
@@ -27,7 +29,7 @@ def main() -> None:
     os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    checkpoint_path = Path(DEFAULT_MODELS[args.model])
+    checkpoint_path = args.checkpoint if args.checkpoint is not None else Path(DEFAULT_MODELS[args.model])
     history_path = checkpoint_path.parent / "history.json"
     build_mode_summary(
         model_name=args.model,
@@ -38,9 +40,9 @@ def main() -> None:
         progress_every=args.progress_every,
         mode=args.mode,
         write_rows=args.write_rows,
+        policy_temperature_override=args.policy_temperature,
     )
 
 
 if __name__ == "__main__":
     main()
-

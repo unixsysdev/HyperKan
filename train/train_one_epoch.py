@@ -111,6 +111,7 @@ def run_epoch(
     device: torch.device,
     value_weight: float = 0.3,
     entropy_weight: float = 0.05,
+    mixture_entropy_weight: float = 0.0,
     grad_clip_norm: float = 1.0,
 ) -> dict[str, float]:
     training = optimizer is not None
@@ -121,6 +122,7 @@ def run_epoch(
     for batch in dataloader:
         batch = move_batch(batch, device)
         outputs = model(batch.state_ids, batch.state_lengths, batch.goal_ids, batch.goal_lengths)
+        mixture_weights = outputs.get("mixture_weights") if isinstance(outputs, dict) else None
         loss, metrics = multi_task_loss(
             logits=outputs["logits"],
             values=outputs["value"],
@@ -128,6 +130,8 @@ def run_epoch(
             value_targets=batch.value_targets,
             value_weight=value_weight,
             entropy_weight=entropy_weight,
+            mixture_weights=mixture_weights if isinstance(mixture_weights, list) else None,
+            mixture_entropy_weight=mixture_entropy_weight,
         )
         if training:
             optimizer.zero_grad(set_to_none=True)

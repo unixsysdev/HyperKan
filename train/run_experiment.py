@@ -89,6 +89,7 @@ def main() -> None:
             device,
             value_weight=config["train"]["value_loss_weight"],
             entropy_weight=config["train"]["entropy_weight"],
+            mixture_entropy_weight=float(config["train"].get("mixture_entropy_weight", 0.0)),
             grad_clip_norm=config["train"]["grad_clip_norm"],
         )
         val_metrics = run_epoch(
@@ -98,6 +99,7 @@ def main() -> None:
             device=device,
             value_weight=config["train"]["value_loss_weight"],
             entropy_weight=config["train"]["entropy_weight"],
+            mixture_entropy_weight=float(config["train"].get("mixture_entropy_weight", 0.0)),
             grad_clip_norm=config["train"]["grad_clip_norm"],
         )
         record = {"epoch": epoch, "train": train_metrics, "val": val_metrics}
@@ -122,4 +124,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

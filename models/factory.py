@@ -34,6 +34,8 @@ def create_model(model_type: str, config: dict[str, Any]):
             kan_hidden_dim=model_cfg["kan_hidden_dim"],
             basis_dim=model_cfg["spline_basis_dim"],
             num_templates=model_cfg["spline_templates"],
+            hyper_hidden_dim=model_cfg.get("hyper_hidden_dim"),
+            condition_kan1=bool(model_cfg.get("hyperkan_condition_kan1", True)),
+            mixture_temperature=float(model_cfg.get("mixture_temperature", 1.0)),
         )
     raise ValueError(f"Unknown model type: {model_type}")
-

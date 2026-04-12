@@ -37,6 +37,7 @@ def run_beam_search(
     max_length: int = 256,
     value_weight: float = 0.5,
     revisit_penalty: float = 1.5,
+    policy_temperature: float = 1.0,
     device: torch.device | None = None,
 ) -> dict[str, object]:
     if device is None:
@@ -71,7 +72,8 @@ def run_beam_search(
                 outputs = model(state_ids, state_lengths, goal_ids, goal_lengths)
             logits = outputs["logits"][0]
             value = float(outputs["value"][0])
-            probabilities = torch.softmax(logits, dim=-1)
+            temperature = max(float(policy_temperature), 1e-6)
+            probabilities = torch.softmax(logits / temperature, dim=-1)
             mask = action_mask(node.expression)
 
             for action_idx, applicable in enumerate(mask):

@@ -63,6 +63,7 @@ def get_search_config(config: dict, mode: str) -> dict[str, float | int]:
         "max_length": int(config["data"].get("max_length", 256)),
         "value_weight": float(search_cfg.get("value_weight", 0.5)),
         "revisit_penalty": float(search_cfg.get("revisit_penalty", 1.5)),
+        "policy_temperature": float(search_cfg.get("policy_temperature", 1.0)),
     }
 
 
@@ -75,6 +76,7 @@ def collect_row_outcomes(
     max_length: int,
     value_weight: float,
     revisit_penalty: float,
+    policy_temperature: float,
     device: torch.device,
     label: str,
     progress_every: int,
@@ -97,6 +99,7 @@ def collect_row_outcomes(
             max_length=max_length,
             value_weight=value_weight,
             revisit_penalty=revisit_penalty,
+            policy_temperature=policy_temperature,
             device=device,
         )
         rows.append(
@@ -138,6 +141,7 @@ def build_mode_summary(
     progress_every: int,
     mode: str,
     write_rows: bool,
+    policy_temperature_override: float | None = None,
 ) -> dict[str, object]:
     mode_start = time.perf_counter()
     status_path = output_dir / f"{model_name}_{mode}_status.json"
@@ -156,6 +160,8 @@ def build_mode_summary(
     best_val_loss = min(record["val"]["total_loss"] for record in history)
     frame = pd.read_parquet(dataset_path)
     search = get_search_config(config, mode=mode)
+    if policy_temperature_override is not None:
+        search["policy_temperature"] = float(policy_temperature_override)
 
     outcomes = collect_row_outcomes(
         model=model,
@@ -166,6 +172,7 @@ def build_mode_summary(
         max_length=int(search["max_length"]),
         value_weight=float(search["value_weight"]),
         revisit_penalty=float(search["revisit_penalty"]),
+        policy_temperature=float(search["policy_temperature"]),
         device=device,
         label=f"{model_name}:{mode}",
         progress_every=progress_every,
@@ -190,4 +197,3 @@ def build_mode_summary(
         (output_dir / f"{model_name}_{mode}_rows.json").write_text(json.dumps(outcomes, indent=2), encoding="utf-8")
     print(json.dumps({"event": "worker_done", "model": model_name, "mode": mode, "elapsed_sec": summary["elapsed_sec"]}), flush=True)
     return summary
-

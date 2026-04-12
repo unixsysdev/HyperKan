@@ -21,6 +21,7 @@ def evaluate_dataset(
     max_length: int,
     value_weight: float,
     revisit_penalty: float,
+    policy_temperature: float,
     device: torch.device,
 ) -> dict[str, float]:
     solved = 0
@@ -41,6 +42,7 @@ def evaluate_dataset(
             max_length=max_length,
             value_weight=value_weight,
             revisit_penalty=revisit_penalty,
+            policy_temperature=policy_temperature,
             device=device,
         )
         if outcome["success"]:
@@ -62,6 +64,7 @@ def main() -> None:
     parser.add_argument("--max-length", type=int, default=None)
     parser.add_argument("--value-weight", type=float, default=None)
     parser.add_argument("--revisit-penalty", type=float, default=None)
+    parser.add_argument("--policy-temperature", type=float, default=None)
     args = parser.parse_args()
 
     payload = torch.load(args.checkpoint, map_location="cpu")
@@ -86,6 +89,7 @@ def main() -> None:
         max_length=args.max_length if args.max_length is not None else config["data"].get("max_length", 256),
         value_weight=args.value_weight if args.value_weight is not None else search_cfg.get("value_weight", 0.5),
         revisit_penalty=args.revisit_penalty if args.revisit_penalty is not None else search_cfg.get("revisit_penalty", 1.5),
+        policy_temperature=args.policy_temperature if args.policy_temperature is not None else search_cfg.get("policy_temperature", 1.0),
         device=device,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
