@@ -1,8 +1,6 @@
-# Mathy — Goal-conditioned HyperKAN for Verified Algebraic Rewriting
+# HyperKan: Verified Algebraic Rewriting with KAN Policy Heads
 
-> **Mathy** is the project. The repository is **HyperKan**. Run it from wherever you cloned it — the instructions below use `$REPO` as the root.
-
-A local-first POC on Strix Halo (ROCm 7.2) for learning symbolic rewrite policies using KAN architectures.
+Local-first POC on Strix Halo (ROCm 7.2) for learning verified symbolic rewrite policies. (Project name: “Mathy”, repo: **HyperKan**.)
 
 ## What this is
 
@@ -17,18 +15,15 @@ Three policy heads are compared:
 
 On the full 274-problem verified test set (beam width 4, max 8 steps), **Static KAN** achieves the best solve rate at **59.5% (163/274)**, outperforming **MLP** at **53.6% (147/274)** and **HyperKAN** at **54.0% (148/274)**.
 
-The benchmark is now effectively a **depth-3 benchmark**: depth-2 is saturated (all models solve **147/147** depth-2 problems), and nearly all separation happens at depth-3:
-- **MLP:** **0/127** depth-3 solves
-- **Static KAN:** **16/127** depth-3 solves
-- **HyperKAN:** **1/127** depth-3 solves
+Depth-2 is saturated (all models solve **147/147** depth-2 problems). The benchmark is now effectively a **depth-3 benchmark**, and that is where the separation lives.
 
-HyperKAN still achieves the lowest supervised validation action loss (best `val_action_loss` ≈ **0.0122** vs ≈ **0.0169** for MLP/static), but that advantage does **not** translate into verified search performance. On this benchmark, HyperKAN is currently misaligned with the search objective (or overfitting the supervised labels).
+| Model | Greedy | Beam | Depth-3 beam |
+|---|---:|---:|---:|
+| MLP | 133/274 (48.5%) | 147/274 (53.6%) | 0/127 (0.0%) |
+| Static KAN | 143/274 (52.2%) | 163/274 (59.5%) | 16/127 (12.6%) |
+| HyperKAN | 147/274 (53.6%) | 148/274 (54.0%) | 1/127 (0.8%) |
 
-## Phase plan
-
-- **Phase 1 (current):** prove the symbolic environment, baselines, and HyperKAN behavior on Strix Halo
-- **Phase 2:** promote to H200/B200 only if the local gate passes
-- **Phase 3:** multi-GPU only if single-GPU changes the research scope
+HyperKAN improves supervised validation action loss (best `val_action_loss` ≈ **0.0122** vs ≈ **0.0169** for MLP/static), but that advantage does **not** translate into verified search performance on this benchmark.
 
 ---
 
@@ -48,9 +43,7 @@ Metrics and plots below are rendered from `artifacts/shallow_benchmark_parallel/
 
 Overall, Static KAN solves **59.5% (163/274)** of test problems vs **53.6% (147/274)** for MLP and **54.0% (148/274)** for HyperKAN. The entire separation comes from depth-3: Static KAN is the only model with meaningful depth-3 performance (**16/127**).
 
-**What this means:**
-- Static KAN outperforms both baselines on the only nontrivial slice of this benchmark (depth-3).
-- HyperKAN improves supervised label fit (`val_action_loss`) but not verified search behavior: loss/search mismatch is real here.
+Interpretation: Static KAN is currently the best inductive bias for verified solving on the only nontrivial slice of this benchmark (depth-3). HyperKAN fits supervised labels better, but does not improve verified search outcomes here.
 
 ### Solve rate by depth
 
@@ -102,83 +95,17 @@ A 3-partial-fraction rational expansion problem. All models exhaust the beam wit
 
 ---
 
-## Action confusion
-
-![Action confusion](docs/action_confusion.png)
-
-*Predicted vs optimal first action on a 15-problem sample. Small counts — treat patterns as suggestive, not definitive.*
-
-**MLP** — on this sample, often collapses expand/factor decisions and conflates together/trigsimp.
-
-**Static KAN** — directionally cleaner: expand predictions align with expand-optimal cases, together predictions align with together-optimal cases. Some trigsimp confusion remains.
-
-**HyperKAN** — achieves the lowest BCE loss but remains poorly calibrated for first-action prediction on this benchmark. Factor predictions dominate across multiple optimal-action classes, suggesting the model is fitting label correlations rather than the underlying policy.
-
----
-
-## KAN spline geometry
-
-![Spline comparison](docs/spline_comparison.png)
-
-*Same 8 test examples run through both models.*
-
-**Static KAN** (left) — uses fixed spline templates across all examples by design. That makes it input-invariant in template weights, which is expected by construction. It still produces the best verified solve rate on the current benchmark.
-
-**HyperKAN** (right) — the hypernetwork produces different mixture weights per example. In Layer 1, examples split across two template groups. In Layer 2, individual examples show distinct combinations. This shows active goal-conditioned routing: different goals produce different spline mixture assignments. The routing is sparse (near one-hot rather than smoothly blended) and has not yet translated into better verified solve rates.
-
-### Spline mixtures by optimal action
-
-![Spline by action](docs/spline_by_action.png)
-
-*Very small per-action sample counts — treat as a diagnostic hint, not a robust result.*
-
-Different optimal actions tend to activate different spline templates in HyperKAN: `expand` activates templates 0–1, while `factor` and `together` both lean on template 3. This partial overlap between factor and together in template space is consistent with the confusion seen in the action calibration plot. Whether this reflects genuine action-specific routing structure or is an artifact of the small dataset is not yet clear.
-
----
-
-## HyperKAN conditional routing
-
-The hypernetwork in HyperKAN generates spline mixture weights from the goal embedding at inference time. The four plots below probe whether this routing is meaningfully goal-conditioned. HyperKAN shows clear goal- and family-dependent routing patterns, but on the current benchmark those routing differences are more visible across goals and families than across steps within a single solved trajectory.
-
 ## Why HyperKAN may not win yet
 
-HyperKAN’s extra capacity is real (the routing plots show it), but the current evidence says it is **not translating into verified search performance**. Plausible reasons:
-- **Shallow + templated data:** depth-2 is saturated and depth-3 is small (127 rows). Goal-conditioning may simply be unnecessary at this difficulty.
-- **Train/search objective mismatch:** the policy is trained with multi-label BCE over all shortest first actions, but inference uses softmax-normalized logits inside beam search. Those imply different decision geometry and calibration pressures.
-- **Search scoring sensitivity:** small miscalibration in logits can dominate beam ranking even if BCE improves.
-- **Stability/regularization:** the hypernetwork may increase variance and overfit label correlations in a small benchmark, while a static KAN provides a simpler inductive bias that generalizes better here.
+HyperKAN’s extra capacity is real (it shows visible goal-conditioned routing), but it is **not translating into verified search performance** on this benchmark. Plausible reasons include shallow/templated data, an objective mismatch between multi-label BCE training and softmax-based search ranking, and increased variance/overfit from the hypernetwork.
 
-### Same state, different goals
+For the diagnostic plots (action confusion, spline geometry, routing), see [docs/shallow_benchmark_details.md](docs/shallow_benchmark_details.md).
+
+### One routing sanity check (same state, different goals)
 
 ![Same state, different goals](docs/hyperkan_same_state_diff_goals.png)
 
-*Fixed current expression, 6 different goal expressions — one row per goal.*
-
-Each row uses the identical state but a different target. Different template assignments are visible across goals, confirming the routing responds to goal identity rather than state alone. The effect is clearest in Layer 1.
-
-### Routing within a motif family
-
-![Family routing](docs/hyperkan_family_routing.png)
-
-*Up to 6 instances per family, 4 families shown.*
-
-Some clustering is visible within family blocks — problems from the same family tend toward similar template combinations rather than pure per-sample chaos. The degree of clustering varies by family.
-
-### Average routing per family
-
-![Average routing per family](docs/hyperkan_family_avg_routing.png)
-
-*Each column = one family; rows = Layer 1 and Layer 2. Averaged over up to 8 examples per family.*
-
-Averaged routing differs across families: some consistently favor one template, others spread weight across two or three. This is the clearest evidence of family-level structure in the spline routing. Sample counts per family are small, so individual family averages may be brittle.
-
-### Routing along a solved trajectory
-
-![Trajectory routing](docs/hyperkan_trajectory_routing.png)
-
-*Routing at each step of one beam-search solution (factor → trigsimp).*
-
-For this solved trajectory, routing stays largely stable across steps — Layer 1 stays on the same template, Layer 2 stays on the same template. This suggests the goal-conditioned configuration may dominate over local state changes on this example. Whether dynamic per-step rerouting occurs on harder, longer trajectories is not established here.
+This confirms the hypernetwork responds to goal identity rather than state alone.
 
 ---
 
