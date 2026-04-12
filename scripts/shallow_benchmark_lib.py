@@ -156,8 +156,10 @@ def build_mode_summary(
 
     torch.set_num_threads(1)
     model, tokenizer, config, device = load_model(checkpoint_path)
-    history = json.loads(history_path.read_text(encoding="utf-8"))
-    best_val_loss = min(record["val"]["total_loss"] for record in history)
+    best_val_loss = None
+    if history_path.exists():
+        history = json.loads(history_path.read_text(encoding="utf-8"))
+        best_val_loss = min(record["val"]["total_loss"] for record in history)
     frame = pd.read_parquet(dataset_path)
     search = get_search_config(config, mode=mode)
     if policy_temperature_override is not None:
