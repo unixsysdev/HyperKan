@@ -116,7 +116,7 @@ def run_epoch(
 ) -> dict[str, float]:
     training = optimizer is not None
     model.train(training)
-    totals = {"action_loss": 0.0, "value_loss": 0.0, "entropy_loss": 0.0, "total_loss": 0.0}
+    totals: dict[str, float] = {}
     steps = 0
 
     for batch in dataloader:
@@ -140,7 +140,7 @@ def run_epoch(
             optimizer.step()
 
         for key, value in metrics.items():
-            totals[key] += value
+            totals[key] = totals.get(key, 0.0) + value
         steps += 1
 
     if steps == 0:

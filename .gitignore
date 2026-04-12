@@ -17,3 +17,7 @@ build/
 # Benchmark outputs (keep local; do not commit)
 artifacts/shallow_benchmark*/
 artifacts/shallow_benchmark_parallel*/
+
+# Recovery sweeps (local artifacts; do not commit)
+artifacts/checkpoints_recovery/
+artifacts/hyperkan_recovery/

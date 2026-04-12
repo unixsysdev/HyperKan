@@ -1,0 +1,79 @@
+{
+  "model": "hyperkan",
+  "mode": "beam",
+  "checkpoint": "artifacts/checkpoints_recovery/small_hyper/hyperkan/best.pt",
+  "best_val_total_loss": -0.027948152273893356,
+  "elapsed_sec": 1485.75,
+  "search": {
+    "beam_width": 4,
+    "max_steps": 8,
+    "max_length": 256,
+    "value_weight": 0.5,
+    "revisit_penalty": 1.5,
+    "policy_temperature": 1.0
+  },
+  "metrics": {
+    "attempts": 274,
+    "solved": 162,
+    "solve_rate": 0.5912408759124088,
+    "mean_solved_steps": 2.234567901234568
+  },
+  "per_depth": {
+    "2": {
+      "attempts": 147,
+      "solved": 147,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 2.0136054421768708
+    },
+    "3": {
+      "attempts": 127,
+      "solved": 15,
+      "solve_rate": 0.11811023622047244,
+      "mean_solved_steps": 4.4
+    }
+  },
+  "per_family": {
+    "poly_trig_to_expanded": {
+      "attempts": 10,
+      "solved": 10,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 2.0
+    },
+    "poly_trig_to_factored": {
+      "attempts": 11,
+      "solved": 11,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 2.0
+    },
+    "rat_partial_trig_to_expanded": {
+      "attempts": 37,
+      "solved": 21,
+      "solve_rate": 0.5675675675675675,
+      "mean_solved_steps": 3.8095238095238093
+    },
+    "rat_partial_trig_to_together": {
+      "attempts": 34,
+      "solved": 34,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 2.0
+    },
+    "rat_poly_trig_to_one": {
+      "attempts": 1,
+      "solved": 1,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 2.0
+    },
+    "rat_three_partial_trig_to_expanded": {
+      "attempts": 96,
+      "solved": 0,
+      "solve_rate": 0.0,
+      "mean_solved_steps": 0.0
+    },
+    "rat_three_partial_trig_to_together": {
+      "attempts": 85,
+      "solved": 85,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 2.0
+    }
+  }
+}

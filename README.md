@@ -25,6 +25,26 @@ Depth-2 is saturated (all models solve **147/147** depth-2 problems). The benchm
 
 HyperKAN improves supervised validation action loss (best `val_action_loss` ≈ **0.0122** vs ≈ **0.0169** for MLP/static), but that advantage does **not** translate into verified search performance on this benchmark.
 
+## Phase A: HyperKAN Recovery (Done)
+
+Goal: make HyperKAN competitive with Static KAN on verified search *before* betting on it for deeper chains.
+
+Result: reducing HyperKAN’s conditioning capacity closes almost the entire gap.
+
+- Static KAN beam: **163/274**, depth-3: **16/127**
+- Recovered HyperKAN (`small_hyper`) beam: **162/274**, depth-3: **15/127**
+
+The recovery sweep tested:
+- Conditioning only the last KAN layer (`hyperkan_condition_kan1: false`)
+- Smaller hypernetwork (`hyper_hidden_dim: 64`) **(best)**
+- Fewer templates (`spline_templates: 2`)
+- Softer routing + routing entropy regularization (`mixture_temperature`, `mixture_entropy_weight`)
+- Eval-only beam softmax temperature (`policy_temperature`) on the best checkpoint (no improvement; high temperature hurts)
+
+Full table + temperature sweep: [docs/hyperkan_recovery_results.md](docs/hyperkan_recovery_results.md).
+
+For public, committed JSON artifacts (per-variant summaries + training histories), see `results/hyperkan_recovery/` (starting point: [results/README.md](results/README.md)).
+
 ---
 
 ## First real run — results
@@ -97,7 +117,7 @@ A 3-partial-fraction rational expansion problem. All models exhaust the beam wit
 
 ## Why HyperKAN may not win yet
 
-HyperKAN’s extra capacity is real (it shows visible goal-conditioned routing), but it is **not translating into verified search performance** on this benchmark. Plausible reasons include shallow/templated data, an objective mismatch between multi-label BCE training and softmax-based search ranking, and increased variance/overfit from the hypernetwork.
+Baseline HyperKAN underperforms Static KAN on verified search, but Phase A shows that this was largely an architecture/config issue: a smaller hypernetwork can recover to near-parity. Remaining plausible reasons HyperKAN does not *win* yet include shallow/templated data, an objective mismatch between multi-label BCE training and softmax-based search ranking, and goal-conditioning not being necessary at depth 2–3.
 
 For the diagnostic plots (action confusion, spline geometry, routing), see [docs/shallow_benchmark_details.md](docs/shallow_benchmark_details.md).
 
@@ -117,7 +137,8 @@ This confirms the hypernetwork responds to goal identity rather than state alone
 | Static KAN is the best head on verified solve rate | ✓ on this benchmark (59.5% vs 53.6% / 54.0%) |
 | HyperKAN > static KAN on verified solve rate | ✗ not demonstrated |
 | HyperKAN learns goal-conditioned spline routing | ✓ visible in spline plots |
-| Goal-conditioned routing improves search at depth 3 | ✗ not on current data (1/127) |
+| Reduced-capacity HyperKAN can be competitive on verified search | ✓ (`small_hyper`: 162/274; 15/127 depth-3) |
+| Search temperature calibration is the missing lever | ✗ (no improvement over `t=1.0`) |
 | Depth-2 is a useful discriminator | ✗ saturated (147/147 for all models) |
 | Depth-3 is the discriminator | ✓ (MLP 0/127, static 16/127, hyper 1/127) |
 
@@ -131,8 +152,8 @@ This confirms the hypernetwork responds to goal identity rather than state alone
 ## Next steps
 
 - Promote Static KAN as the baseline head to beat
-- Focus dataset work on depth 3+ (depth-2 is saturated)
-- Run a small, disciplined HyperKAN recovery sweep before deeper chains: see [docs/hyperkan_recovery_plan.md](docs/hyperkan_recovery_plan.md)
+- Promote `small_hyper` as the recovered HyperKAN baseline (Phase A complete): see [docs/hyperkan_recovery_results.md](docs/hyperkan_recovery_results.md)
+- Focus dataset work on depth 4+ (depth-2 is saturated; depth-3 is now mostly the discriminator)
 - Build validated depth-4+ exact-form families (deep-chain synthesis) before spending more complexity budget on HyperKAN
 - Scale to 10k–20k rows only after depth-4+ examples exist and the benchmark is no longer effectively “depth-3 only”
 - Promote to H200/B200 only if local gains hold and depth scaling confirms the result
