@@ -1,0 +1,342 @@
+[
+  {
+    "epoch": 1,
+    "train": {
+      "action_loss": 0.3979295056599837,
+      "value_loss": 0.45957941526117235,
+      "entropy_loss": -1.2436584417636578,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.47362041817261624
+    },
+    "val": {
+      "action_loss": 0.20407340427239737,
+      "value_loss": 0.18307395776112875,
+      "entropy_loss": -0.6284306248029073,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.22757406532764435
+    }
+  },
+  {
+    "epoch": 2,
+    "train": {
+      "action_loss": 0.09497053606005815,
+      "value_loss": 0.09245728916273667,
+      "entropy_loss": -0.7405322056550246,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.08568111062049866
+    },
+    "val": {
+      "action_loss": 0.04757014289498329,
+      "value_loss": 0.03317318670451641,
+      "entropy_loss": -0.7990360458691915,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.017570295681556065
+    }
+  },
+  {
+    "epoch": 3,
+    "train": {
+      "action_loss": 0.02179466626750162,
+      "value_loss": 0.019009560633164186,
+      "entropy_loss": -0.7417525832469647,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.009590094765791526
+    },
+    "val": {
+      "action_loss": 0.02623172663152218,
+      "value_loss": 0.015222525224089622,
+      "entropy_loss": -0.8156171639760336,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.009982374807198843
+    }
+  },
+  {
+    "epoch": 4,
+    "train": {
+      "action_loss": 0.012379604821594862,
+      "value_loss": 0.00819875003519253,
+      "entropy_loss": -0.7996909572527959,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.02514531907553856
+    },
+    "val": {
+      "action_loss": 0.020575179407993954,
+      "value_loss": 0.0062925863700608415,
+      "entropy_loss": -0.8375612298647562,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.01941510538260142
+    }
+  },
+  {
+    "epoch": 5,
+    "train": {
+      "action_loss": 0.0102663125592069,
+      "value_loss": 0.0030175073681255947,
+      "entropy_loss": -0.8160501305873578,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.029630942126879327
+    },
+    "val": {
+      "action_loss": 0.020935853011906147,
+      "value_loss": 0.002568439425279697,
+      "entropy_loss": -0.8341207305590311,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.019999653100967407
+    }
+  },
+  {
+    "epoch": 6,
+    "train": {
+      "action_loss": 0.0095465724902729,
+      "value_loss": 0.0016072492939061844,
+      "entropy_loss": -0.8148934061710651,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.030715923756361008
+    },
+    "val": {
+      "action_loss": 0.01680384948849678,
+      "value_loss": 0.0017213095367575686,
+      "entropy_loss": -0.8384684522946676,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.024603181208173435
+    }
+  },
+  {
+    "epoch": 7,
+    "train": {
+      "action_loss": 0.01446240632615697,
+      "value_loss": 0.0014684683410450816,
+      "entropy_loss": -0.8148316099093511,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.025838633999228477
+    },
+    "val": {
+      "action_loss": 0.01915676270922025,
+      "value_loss": 0.002427227251852552,
+      "entropy_loss": -0.831991453965505,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.021714642643928528
+    }
+  },
+  {
+    "epoch": 8,
+    "train": {
+      "action_loss": 0.014508354432809237,
+      "value_loss": 0.0025596651785935345,
+      "entropy_loss": -0.7761879104834336,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.02353314167031875
+    },
+    "val": {
+      "action_loss": 0.019298274380465347,
+      "value_loss": 0.002512555103749037,
+      "entropy_loss": -0.8420244654019674,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.02204918364683787
+    }
+  },
+  {
+    "epoch": 9,
+    "train": {
+      "action_loss": 0.010917906962836591,
+      "value_loss": 0.0020345150797556224,
+      "entropy_loss": -0.8142510881790748,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.02918429343173137
+    },
+    "val": {
+      "action_loss": 0.01708845514804125,
+      "value_loss": 0.0008279707205171386,
+      "entropy_loss": -0.8578079541524252,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.025553551812966663
+    }
+  },
+  {
+    "epoch": 10,
+    "train": {
+      "action_loss": 0.009319242586990675,
+      "value_loss": 0.0011362066008866979,
+      "entropy_loss": -0.8178441111858075,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.031232101269639455
+    },
+    "val": {
+      "action_loss": 0.01772954532255729,
+      "value_loss": 0.00045304695959202945,
+      "entropy_loss": -0.8589631120363871,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.02508269747098287
+    }
+  },
+  {
+    "epoch": 11,
+    "train": {
+      "action_loss": 0.007978692234386332,
+      "value_loss": 0.0005886262448397107,
+      "entropy_loss": -0.8155619181119479,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.03262281690079432
+    },
+    "val": {
+      "action_loss": 0.01590753470857938,
+      "value_loss": 0.0006902264431118965,
+      "entropy_loss": -0.8540479143460592,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.026587793603539467
+    }
+  },
+  {
+    "epoch": 12,
+    "train": {
+      "action_loss": 0.007755068549438595,
+      "value_loss": 0.0005508951189068074,
+      "entropy_loss": -0.8178835832155668,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.03297384355503779
+    },
+    "val": {
+      "action_loss": 0.020259284724791844,
+      "value_loss": 0.0003362512798048556,
+      "entropy_loss": -0.8611449599266052,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.02269708923995495
+    }
+  },
+  {
+    "epoch": 13,
+    "train": {
+      "action_loss": 0.011593256248698499,
+      "value_loss": 0.00036921478749718517,
+      "entropy_loss": -0.8259821625856253,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.029595087927121382
+    },
+    "val": {
+      "action_loss": 0.02020885484913985,
+      "value_loss": 0.0010764694306999445,
+      "entropy_loss": -0.8473441203435262,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.021835411588350933
+    }
+  },
+  {
+    "epoch": 14,
+    "train": {
+      "action_loss": 0.009505532713284573,
+      "value_loss": 0.0008024335055289647,
+      "entropy_loss": -0.8140622423245356,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.030956849885674622
+    },
+    "val": {
+      "action_loss": 0.01800596248358488,
+      "value_loss": 0.000946547370404005,
+      "entropy_loss": -0.8571690718332926,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.024568527316053707
+    }
+  },
+  {
+    "epoch": 15,
+    "train": {
+      "action_loss": 0.008070154258838067,
+      "value_loss": 0.0005408302229345561,
+      "entropy_loss": -0.8261120686164269,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.03307320062930767
+    },
+    "val": {
+      "action_loss": 0.019151602871716022,
+      "value_loss": 0.0002692113387941693,
+      "entropy_loss": -0.8649395108222961,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.024014610797166824
+    }
+  },
+  {
+    "epoch": 16,
+    "train": {
+      "action_loss": 0.007529942457599996,
+      "value_loss": 0.0003762512552874306,
+      "entropy_loss": -0.8308575061651376,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.03390005847009329
+    },
+    "val": {
+      "action_loss": 0.01759100705385208,
+      "value_loss": 0.0003078332035026203,
+      "entropy_loss": -0.8591477274894714,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.02527403086423874
+    }
+  },
+  {
+    "epoch": 17,
+    "train": {
+      "action_loss": 0.007774514746135817,
+      "value_loss": 0.00030261630532689963,
+      "entropy_loss": -0.8221449576891385,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.033241948972527795
+    },
+    "val": {
+      "action_loss": 0.020070345140993595,
+      "value_loss": 0.00038679941402127344,
+      "entropy_loss": -0.8613202373186747,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.022879628464579582
+    }
+  },
+  {
+    "epoch": 18,
+    "train": {
+      "action_loss": 0.007649331980456526,
+      "value_loss": 0.00030557535053678573,
+      "entropy_loss": -0.8268756499657264,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.03360277901475246
+    },
+    "val": {
+      "action_loss": 0.018863816745579243,
+      "value_loss": 0.00015458545628158996,
+      "entropy_loss": -0.8643959760665894,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.024309605360031128
+    }
+  },
+  {
+    "epoch": 19,
+    "train": {
+      "action_loss": 0.007091165291897666,
+      "value_loss": 0.0002026054890638289,
+      "entropy_loss": -0.8340133611972516,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.03454872235082663
+    },
+    "val": {
+      "action_loss": 0.021892465961476166,
+      "value_loss": 0.0003401785215828568,
+      "entropy_loss": -0.8662803371747335,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.021319497376680374
+    }
+  },
+  {
+    "epoch": 20,
+    "train": {
+      "action_loss": 0.007492582172115083,
+      "value_loss": 0.00025056357676825987,
+      "entropy_loss": -0.8288124295381399,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.03387287087165392
+    },
+    "val": {
+      "action_loss": 0.0210122000426054,
+      "value_loss": 0.0003388657545049985,
+      "entropy_loss": -0.86395796140035,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": -0.022084040567278862
+    }
+  }
+]

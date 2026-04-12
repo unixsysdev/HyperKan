@@ -19,5 +19,8 @@ artifacts/shallow_benchmark*/
 artifacts/shallow_benchmark_parallel*/
 
 # Recovery sweeps (local artifacts; do not commit)
-artifacts/checkpoints_recovery/
 artifacts/hyperkan_recovery/
+
+# We *do* commit the best checkpoints for reproducibility.
+!artifacts/checkpoints/**/best.pt
+!artifacts/checkpoints_recovery/**/best.pt
