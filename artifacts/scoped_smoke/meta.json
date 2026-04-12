@@ -1,0 +1,15 @@
+{
+  "benchmark_mode": "scoped_actions",
+  "label_mode": "guided_single_path",
+  "samples": 24,
+  "rows": 120,
+  "train": 80,
+  "val": 20,
+  "test": 20,
+  "action_vocab": {
+    "expr@1::factor": 0,
+    "expr@0::trigsimp": 1,
+    "add_slice@root[0:2]::together": 2,
+    "expr@1::expand": 3
+  }
+}

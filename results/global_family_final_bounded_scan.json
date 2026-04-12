@@ -1,0 +1,506 @@
+{
+  "families": {
+    "block_a_trig_merge_expand": {
+      "summary": {
+        "instances": 2,
+        "max_depth_observed": 3,
+        "instances_with_depth_ge_4": 0,
+        "depth_ge_4_rate": 0.0,
+        "mean_shortcut_density": 0.0,
+        "mean_optimal_action_entropy_bits": 2.521928094887362,
+        "mean_geodesic_action_entropy_bits": 2.0,
+        "intended_spine_geodesic_rate": 1.0
+      },
+      "examples": [
+        {
+          "family": "block_a_trig_merge_expand",
+          "params": {
+            "coeff_a": 1,
+            "coeff_b": 1,
+            "shift_a": 1,
+            "shift_b": 2
+          },
+          "goal_name": "goal",
+          "goal": "2*x/(x**2 + 3*x + 2) + 3/(x**2 + 3*x + 2)",
+          "timeout_nodes": [],
+          "node_count": 4,
+          "edge_count": 7,
+          "nodes": [
+            {
+              "name": "goal",
+              "expr_str": "2*x/(x**2 + 3*x + 2) + 3/(x**2 + 3*x + 2)",
+              "structural": "Add(Mul(Integer(2), Symbol('x'), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))), Mul(Integer(3), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))))"
+            },
+            {
+              "name": "together",
+              "expr_str": "(2*x + 3)/((x + 1)*(x + 2))",
+              "structural": "Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Add(Mul(Integer(2), Symbol('x')), Integer(3)))"
+            },
+            {
+              "name": "base",
+              "expr_str": "1/(x + 2) + 1/(x + 1)",
+              "structural": "Add(Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Pow(Add(Symbol('x'), Integer(1)), Integer(-1)))"
+            },
+            {
+              "name": "start",
+              "expr_str": "(1/(x + 2) + 1/(x + 1))*(sin(y)**2 + cos(y)**2)",
+              "structural": "Mul(Add(Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Pow(Add(Symbol('x'), Integer(1)), Integer(-1))), Add(Pow(sin(Symbol('y')), Integer(2)), Pow(cos(Symbol('y')), Integer(2))))"
+            }
+          ],
+          "edges": [
+            {
+              "source": "base",
+              "action": "factor",
+              "target": "together"
+            },
+            {
+              "source": "base",
+              "action": "together",
+              "target": "together"
+            },
+            {
+              "source": "goal",
+              "action": "apart",
+              "target": "base"
+            },
+            {
+              "source": "goal",
+              "action": "factor",
+              "target": "together"
+            },
+            {
+              "source": "start",
+              "action": "trigsimp",
+              "target": "base"
+            },
+            {
+              "source": "together",
+              "action": "apart",
+              "target": "base"
+            },
+            {
+              "source": "together",
+              "action": "expand",
+              "target": "goal"
+            }
+          ],
+          "global_depths": {
+            "goal": 0,
+            "together": 1,
+            "base": 2,
+            "start": 3
+          },
+          "induced_distances": {
+            "goal": 0,
+            "together": 1,
+            "base": 2,
+            "start": 3
+          },
+          "depth_histogram": {
+            "0": 1,
+            "1": 1,
+            "2": 1,
+            "3": 1
+          },
+          "max_global_depth": 3,
+          "depth_ge_4_nodes": [],
+          "optimal_actions": {
+            "goal": [],
+            "together": [
+              "expand"
+            ],
+            "base": [
+              "cancel",
+              "factor",
+              "together"
+            ],
+            "start": [
+              "apart",
+              "cancel",
+              "expand",
+              "factor",
+              "together",
+              "trigsimp"
+            ]
+          },
+          "optimal_action_entropy_bits": 2.521928094887362,
+          "geodesic_action_entropy_bits": 2.0,
+          "geodesic_edges": 4,
+          "shortcut_edges": 0,
+          "shortcut_density": 0.0,
+          "leaking_edges": 3,
+          "intended_spine": [
+            "start",
+            "base",
+            "together",
+            "goal"
+          ],
+          "intended_spine_depths": [
+            3,
+            2,
+            1,
+            0
+          ],
+          "intended_spine_geodesic": true
+        }
+      ]
+    },
+    "block_b_cancel_expand": {
+      "summary": {
+        "instances": 2,
+        "max_depth_observed": 2,
+        "instances_with_depth_ge_4": 0,
+        "depth_ge_4_rate": 0.0,
+        "mean_shortcut_density": 0.0,
+        "mean_optimal_action_entropy_bits": 1.584962500721156,
+        "mean_geodesic_action_entropy_bits": 1.0,
+        "intended_spine_geodesic_rate": 1.0
+      },
+      "examples": [
+        {
+          "family": "block_b_cancel_expand",
+          "params": {
+            "p": 1,
+            "q": 2,
+            "r": 3,
+            "d": 6
+          },
+          "goal_name": "goal",
+          "goal": "z/(z**2 + 3*z + 2) + 6/(z**2 + 3*z + 2)",
+          "timeout_nodes": [],
+          "node_count": 3,
+          "edge_count": 3,
+          "nodes": [
+            {
+              "name": "goal",
+              "expr_str": "z/(z**2 + 3*z + 2) + 6/(z**2 + 3*z + 2)",
+              "structural": "Add(Mul(Symbol('z'), Pow(Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(3), Symbol('z')), Integer(2)), Integer(-1))), Mul(Integer(6), Pow(Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(3), Symbol('z')), Integer(2)), Integer(-1))))"
+            },
+            {
+              "name": "reduced",
+              "expr_str": "(z + 6)/(((z + 1)*(z + 2)))",
+              "structural": "Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Add(Symbol('z'), Integer(6)))"
+            },
+            {
+              "name": "state",
+              "expr_str": "(z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))",
+              "structural": "Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Pow(Add(Symbol('z'), Integer(3)), Integer(-1)), Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(9), Symbol('z')), Integer(18)))"
+            }
+          ],
+          "edges": [
+            {
+              "source": "goal",
+              "action": "factor",
+              "target": "reduced"
+            },
+            {
+              "source": "reduced",
+              "action": "expand",
+              "target": "goal"
+            },
+            {
+              "source": "state",
+              "action": "factor",
+              "target": "reduced"
+            }
+          ],
+          "global_depths": {
+            "goal": 0,
+            "reduced": 1,
+            "state": 2
+          },
+          "induced_distances": {
+            "goal": 0,
+            "reduced": 1,
+            "state": 2
+          },
+          "depth_histogram": {
+            "0": 1,
+            "1": 1,
+            "2": 1
+          },
+          "max_global_depth": 2,
+          "depth_ge_4_nodes": [],
+          "optimal_actions": {
+            "goal": [],
+            "reduced": [
+              "expand"
+            ],
+            "state": [
+              "cancel",
+              "factor"
+            ]
+          },
+          "optimal_action_entropy_bits": 1.584962500721156,
+          "geodesic_action_entropy_bits": 1.0,
+          "geodesic_edges": 2,
+          "shortcut_edges": 0,
+          "shortcut_density": 0.0,
+          "leaking_edges": 1,
+          "intended_spine": [
+            "state",
+            "reduced",
+            "goal"
+          ],
+          "intended_spine_depths": [
+            2,
+            1,
+            0
+          ],
+          "intended_spine_geodesic": true
+        }
+      ]
+    },
+    "sum_a3_b1_cancel": {
+      "summary": {
+        "instances": 2,
+        "max_depth_observed": 0,
+        "instances_with_depth_ge_4": 0,
+        "depth_ge_4_rate": 0.0,
+        "mean_shortcut_density": 0.0,
+        "mean_optimal_action_entropy_bits": 0.0,
+        "mean_geodesic_action_entropy_bits": 0.0,
+        "intended_spine_geodesic_rate": 0.0
+      },
+      "examples": [
+        {
+          "family": "sum_a3_b1_cancel",
+          "params": {
+            "p": 1,
+            "q": 2,
+            "r": 3,
+            "d": 6
+          },
+          "goal_name": "goal",
+          "goal": "(5*x/(x**2 + 3*x + 2) + 7/(x**2 + 3*x + 2)) + (z + 6)/(((z + 1)*(z + 2)))",
+          "timeout_nodes": [
+            "a_goal_b_state",
+            "a_together_b_state",
+            "a_base_b_state",
+            "a_start_b_state"
+          ],
+          "node_count": 5,
+          "edge_count": 1,
+          "nodes": [
+            {
+              "name": "goal",
+              "expr_str": "(5*x/(x**2 + 3*x + 2) + 7/(x**2 + 3*x + 2)) + (z + 6)/(((z + 1)*(z + 2)))",
+              "structural": "Add(Mul(Integer(5), Symbol('x'), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))), Mul(Integer(7), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))), Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Add(Symbol('z'), Integer(6))))"
+            },
+            {
+              "name": "a_goal_b_state",
+              "expr_str": "(5*x/(x**2 + 3*x + 2) + 7/(x**2 + 3*x + 2)) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))",
+              "structural": "Add(Mul(Integer(5), Symbol('x'), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))), Mul(Integer(7), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))), Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Pow(Add(Symbol('z'), Integer(3)), Integer(-1)), Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(9), Symbol('z')), Integer(18))))"
+            },
+            {
+              "name": "a_together_b_state",
+              "expr_str": "(z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3))) + (5*x + 7)/(((x + 1)*(x + 2)))",
+              "structural": "Add(Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Pow(Add(Symbol('z'), Integer(3)), Integer(-1)), Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(9), Symbol('z')), Integer(18))), Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Add(Mul(Integer(5), Symbol('x')), Integer(7))))"
+            },
+            {
+              "name": "a_base_b_state",
+              "expr_str": "(3/(x + 2) + 2/(x + 1)) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))",
+              "structural": "Add(Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Pow(Add(Symbol('z'), Integer(3)), Integer(-1)), Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(9), Symbol('z')), Integer(18))), Mul(Integer(3), Pow(Add(Symbol('x'), Integer(2)), Integer(-1))), Mul(Integer(2), Pow(Add(Symbol('x'), Integer(1)), Integer(-1))))"
+            },
+            {
+              "name": "a_start_b_state",
+              "expr_str": "(3/(x + 2) + 2/(x + 1))*(sin(y)**2 + cos(y)**2) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))",
+              "structural": "Add(Mul(Add(Mul(Integer(3), Pow(Add(Symbol('x'), Integer(2)), Integer(-1))), Mul(Integer(2), Pow(Add(Symbol('x'), Integer(1)), Integer(-1)))), Add(Pow(sin(Symbol('y')), Integer(2)), Pow(cos(Symbol('y')), Integer(2)))), Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Pow(Add(Symbol('z'), Integer(3)), Integer(-1)), Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(9), Symbol('z')), Integer(18))))"
+            }
+          ],
+          "edges": [
+            {
+              "source": "a_start_b_state",
+              "action": "trigsimp",
+              "target": "a_base_b_state"
+            }
+          ],
+          "global_depths": {
+            "goal": 0,
+            "a_goal_b_state": null,
+            "a_together_b_state": null,
+            "a_base_b_state": null,
+            "a_start_b_state": null
+          },
+          "induced_distances": {
+            "goal": 0
+          },
+          "depth_histogram": {
+            "0": 1
+          },
+          "max_global_depth": 0,
+          "depth_ge_4_nodes": [],
+          "optimal_actions": {
+            "goal": [],
+            "a_goal_b_state": [],
+            "a_together_b_state": [],
+            "a_base_b_state": [],
+            "a_start_b_state": []
+          },
+          "optimal_action_entropy_bits": 0.0,
+          "geodesic_action_entropy_bits": 0.0,
+          "geodesic_edges": 0,
+          "shortcut_edges": 0,
+          "shortcut_density": 0.0,
+          "leaking_edges": 0,
+          "intended_spine": [
+            "a_start_b_state",
+            "a_base_b_state",
+            "a_together_b_state",
+            "a_goal_b_state",
+            "goal"
+          ],
+          "intended_spine_depths": [
+            null,
+            null,
+            null,
+            null,
+            0
+          ],
+          "intended_spine_geodesic": false
+        }
+      ]
+    },
+    "sum_a3_b2_cancel_expand": {
+      "summary": {
+        "instances": 2,
+        "max_depth_observed": 3,
+        "instances_with_depth_ge_4": 0,
+        "depth_ge_4_rate": 0.0,
+        "mean_shortcut_density": 0.0,
+        "mean_optimal_action_entropy_bits": 0.5,
+        "mean_geodesic_action_entropy_bits": 0.0,
+        "intended_spine_geodesic_rate": 0.0
+      },
+      "examples": [
+        {
+          "family": "sum_a3_b2_cancel_expand",
+          "params": {
+            "p": 1,
+            "q": 2,
+            "r": 3,
+            "d": 7
+          },
+          "goal_name": "goal",
+          "goal": "(5*x/(x**2 + 3*x + 2) + 7/(x**2 + 3*x + 2)) + (z/(z**2 + 3*z + 2) + 7/(z**2 + 3*z + 2))",
+          "timeout_nodes": [
+            "a_goal_b_state",
+            "a_together_b_state",
+            "a_base_b_state"
+          ],
+          "node_count": 6,
+          "edge_count": 2,
+          "nodes": [
+            {
+              "name": "goal",
+              "expr_str": "(5*x/(x**2 + 3*x + 2) + 7/(x**2 + 3*x + 2)) + (z/(z**2 + 3*z + 2) + 7/(z**2 + 3*z + 2))",
+              "structural": "Add(Mul(Integer(5), Symbol('x'), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))), Mul(Symbol('z'), Pow(Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(3), Symbol('z')), Integer(2)), Integer(-1))), Mul(Integer(7), Pow(Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(3), Symbol('z')), Integer(2)), Integer(-1))), Mul(Integer(7), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))))"
+            },
+            {
+              "name": "a_goal_b_reduced",
+              "expr_str": "(5*x/(x**2 + 3*x + 2) + 7/(x**2 + 3*x + 2)) + (z + 7)/(((z + 1)*(z + 2)))",
+              "structural": "Add(Mul(Integer(5), Symbol('x'), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))), Mul(Integer(7), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))), Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Add(Symbol('z'), Integer(7))))"
+            },
+            {
+              "name": "a_goal_b_state",
+              "expr_str": "(5*x/(x**2 + 3*x + 2) + 7/(x**2 + 3*x + 2)) + (z**2 + 10*z + 21)/(((z + 1)*(z + 2)*(z + 3)))",
+              "structural": "Add(Mul(Integer(5), Symbol('x'), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))), Mul(Integer(7), Pow(Add(Pow(Symbol('x'), Integer(2)), Mul(Integer(3), Symbol('x')), Integer(2)), Integer(-1))), Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Pow(Add(Symbol('z'), Integer(3)), Integer(-1)), Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(10), Symbol('z')), Integer(21))))"
+            },
+            {
+              "name": "a_together_b_state",
+              "expr_str": "(z**2 + 10*z + 21)/(((z + 1)*(z + 2)*(z + 3))) + (5*x + 7)/(((x + 1)*(x + 2)))",
+              "structural": "Add(Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Pow(Add(Symbol('z'), Integer(3)), Integer(-1)), Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(10), Symbol('z')), Integer(21))), Mul(Pow(Add(Symbol('x'), Integer(1)), Integer(-1)), Pow(Add(Symbol('x'), Integer(2)), Integer(-1)), Add(Mul(Integer(5), Symbol('x')), Integer(7))))"
+            },
+            {
+              "name": "a_base_b_state",
+              "expr_str": "(3/(x + 2) + 2/(x + 1)) + (z**2 + 10*z + 21)/(((z + 1)*(z + 2)*(z + 3)))",
+              "structural": "Add(Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Pow(Add(Symbol('z'), Integer(3)), Integer(-1)), Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(10), Symbol('z')), Integer(21))), Mul(Integer(3), Pow(Add(Symbol('x'), Integer(2)), Integer(-1))), Mul(Integer(2), Pow(Add(Symbol('x'), Integer(1)), Integer(-1))))"
+            },
+            {
+              "name": "a_start_b_state",
+              "expr_str": "(3/(x + 2) + 2/(x + 1))*(sin(y)**2 + cos(y)**2) + (z**2 + 10*z + 21)/(((z + 1)*(z + 2)*(z + 3)))",
+              "structural": "Add(Mul(Add(Mul(Integer(3), Pow(Add(Symbol('x'), Integer(2)), Integer(-1))), Mul(Integer(2), Pow(Add(Symbol('x'), Integer(1)), Integer(-1)))), Add(Pow(sin(Symbol('y')), Integer(2)), Pow(cos(Symbol('y')), Integer(2)))), Mul(Pow(Add(Symbol('z'), Integer(1)), Integer(-1)), Pow(Add(Symbol('z'), Integer(2)), Integer(-1)), Pow(Add(Symbol('z'), Integer(3)), Integer(-1)), Add(Pow(Symbol('z'), Integer(2)), Mul(Integer(10), Symbol('z')), Integer(21))))"
+            }
+          ],
+          "edges": [
+            {
+              "source": "a_goal_b_reduced",
+              "action": "expand",
+              "target": "goal"
+            },
+            {
+              "source": "a_start_b_state",
+              "action": "trigsimp",
+              "target": "a_base_b_state"
+            }
+          ],
+          "global_depths": {
+            "goal": 0,
+            "a_goal_b_reduced": 1,
+            "a_goal_b_state": null,
+            "a_together_b_state": null,
+            "a_base_b_state": null,
+            "a_start_b_state": 3
+          },
+          "induced_distances": {
+            "goal": 0,
+            "a_goal_b_reduced": 1
+          },
+          "depth_histogram": {
+            "0": 1,
+            "1": 1,
+            "3": 1
+          },
+          "max_global_depth": 3,
+          "depth_ge_4_nodes": [],
+          "optimal_actions": {
+            "goal": [],
+            "a_goal_b_reduced": [
+              "expand"
+            ],
+            "a_goal_b_state": [],
+            "a_together_b_state": [],
+            "a_base_b_state": [],
+            "a_start_b_state": [
+              "apart"
+            ]
+          },
+          "optimal_action_entropy_bits": 1.0,
+          "geodesic_action_entropy_bits": 0.0,
+          "geodesic_edges": 1,
+          "shortcut_edges": 0,
+          "shortcut_density": 0.0,
+          "leaking_edges": 0,
+          "intended_spine": [
+            "a_start_b_state",
+            "a_base_b_state",
+            "a_together_b_state",
+            "a_goal_b_state",
+            "a_goal_b_reduced",
+            "goal"
+          ],
+          "intended_spine_depths": [
+            3,
+            null,
+            null,
+            null,
+            1,
+            0
+          ],
+          "intended_spine_geodesic": false
+        }
+      ]
+    }
+  },
+  "settings": {
+    "families": [
+      "block_a_trig_merge_expand",
+      "block_b_cancel_expand",
+      "sum_a3_b1_cancel",
+      "sum_a3_b2_cancel_expand"
+    ],
+    "per_family_limit": 2,
+    "max_steps": 6,
+    "timeout_seconds": 3
+  }
+}

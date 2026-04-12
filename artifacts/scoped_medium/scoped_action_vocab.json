@@ -1,0 +1,6 @@
+{
+  "expr@1::factor": 0,
+  "expr@0::trigsimp": 1,
+  "add_slice@root[0:2]::together": 2,
+  "expr@1::expand": 3
+}

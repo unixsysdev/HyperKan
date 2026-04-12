@@ -1,0 +1,87 @@
+[
+  {
+    "epoch": 1,
+    "train": {
+      "action_loss": 0.41238891075436884,
+      "value_loss": 0.275768951441233,
+      "entropy_loss": -0.9150448401386921,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.4768187048343512
+    },
+    "val": {
+      "action_loss": 0.20580639796597616,
+      "value_loss": 0.09213618614843913,
+      "entropy_loss": -0.4693218895367214,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.2240608185529709
+    }
+  },
+  {
+    "epoch": 2,
+    "train": {
+      "action_loss": 0.0799510055691756,
+      "value_loss": 0.027860611784630097,
+      "entropy_loss": -0.17783855914470992,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.08475241772024535
+    },
+    "val": {
+      "action_loss": 0.0006951116873616618,
+      "value_loss": 0.002213194450762655,
+      "entropy_loss": -3.0448580738655956e-05,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.00135846108397735
+    }
+  },
+  {
+    "epoch": 3,
+    "train": {
+      "action_loss": 0.0003342482405759466,
+      "value_loss": 0.0020473722184900767,
+      "entropy_loss": -9.711998455504026e-06,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.0009482656927362909
+    },
+    "val": {
+      "action_loss": 0.0001768172431703923,
+      "value_loss": 0.0008826923440210521,
+      "entropy_loss": -2.25712645780212e-06,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.0004415798175614327
+    }
+  },
+  {
+    "epoch": 4,
+    "train": {
+      "action_loss": 0.00014327457840688742,
+      "value_loss": 0.0003434398867494355,
+      "entropy_loss": -1.5627774963342324e-06,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.0002462752899401284
+    },
+    "val": {
+      "action_loss": 0.00011309870543690132,
+      "value_loss": 0.0002932594236751486,
+      "entropy_loss": -9.571460850565927e-07,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.00020105739323688404
+    }
+  },
+  {
+    "epoch": 5,
+    "train": {
+      "action_loss": 9.750754781215129e-05,
+      "value_loss": 0.00028277108853776904,
+      "entropy_loss": -7.154249279149274e-07,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.0001823245698827892
+    },
+    "val": {
+      "action_loss": 7.986828027891793e-05,
+      "value_loss": 0.0009757029724174312,
+      "entropy_loss": -4.881594983479382e-07,
+      "mixture_entropy_loss": 0.0,
+      "total_loss": 0.00037256942596286535
+    }
+  }
+]

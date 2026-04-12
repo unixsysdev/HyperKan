@@ -1,0 +1,637 @@
+{
+  "site_model": "path_based_scoped_sites",
+  "site_rules": {
+    "max_path_depth": 2,
+    "site_types": [
+      "expr",
+      "numerator",
+      "denominator",
+      "add_slice"
+    ],
+    "whitelist": [
+      "root",
+      "Add",
+      "Mul",
+      "rational subtree",
+      "trig-containing subtree"
+    ],
+    "add_slice_lengths": [
+      2,
+      3
+    ],
+    "max_nodes_per_query": 500,
+    "timeout_seconds": 12,
+    "composition_timeout_seconds": 3
+  },
+  "block_a_scoped_shortest": {
+    "distance": 3,
+    "optimal_actions": [
+      "expr@root::trigsimp"
+    ],
+    "reason": "ok",
+    "nodes_expanded": 26,
+    "mode": "strict_bounded"
+  },
+  "block_b_scoped_shortest": {
+    "distance": 2,
+    "optimal_actions": [
+      "expr@root::factor"
+    ],
+    "reason": "ok",
+    "nodes_expanded": 2,
+    "mode": "strict_bounded"
+  },
+  "composed_reduced_goal_shortest": {
+    "distance": null,
+    "optimal_actions": [],
+    "reason": "timeout",
+    "nodes_expanded": null,
+    "mode": "strict_bounded"
+  },
+  "composed_reduced_goal_guided": {
+    "distance": 4,
+    "optimal_actions": [
+      "expr@1::factor"
+    ],
+    "reason": "ok",
+    "nodes_expanded": 4,
+    "mode": "guided_first_path"
+  },
+  "composed_expanded_goal_shortest": {
+    "distance": null,
+    "optimal_actions": [],
+    "reason": "timeout",
+    "nodes_expanded": null,
+    "mode": "strict_bounded"
+  },
+  "addressability": {
+    "start": {
+      "a_block_is_addressable_exactly": true,
+      "a_block_is_addressable_structurally": true,
+      "site_count": 17,
+      "site_snapshot": [
+        {
+          "site_id": "expr@root",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "(3/(x + 2) + 2/(x + 1))*(sin(y)**2 + cos(y)**2) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "add_slice@root[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "(3/(x + 2) + 2/(x + 1))*(sin(y)**2 + cos(y)**2) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "expr@0",
+          "site_type": "expr",
+          "root_type": "Mul",
+          "expr": "(3/(x + 2) + 2/(x + 1))*(sin(y)**2 + cos(y)**2)"
+        },
+        {
+          "site_id": "expr@0.0",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "3/(x + 2) + 2/(x + 1)"
+        },
+        {
+          "site_id": "add_slice@0.0[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "3/(x + 2) + 2/(x + 1)"
+        },
+        {
+          "site_id": "expr@0.1",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "sin(y)**2 + cos(y)**2"
+        },
+        {
+          "site_id": "add_slice@0.1[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "sin(y)**2 + cos(y)**2"
+        },
+        {
+          "site_id": "expr@1",
+          "site_type": "expr",
+          "root_type": "Mul",
+          "expr": "(z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "numerator@1",
+          "site_type": "numerator",
+          "root_type": "Mul",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "denominator@1",
+          "site_type": "denominator",
+          "root_type": "Mul",
+          "expr": "(z + 1)*(z + 2)*(z + 3)"
+        },
+        {
+          "site_id": "expr@1.0",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "add_slice@1.0[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z"
+        },
+        {
+          "site_id": "add_slice@1.0[1:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "9*z + 18"
+        },
+        {
+          "site_id": "add_slice@1.0[0:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "expr@1.1",
+          "site_type": "expr",
+          "root_type": "Pow",
+          "expr": "1/((z + 1)*(z + 2)*(z + 3))"
+        },
+        {
+          "site_id": "numerator@1.1",
+          "site_type": "numerator",
+          "root_type": "Pow",
+          "expr": "1"
+        },
+        {
+          "site_id": "denominator@1.1",
+          "site_type": "denominator",
+          "root_type": "Pow",
+          "expr": "(z + 1)*(z + 2)*(z + 3)"
+        }
+      ]
+    },
+    "after_trigsimp": {
+      "a_block_is_addressable_exactly": false,
+      "a_block_is_addressable_structurally": false,
+      "site_count": 26,
+      "site_snapshot": [
+        {
+          "site_id": "expr@root",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "3/(x + 2) + 2/(x + 1) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "add_slice@root[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "3/(x + 2) + 2/(x + 1)"
+        },
+        {
+          "site_id": "add_slice@root[1:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "2/(x + 1) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "add_slice@root[0:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "3/(x + 2) + 2/(x + 1) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "expr@0",
+          "site_type": "expr",
+          "root_type": "Mul",
+          "expr": "3/(x + 2)"
+        },
+        {
+          "site_id": "numerator@0",
+          "site_type": "numerator",
+          "root_type": "Mul",
+          "expr": "3"
+        },
+        {
+          "site_id": "denominator@0",
+          "site_type": "denominator",
+          "root_type": "Mul",
+          "expr": "x + 2"
+        },
+        {
+          "site_id": "expr@0.1",
+          "site_type": "expr",
+          "root_type": "Pow",
+          "expr": "1/(x + 2)"
+        },
+        {
+          "site_id": "numerator@0.1",
+          "site_type": "numerator",
+          "root_type": "Pow",
+          "expr": "1"
+        },
+        {
+          "site_id": "denominator@0.1",
+          "site_type": "denominator",
+          "root_type": "Pow",
+          "expr": "x + 2"
+        },
+        {
+          "site_id": "expr@1",
+          "site_type": "expr",
+          "root_type": "Mul",
+          "expr": "2/(x + 1)"
+        },
+        {
+          "site_id": "numerator@1",
+          "site_type": "numerator",
+          "root_type": "Mul",
+          "expr": "2"
+        },
+        {
+          "site_id": "denominator@1",
+          "site_type": "denominator",
+          "root_type": "Mul",
+          "expr": "x + 1"
+        },
+        {
+          "site_id": "expr@1.1",
+          "site_type": "expr",
+          "root_type": "Pow",
+          "expr": "1/(x + 1)"
+        },
+        {
+          "site_id": "numerator@1.1",
+          "site_type": "numerator",
+          "root_type": "Pow",
+          "expr": "1"
+        },
+        {
+          "site_id": "denominator@1.1",
+          "site_type": "denominator",
+          "root_type": "Pow",
+          "expr": "x + 1"
+        },
+        {
+          "site_id": "expr@2",
+          "site_type": "expr",
+          "root_type": "Mul",
+          "expr": "(z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "numerator@2",
+          "site_type": "numerator",
+          "root_type": "Mul",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "denominator@2",
+          "site_type": "denominator",
+          "root_type": "Mul",
+          "expr": "(z + 1)*(z + 2)*(z + 3)"
+        },
+        {
+          "site_id": "expr@2.0",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "add_slice@2.0[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z"
+        },
+        {
+          "site_id": "add_slice@2.0[1:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "9*z + 18"
+        },
+        {
+          "site_id": "add_slice@2.0[0:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "expr@2.1",
+          "site_type": "expr",
+          "root_type": "Pow",
+          "expr": "1/((z + 1)*(z + 2)*(z + 3))"
+        },
+        {
+          "site_id": "numerator@2.1",
+          "site_type": "numerator",
+          "root_type": "Pow",
+          "expr": "1"
+        },
+        {
+          "site_id": "denominator@2.1",
+          "site_type": "denominator",
+          "root_type": "Pow",
+          "expr": "(z + 1)*(z + 2)*(z + 3)"
+        }
+      ]
+    },
+    "after_together": {
+      "a_block_is_addressable_exactly": false,
+      "a_block_is_addressable_structurally": true,
+      "site_count": 20,
+      "site_snapshot": [
+        {
+          "site_id": "expr@root",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "(z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3))) + (5*x + 7)/(((x + 1)*(x + 2)))"
+        },
+        {
+          "site_id": "add_slice@root[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "(z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3))) + (5*x + 7)/(((x + 1)*(x + 2)))"
+        },
+        {
+          "site_id": "expr@0",
+          "site_type": "expr",
+          "root_type": "Mul",
+          "expr": "(z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "numerator@0",
+          "site_type": "numerator",
+          "root_type": "Mul",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "denominator@0",
+          "site_type": "denominator",
+          "root_type": "Mul",
+          "expr": "(z + 1)*(z + 2)*(z + 3)"
+        },
+        {
+          "site_id": "expr@0.0",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "add_slice@0.0[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z"
+        },
+        {
+          "site_id": "add_slice@0.0[1:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "9*z + 18"
+        },
+        {
+          "site_id": "add_slice@0.0[0:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "expr@0.1",
+          "site_type": "expr",
+          "root_type": "Pow",
+          "expr": "1/((z + 1)*(z + 2)*(z + 3))"
+        },
+        {
+          "site_id": "numerator@0.1",
+          "site_type": "numerator",
+          "root_type": "Pow",
+          "expr": "1"
+        },
+        {
+          "site_id": "denominator@0.1",
+          "site_type": "denominator",
+          "root_type": "Pow",
+          "expr": "(z + 1)*(z + 2)*(z + 3)"
+        },
+        {
+          "site_id": "expr@1",
+          "site_type": "expr",
+          "root_type": "Mul",
+          "expr": "(5*x + 7)/(((x + 1)*(x + 2)))"
+        },
+        {
+          "site_id": "numerator@1",
+          "site_type": "numerator",
+          "root_type": "Mul",
+          "expr": "5*x + 7"
+        },
+        {
+          "site_id": "denominator@1",
+          "site_type": "denominator",
+          "root_type": "Mul",
+          "expr": "(x + 1)*(x + 2)"
+        },
+        {
+          "site_id": "expr@1.0",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "5*x + 7"
+        },
+        {
+          "site_id": "add_slice@1.0[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "5*x + 7"
+        },
+        {
+          "site_id": "expr@1.1",
+          "site_type": "expr",
+          "root_type": "Pow",
+          "expr": "1/((x + 1)*(x + 2))"
+        },
+        {
+          "site_id": "numerator@1.1",
+          "site_type": "numerator",
+          "root_type": "Pow",
+          "expr": "1"
+        },
+        {
+          "site_id": "denominator@1.1",
+          "site_type": "denominator",
+          "root_type": "Pow",
+          "expr": "(x + 1)*(x + 2)"
+        }
+      ]
+    },
+    "after_a_goal": {
+      "a_block_is_addressable_exactly": false,
+      "a_block_is_addressable_structurally": false,
+      "site_count": 26,
+      "site_snapshot": [
+        {
+          "site_id": "expr@root",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "5*x/(x**2 + 3*x + 2) + 7/(x**2 + 3*x + 2) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "add_slice@root[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "5*x/(x**2 + 3*x + 2) + 7/(x**2 + 3*x + 2)"
+        },
+        {
+          "site_id": "add_slice@root[1:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "7/(x**2 + 3*x + 2) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "add_slice@root[0:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "5*x/(x**2 + 3*x + 2) + 7/(x**2 + 3*x + 2) + (z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "expr@0",
+          "site_type": "expr",
+          "root_type": "Mul",
+          "expr": "5*x/(x**2 + 3*x + 2)"
+        },
+        {
+          "site_id": "numerator@0",
+          "site_type": "numerator",
+          "root_type": "Mul",
+          "expr": "5*x"
+        },
+        {
+          "site_id": "denominator@0",
+          "site_type": "denominator",
+          "root_type": "Mul",
+          "expr": "x**2 + 3*x + 2"
+        },
+        {
+          "site_id": "expr@0.2",
+          "site_type": "expr",
+          "root_type": "Pow",
+          "expr": "1/(x**2 + 3*x + 2)"
+        },
+        {
+          "site_id": "numerator@0.2",
+          "site_type": "numerator",
+          "root_type": "Pow",
+          "expr": "1"
+        },
+        {
+          "site_id": "denominator@0.2",
+          "site_type": "denominator",
+          "root_type": "Pow",
+          "expr": "x**2 + 3*x + 2"
+        },
+        {
+          "site_id": "expr@1",
+          "site_type": "expr",
+          "root_type": "Mul",
+          "expr": "7/(x**2 + 3*x + 2)"
+        },
+        {
+          "site_id": "numerator@1",
+          "site_type": "numerator",
+          "root_type": "Mul",
+          "expr": "7"
+        },
+        {
+          "site_id": "denominator@1",
+          "site_type": "denominator",
+          "root_type": "Mul",
+          "expr": "x**2 + 3*x + 2"
+        },
+        {
+          "site_id": "expr@1.1",
+          "site_type": "expr",
+          "root_type": "Pow",
+          "expr": "1/(x**2 + 3*x + 2)"
+        },
+        {
+          "site_id": "numerator@1.1",
+          "site_type": "numerator",
+          "root_type": "Pow",
+          "expr": "1"
+        },
+        {
+          "site_id": "denominator@1.1",
+          "site_type": "denominator",
+          "root_type": "Pow",
+          "expr": "x**2 + 3*x + 2"
+        },
+        {
+          "site_id": "expr@2",
+          "site_type": "expr",
+          "root_type": "Mul",
+          "expr": "(z**2 + 9*z + 18)/(((z + 1)*(z + 2)*(z + 3)))"
+        },
+        {
+          "site_id": "numerator@2",
+          "site_type": "numerator",
+          "root_type": "Mul",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "denominator@2",
+          "site_type": "denominator",
+          "root_type": "Mul",
+          "expr": "(z + 1)*(z + 2)*(z + 3)"
+        },
+        {
+          "site_id": "expr@2.0",
+          "site_type": "expr",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "add_slice@2.0[0:2]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z"
+        },
+        {
+          "site_id": "add_slice@2.0[1:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "9*z + 18"
+        },
+        {
+          "site_id": "add_slice@2.0[0:3]",
+          "site_type": "add_slice",
+          "root_type": "Add",
+          "expr": "z**2 + 9*z + 18"
+        },
+        {
+          "site_id": "expr@2.1",
+          "site_type": "expr",
+          "root_type": "Pow",
+          "expr": "1/((z + 1)*(z + 2)*(z + 3))"
+        },
+        {
+          "site_id": "numerator@2.1",
+          "site_type": "numerator",
+          "root_type": "Pow",
+          "expr": "1"
+        },
+        {
+          "site_id": "denominator@2.1",
+          "site_type": "denominator",
+          "root_type": "Pow",
+          "expr": "(z + 1)*(z + 2)*(z + 3)"
+        }
+      ]
+    }
+  },
+  "notes": [
+    "This is the path-based replacement for the shallow named-site prototype.",
+    "The key question is whether path sites preserve access to the relevant subtree after partial rewriting and normalization.",
+    "Strict bounded search still represents the verifier standard for final labels.",
+    "The guided first-path field is a smoke-test check that uses the same scoped action semantics but returns after the first bounded valid path."
+  ]
+}
