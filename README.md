@@ -1,5 +1,7 @@
 # Mathy — Goal-conditioned HyperKAN for Verified Algebraic Rewriting
 
+> **Mathy** is the project. The repository is **HyperKan**. Run it from wherever you cloned it — the instructions below use `$REPO` as the root.
+
 A local-first POC on Strix Halo (ROCm 7.2) for learning symbolic rewrite policies using KAN architectures.
 
 ## What this is
@@ -10,6 +12,10 @@ Three policy heads are compared:
 - **MLP** — standard dense baseline
 - **Static KAN** — Kolmogorov-Arnold Network with fixed spline templates
 - **HyperKAN** — goal-conditioned KAN where a hypernetwork generates spline mixture weights from the goal embedding
+
+## Headline result
+
+On a 274-problem verified test set, Static KAN achieved the best solve rate at **59.5%**, outperforming both MLP (53.6%) and HyperKAN (54.0%). HyperKAN achieved the best supervised validation loss (0.0122 BCE) but did not convert that advantage into better beam-search solving.
 
 ## Phase plan
 
@@ -23,30 +29,36 @@ Three policy heads are compared:
 
 **Dataset:** 2206 rows, curated motif families, depth 2–3, random 70/15/15 split after exact shortest-path BFS acceptance.  
 **Training:** 20 epochs, batch 128, AdamW lr=1e-3, ROCm 7.2, Strix Halo.  
-**Eval:** beam-search width 4, max 8 steps, verified by SymPy.
+**Eval:** beam-search width 4, max 8 steps, verified by SymPy, **full test set (274 non-terminal problems)**.
 
 ### Model comparison
 
 ![Model comparison](docs/model_comparison.png)
 
-**The headline result:** Static KAN solves **59.5%** of test problems vs 53.6% for MLP and HyperKAN. Static KAN also uses more steps (2.28 vs 2.00), meaning it finds harder paths MLP misses. HyperKAN achieves the lowest supervised loss (0.012 BCE) but does not convert that to verified solve rate.
+*Full test set, 274 problems.*
+
+Static KAN solves **59.5% (163/274)** of test problems vs 53.6% (147/274) for MLP and 54.0% (148/274) for HyperKAN. Static KAN also uses more solved steps on average (2.28 vs 2.00), consistent with solving cases that require longer trajectories. HyperKAN achieves the lowest supervised loss (0.0122 BCE) but does not convert that into verified search performance.
 
 **What this means:**
-- Static KAN outperforms MLP on end-to-end verified search — a real architecture result
+- Static KAN outperforms MLP on end-to-end verified search — a real architecture result on this benchmark
 - HyperKAN improves label fit but not search behavior — a useful negative, not a failure
-- The goal-conditioned routing in HyperKAN is not yet helping at depth 2–3; likely needs richer/deeper data to matter
+- The goal-conditioned routing in HyperKAN is visible in the spline plots but has not yet translated into better solve rates at depth 2–3
 
 ### Solve rate by depth
 
 ![Solve rate by depth](docs/solve_rate_by_depth.png)
 
-All models solve depth-2 problems perfectly. The gap opens at depth 3 — only static KAN manages to solve any depth-3 problems in this small subset. MLP and HyperKAN collapse to 0% on depth-3 in the 15-row sample. This is where the architecture difference actually lives.
+*Depth breakdown on a 15-problem labeled sample from the test set.*
+
+All models solve depth-2 problems perfectly on this sample. The separation appears at depth 3 — only static KAN solves any depth-3 cases here. This is where the architecture difference lives, but the sample is small and this should not be read as a robust depth-3 claim.
 
 ### Solve rate by motif family
 
 ![Solve rate by family](docs/solve_rate_by_family.png)
 
-All models handle `poly_trig_to_factored`, `rat_partial_trig_to_together`, and `rat_three_partial_trig_to_together` well. The hard family is `rat_three_partial_trig_to_expanded` — zero solve rate across all models. This is a depth-3 multi-step rational expansion problem; the current dataset doesn't have enough of these for training.
+*Family breakdown on the same evaluable subset. Some families have very few examples — treat 0% and 100% bars with caution.*
+
+All models handle `poly_trig_to_factored`, `rat_partial_trig_to_together`, and `rat_three_partial_trig_to_together` well on this sample. The hard family is `rat_three_partial_trig_to_expanded` — zero solve rate across all models. This requires multi-step rational expansion at depth 3; the current dataset and training are not sufficient.
 
 ---
 
@@ -56,19 +68,19 @@ All models handle `poly_trig_to_factored`, `rat_partial_trig_to_together`, and `
 
 ![Trajectory solved by all](docs/trajectory_solved_all.png)
 
-`(2/(x+1) + 3/(x-2))*(sin²y + cos²y) → (5x-1)/((x-2)(x+1))`. Beam search finds the path via `trigsimp` (drop the identity) then `together` (combine fractions). All three models agree — this is the easy case.
+`(2/(x+1) + 3/(x-2))·(sin²y + cos²y) → (5x-1)/((x-2)(x+1))`. Green path: `trigsimp` drops the trig identity, then `together` combines the fractions. All three models find this path — it is the easy case where they agree.
 
 ### Solved ONLY by static_kan — `rat_partial_trig_to_expanded` (depth 3)
 
 ![Trajectory static KAN only](docs/trajectory_static_kan_only.png)
 
-`(2/(x+5) + 2/(x+2))*(sin²y + cos²y) → 4x/(x²+7x+10) + 14/(x²+7x+10)`. A 3-step problem: drop the trig identity, combine fractions, then expand the numerator. MLP and HyperKAN fail — static KAN finds it. The beam explores `expand`, `factor`, `trigsimp`, `together`, `apart`, `cancel` paths before landing on the correct sequence.
+`(2/(x+5) + 2/(x+2))·(sin²y + cos²y) → 4x/(x²+7x+10) + 14/(x²+7x+10)`. A 3-step problem requiring trigsimp, then expand, then apart. MLP and HyperKAN do not find it; static KAN does. The green path shows the solution; gray edges are dead branches the beam explored and abandoned.
 
 ### Failed by all models — `rat_three_partial_trig_to_expanded` (depth 3)
 
 ![Trajectory failed by all](docs/trajectory_failed_all.png)
 
-A 3-partial-fraction rational expansion. The beam explores many paths but none reach the goal within 8 steps. The problem requires coordinating 3 symbolic steps on a more complex expression — the current models and dataset depth aren't enough.
+A 3-partial-fraction rational expansion problem. All models exhaust the beam without reaching the goal within 8 steps. The gray graph shows the space explored — broad but not reaching the target.
 
 ---
 
@@ -76,11 +88,13 @@ A 3-partial-fraction rational expansion. The beam explores many paths but none r
 
 ![Action confusion](docs/action_confusion.png)
 
-**MLP** — confused: predicts `factor` for both `expand` and `factor` optimal actions, predicts `together` for `together` and `trigsimp`. Almost never picks `expand` or `trigsimp` correctly.
+*Predicted vs optimal first action on a 15-problem sample. Small counts — treat patterns as suggestive, not definitive.*
 
-**Static KAN** — cleaner: mostly predicts `expand` for `expand`, `together` for `together`. Some `trigsimp` confusion but directionally right.
+**MLP** — on this sample, often collapses expand/factor decisions and conflates together/trigsimp.
 
-**HyperKAN** — most confused despite lowest BCE loss: `factor` dominates predictions across multiple optimal classes. Lower loss but worse action calibration — the model is fitting label correlations rather than the underlying policy.
+**Static KAN** — directionally cleaner: expand predictions align with expand-optimal cases, together predictions align with together-optimal cases. Some trigsimp confusion remains.
+
+**HyperKAN** — achieves the lowest BCE loss but remains poorly calibrated for first-action prediction on this benchmark. Factor predictions dominate across multiple optimal-action classes, suggesting the model is fitting label correlations rather than the underlying policy.
 
 ---
 
@@ -88,15 +102,19 @@ A 3-partial-fraction rational expansion. The beam explores many paths but none r
 
 ![Spline comparison](docs/spline_comparison.png)
 
-**Static KAN** (left) — uniform purple across all examples and both layers. The model uses a single effective template (all weight on one template, same for everyone). This is stable but not expressive.
+*Same 8 test examples run through both models.*
 
-**HyperKAN** (right) — the hypernetwork produces genuinely different mixture weights per example. In Layer 1, examples cluster into two groups (templates 1–2 vs template 3). In Layer 2, one example (row 2) uses a distinct template combination. This is the goal-conditioning working as intended — different goals produce different spline geometries. The problem is that this expressiveness isn't yet translating to better solve rates.
+**Static KAN** (left) — uses fixed spline templates across all examples by design. That makes it input-invariant in template weights, which is expected by construction. It still produces the best verified solve rate on the current benchmark.
+
+**HyperKAN** (right) — the hypernetwork produces different mixture weights per example. In Layer 1, examples split across two template groups. In Layer 2, individual examples show distinct combinations. This shows active goal-conditioned routing: different goals produce different spline mixture assignments. The routing is sparse (near one-hot rather than smoothly blended) and has not yet translated into better verified solve rates.
 
 ### Spline mixtures by optimal action
 
 ![Spline by action](docs/spline_by_action.png)
 
-Different optimal actions produce different spline template activations in HyperKAN: `expand` lights up templates 0–1, `factor` lights up template 3, `together` also activates template 3. The fact that `factor` and `together` share a template partially explains why those actions get confused in the action confusion matrix.
+*Very small per-action sample counts — treat as a diagnostic hint, not a robust result.*
+
+Different optimal actions tend to activate different spline templates in HyperKAN: `expand` activates templates 0–1, while `factor` and `together` both lean on template 3. This partial overlap between factor and together in template space is consistent with the confusion seen in the action calibration plot. Whether this reflects genuine action-specific routing structure or is an artifact of the small dataset is not yet clear.
 
 ---
 
@@ -105,12 +123,25 @@ Different optimal actions produce different spline template activations in Hyper
 | Claim | Status |
 |-------|--------|
 | End-to-end pipeline works on ROCm 7.2 | ✓ proven |
-| Static KAN > MLP on verified solve rate | ✓ real result (59.5% vs 53.6%) |
-| HyperKAN > static KAN on verified solve rate | ✗ not yet |
-| HyperKAN learns goal-conditioned spline geometry | ✓ visible in spline plots |
-| Goal-conditioning improves search behavior at depth 2–3 | ✗ needs deeper data |
+| Static KAN > MLP on verified solve rate | ✓ real result on this benchmark (59.5% vs 53.6%) |
+| HyperKAN > static KAN on verified solve rate | ✗ not demonstrated |
+| HyperKAN learns goal-conditioned spline routing | ✓ visible in spline plots |
+| Goal-conditioned routing improves search at depth 2–3 | ✗ not on current data |
 
-The depth-3 gap is where the interesting comparison lives. Scaling the motif library to depth 4–6 and 10–20k rows is the next gate before any architecture conclusion can be made about HyperKAN.
+## Limitations
+
+- Dataset is currently depth 2–3 only; depth 4–6 behavior is unknown
+- Motif library is narrow (7 families, polynomial and rational forms only)
+- Depth and family breakdown plots use small subsets — not the full test set
+- HyperKAN routing is active but sparse; the hypernetwork has not been trained with enough depth pressure to make goal-conditioning useful
+- 163/274 vs 147/274 is a real difference but not a large margin; results should be confirmed at scale
+
+## Next steps
+
+- Expand motif library to depth 4–6
+- Scale to 10k–20k rows
+- Re-evaluate HyperKAN under deeper search pressure before drawing architectural conclusions
+- Promote to H200/B200 only if local gains hold and depth scaling confirms the result
 
 ---
 
@@ -127,15 +158,16 @@ eval/           end-to-end evaluation entrypoints
 viz/            spline mixture and trajectory graph plots
 scripts/        run_viz.py, run_full_viz.py, analyze_actions.py, train_local.sh
 artifacts/      generated datasets, checkpoints, logs and plots
+docs/           visualization outputs committed for README rendering
 ```
 
 ## Running
 
 ```bash
 # All commands run inside the ROCm 7.2 toolbox
-toolbox run -c llama-rocm-7.2 bash -c 'cd /path/to/Mathy && source scripts/toolbox_env.sh && <command>'
+toolbox run -c llama-rocm-7.2 bash -c 'cd $REPO && source scripts/toolbox_env.sh && <command>'
 
-# Generate data
+# Generate data (random split for architecture comparison)
 python3 -m data_gen.generate_backward --samples 5000 --seed 17 --workers 6 --split-mode random --output-dir artifacts/generated
 
 # Train
