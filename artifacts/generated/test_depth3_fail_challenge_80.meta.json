@@ -1,0 +1,11 @@
+{
+  "source_dataset": "artifacts/generated/test_depth3.parquet",
+  "source_rows_json": "artifacts/tmp_rows_small_hyper_depth3/hyperkan_beam_rows.json",
+  "depth": 3,
+  "failures_only": true,
+  "requested_limit": 80,
+  "rows_selected": 80,
+  "rows_found_in_dataset": 80,
+  "seed": 17,
+  "output": "artifacts/generated/test_depth3_fail_challenge_80.parquet"
+}

@@ -1,0 +1,43 @@
+{
+  "model": "hyperkan",
+  "mode": "beam",
+  "checkpoint": "artifacts/checkpoints_recovery/small_hyper/hyperkan/best.pt",
+  "best_val_total_loss": -0.027948152273893356,
+  "elapsed_sec": 1079.78,
+  "search": {
+    "beam_width": 4,
+    "max_steps": 8,
+    "max_length": 256,
+    "value_weight": 0.5,
+    "revisit_penalty": 1.5,
+    "policy_temperature": 1.0
+  },
+  "metrics": {
+    "attempts": 127,
+    "solved": 15,
+    "solve_rate": 0.11811023622047244,
+    "mean_solved_steps": 4.4
+  },
+  "per_depth": {
+    "3": {
+      "attempts": 127,
+      "solved": 15,
+      "solve_rate": 0.11811023622047244,
+      "mean_solved_steps": 4.4
+    }
+  },
+  "per_family": {
+    "rat_partial_trig_to_expanded": {
+      "attempts": 31,
+      "solved": 15,
+      "solve_rate": 0.4838709677419355,
+      "mean_solved_steps": 4.4
+    },
+    "rat_three_partial_trig_to_expanded": {
+      "attempts": 96,
+      "solved": 0,
+      "solve_rate": 0.0,
+      "mean_solved_steps": 0.0
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "model": "static_kan",
+  "mode": "beam",
+  "checkpoint": "artifacts/checkpoints/static_kan/best.pt",
+  "best_val_total_loss": -0.026005353157718975,
+  "elapsed_sec": 1062.83,
+  "search": {
+    "beam_width": 4,
+    "max_steps": 8,
+    "max_length": 256,
+    "value_weight": 0.5,
+    "revisit_penalty": 1.5,
+    "policy_temperature": 1.0
+  },
+  "metrics": {
+    "attempts": 127,
+    "solved": 16,
+    "solve_rate": 0.12598425196850394,
+    "mean_solved_steps": 4.75
+  },
+  "per_depth": {
+    "3": {
+      "attempts": 127,
+      "solved": 16,
+      "solve_rate": 0.12598425196850394,
+      "mean_solved_steps": 4.75
+    }
+  },
+  "per_family": {
+    "rat_partial_trig_to_expanded": {
+      "attempts": 31,
+      "solved": 16,
+      "solve_rate": 0.5161290322580645,
+      "mean_solved_steps": 4.75
+    },
+    "rat_three_partial_trig_to_expanded": {
+      "attempts": 96,
+      "solved": 0,
+      "solve_rate": 0.0,
+      "mean_solved_steps": 0.0
+    }
+  }
+}

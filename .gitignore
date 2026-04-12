@@ -21,6 +21,20 @@ artifacts/shallow_benchmark_parallel*/
 # Recovery sweeps (local artifacts; do not commit)
 artifacts/hyperkan_recovery/
 
+# Longer-training extension tests are committed when small enough.
+# (Artifacts produced by ad-hoc experiments outside the documented flows should still be kept local.)
+
+# Allow committing specific generated parquets used for public challenge-set eval.
+!artifacts/generated/test_depth3.parquet
+!artifacts/generated/test_depth3_fail_challenge_*.parquet
+!artifacts/generated/test_depth3_fail_challenge_*.meta.json
+
+# Allow committing extension checkpoints/logs and netcheck summaries.
+!artifacts/extension_depth3_challenge/**/*
+!artifacts/extension_depth3_challenge/**/*.pt
+!artifacts/tmp_depth3_netcheck/**/*
+!artifacts/tmp_rows_small_hyper_depth3/**/*
+
 # We *do* commit the best checkpoints for reproducibility.
 !artifacts/checkpoints/**/best.pt
 !artifacts/checkpoints_recovery/**/best.pt

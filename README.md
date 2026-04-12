@@ -45,6 +45,28 @@ Full table + temperature sweep: [docs/hyperkan_recovery_results.md](docs/hyperka
 
 For public, committed JSON artifacts (per-variant summaries + training histories), see `results/hyperkan_recovery/` (starting point: [results/README.md](results/README.md)).
 
+## Rigor Check: “Maybe It Just Needed More Training?” (No)
+
+We ran a controlled extension to distinguish “undertrained” vs “misaligned/unstable for search”.
+
+Setup:
+- Extend training from ~20 → 50 epochs for:
+  - recovered HyperKAN (`small_hyper`, best Phase A checkpoint)
+  - baseline HyperKAN (`hyperkan_base`, original)
+- Beam-eval on a fixed **80-row depth-3 failure challenge set** derived from `small_hyper`’s depth-3 beam failures at epoch 20.
+- Net-check on the full **127-row depth-3 test slice** (the real discriminator).
+
+Results:
+- Challenge set (80 rows): at epoch 35, `small_hyper` improved (6/80), but by epoch 50 both models collapsed (0/80).
+- Depth-3 netcheck (127 rows, beam):
+  - Static KAN: **16/127**
+  - `small_hyper` epoch-20: **15/127**
+  - `small_hyper` epoch-35: **13/127** (regressed)
+
+Conclusion: supervised validation loss kept improving, but verified beam performance did not. Checkpoint selection must be based on verified search metrics (or search-based early stopping), not val loss alone.
+
+Public summary artifacts: `results/hyperkan_extension_check/`.
+
 ---
 
 ## First real run — results

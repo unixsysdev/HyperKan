@@ -1,0 +1,28 @@
+{
+  "purpose": "Controlled longer-training check: does continued training improve verified beam search, or only supervised validation loss?",
+  "challenge_set": {
+    "source": "depth-3 test slice failures from recovered HyperKAN (small_hyper) epoch-20 checkpoint",
+    "dataset": "artifacts/generated/test_depth3_fail_challenge_80.parquet",
+    "rows": 80,
+    "seed": 17
+  },
+  "checkpoints": {
+    "static_kan": "artifacts/checkpoints/static_kan/best.pt",
+    "hyperkan_base_epoch20": "artifacts/checkpoints/hyperkan/best.pt",
+    "hyperkan_small_hyper_epoch20": "artifacts/checkpoints_recovery/small_hyper/hyperkan/best.pt",
+    "hyperkan_small_hyper_epoch35": "artifacts/extension_depth3_challenge/small_hyper_20to50/checkpoints/epoch_35.pt"
+  },
+  "challenge_set_beam_results": {
+    "small_hyper_epoch35": { "solved": 6, "attempts": 80 },
+    "hyperkan_base_epoch35": { "solved": 3, "attempts": 80 },
+    "small_hyper_epoch50": { "solved": 0, "attempts": 80 },
+    "hyperkan_base_epoch50": { "solved": 0, "attempts": 80 }
+  },
+  "depth3_netcheck_beam_results": {
+    "static_kan": { "solved": 16, "attempts": 127 },
+    "small_hyper_epoch20": { "solved": 15, "attempts": 127 },
+    "small_hyper_epoch35": { "solved": 13, "attempts": 127 }
+  },
+  "takeaway": "Continued training can regress verified beam success even as supervised validation loss improves. Select checkpoints by verified search metrics."
+}
+

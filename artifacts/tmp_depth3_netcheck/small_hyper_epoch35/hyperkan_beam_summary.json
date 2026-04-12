@@ -1,0 +1,43 @@
+{
+  "model": "hyperkan",
+  "mode": "beam",
+  "checkpoint": "artifacts/extension_depth3_challenge/small_hyper_20to50/checkpoints/epoch_35.pt",
+  "best_val_total_loss": null,
+  "elapsed_sec": 1100.27,
+  "search": {
+    "beam_width": 4,
+    "max_steps": 8,
+    "max_length": 256,
+    "value_weight": 0.5,
+    "revisit_penalty": 1.5,
+    "policy_temperature": 1.0
+  },
+  "metrics": {
+    "attempts": 127,
+    "solved": 13,
+    "solve_rate": 0.10236220472440945,
+    "mean_solved_steps": 5.0
+  },
+  "per_depth": {
+    "3": {
+      "attempts": 127,
+      "solved": 13,
+      "solve_rate": 0.10236220472440945,
+      "mean_solved_steps": 5.0
+    }
+  },
+  "per_family": {
+    "rat_partial_trig_to_expanded": {
+      "attempts": 31,
+      "solved": 13,
+      "solve_rate": 0.41935483870967744,
+      "mean_solved_steps": 5.0
+    },
+    "rat_three_partial_trig_to_expanded": {
+      "attempts": 96,
+      "solved": 0,
+      "solve_rate": 0.0,
+      "mean_solved_steps": 0.0
+    }
+  }
+}

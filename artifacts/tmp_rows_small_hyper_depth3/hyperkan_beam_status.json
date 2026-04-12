@@ -1,0 +1,11 @@
+{
+  "event": "stage_progress",
+  "model": "hyperkan",
+  "mode": "beam",
+  "stage": "hyperkan:beam",
+  "processed": 127,
+  "total": 127,
+  "elapsed_sec": 1018.8,
+  "rows_per_sec": 0.12,
+  "solved_so_far": 15
+}
