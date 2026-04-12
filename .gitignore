@@ -8,7 +8,9 @@ dist/
 build/
 *.parquet
 *.pt
-*.png
 *.svg
 *.pdf
+# PNGs tracked only in docs/
+*.png
+!docs/*.png
 
