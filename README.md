@@ -120,7 +120,7 @@ Different optimal actions tend to activate different spline templates in HyperKA
 
 ## HyperKAN conditional routing
 
-The hypernetwork in HyperKAN generates spline mixture weights from the goal embedding at inference time. The four plots below probe whether this routing is meaningfully goal-conditioned.
+The hypernetwork in HyperKAN generates spline mixture weights from the goal embedding at inference time. The four plots below probe whether this routing is meaningfully goal-conditioned. HyperKAN shows clear goal- and family-dependent routing patterns, but on the current benchmark those routing differences are more visible across goals and families than across steps within a single solved trajectory.
 
 ### Same state, different goals
 
@@ -128,7 +128,7 @@ The hypernetwork in HyperKAN generates spline mixture weights from the goal embe
 
 *Fixed current expression, 6 different goal expressions — one row per goal.*
 
-Each row uses the identical state but a different target. The mixture weights shift noticeably across rows, confirming the routing responds to goal identity rather than state alone. The effect is clearest in Layer 1.
+Each row uses the identical state but a different target. Different template assignments are visible across goals, confirming the routing responds to goal identity rather than state alone. The effect is clearest in Layer 1.
 
 ### Routing within a motif family
 
@@ -136,15 +136,15 @@ Each row uses the identical state but a different target. The mixture weights sh
 
 *Up to 6 instances per family, 4 families shown.*
 
-Problems from the same motif family tend to land on similar template combinations — visible clustering within each family block. The degree of clustering varies by family; some are near-uniform, others show clear template preference.
+Some clustering is visible within family blocks — problems from the same family tend toward similar template combinations rather than pure per-sample chaos. The degree of clustering varies by family.
 
 ### Average routing per family
 
 ![Average routing per family](docs/hyperkan_family_avg_routing.png)
 
-*Each column = one family; rows = Layer 1 and Layer 2. Averaged over up to 8 examples.*
+*Each column = one family; rows = Layer 1 and Layer 2. Averaged over up to 8 examples per family.*
 
-Across families, the average routing differs. Some families consistently favor one template; others spread weight across two or three. This is the clearest evidence of family-level structure in the spline routing, though the sample counts per family are small.
+Averaged routing differs across families: some consistently favor one template, others spread weight across two or three. This is the clearest evidence of family-level structure in the spline routing. Sample counts per family are small, so individual family averages may be brittle.
 
 ### Routing along a solved trajectory
 
@@ -152,7 +152,7 @@ Across families, the average routing differs. Some families consistently favor o
 
 *Routing at each step of one beam-search solution (factor → trigsimp).*
 
-As the expression approaches the goal, the mixture weights shift step-by-step. The model is not applying a fixed policy: it re-routes at each state, and the routing at the final step before the goal differs from the routing at the start. Whether this shift encodes something semantically meaningful about proximity to the goal is an open question.
+For this solved trajectory, routing stays largely stable across steps — Layer 1 stays on the same template, Layer 2 stays on the same template. This suggests the goal-conditioned configuration may dominate over local state changes on this example. Whether dynamic per-step rerouting occurs on harder, longer trajectories is not established here.
 
 ---
 
