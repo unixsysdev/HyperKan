@@ -343,18 +343,19 @@ def collect_rows(
     return dedupe_rows(rows)
 
 
-def split_rows(rows: list[SampleRow]) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    families = sorted({row.expr_family for row in rows})
-    if len(families) >= 3:
-        train_families = set(families[:-2])
-        val_family = families[-2]
-        test_family = families[-1]
-        train = pd.DataFrame([asdict(row) for row in rows if row.expr_family in train_families])
-        val = pd.DataFrame([asdict(row) for row in rows if row.expr_family == val_family])
-        test = pd.DataFrame([asdict(row) for row in rows if row.expr_family == test_family])
-        min_eval_rows = max(4, len(rows) // 20)
-        if len(train) >= max(8, min_eval_rows * 2) and len(val) >= min_eval_rows and len(test) >= min_eval_rows:
-            return train, val, test
+def split_rows(rows: list[SampleRow], mode: str = "family") -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    if mode == "family":
+        families = sorted({row.expr_family for row in rows})
+        if len(families) >= 3:
+            train_families = set(families[:-2])
+            val_family = families[-2]
+            test_family = families[-1]
+            train = pd.DataFrame([asdict(row) for row in rows if row.expr_family in train_families])
+            val = pd.DataFrame([asdict(row) for row in rows if row.expr_family == val_family])
+            test = pd.DataFrame([asdict(row) for row in rows if row.expr_family == test_family])
+            min_eval_rows = max(4, len(rows) // 20)
+            if len(train) >= max(8, min_eval_rows * 2) and len(val) >= min_eval_rows and len(test) >= min_eval_rows:
+                return train, val, test
 
     frame = pd.DataFrame([asdict(row) for row in rows])
     if frame.empty:
@@ -382,6 +383,7 @@ def main() -> None:
     parser.add_argument("--terminal-ratio", type=float, default=0.25)
     parser.add_argument("--template-keys", nargs="+", default=list(DEFAULT_TEMPLATE_KEYS))
     parser.add_argument("--max-attempts", type=int, default=12)
+    parser.add_argument("--split-mode", choices=("family", "random"), default="family")
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/generated"))
     args = parser.parse_args()
 
@@ -395,7 +397,7 @@ def main() -> None:
         template_keys=tuple(args.template_keys),
         max_attempts=args.max_attempts,
     )
-    train, val, test = split_rows(rows)
+    train, val, test = split_rows(rows, mode=args.split_mode)
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     train.to_parquet(args.output_dir / "train.parquet", index=False)

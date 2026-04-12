@@ -5,7 +5,12 @@ from torch import Tensor
 from torch.nn import functional as F
 
 
-def masked_bce_with_logits(logits: Tensor, targets: Tensor) -> Tensor:
+def masked_bce_with_logits(logits: Tensor, targets: Tensor, mask: Tensor | None = None) -> Tensor:
+    if mask is not None and mask.any():
+        logits = logits[mask]
+        targets = targets[mask]
+    elif mask is not None:
+        return torch.tensor(0.0, device=logits.device, requires_grad=True)
     return F.binary_cross_entropy_with_logits(logits, targets.float())
 
 
@@ -28,9 +33,10 @@ def multi_task_loss(
     value_weight: float = 0.3,
     entropy_weight: float = 0.05,
 ) -> tuple[Tensor, dict[str, float]]:
-    action_loss = masked_bce_with_logits(logits, action_targets)
+    non_terminal = value_targets > 0
+    action_loss = masked_bce_with_logits(logits, action_targets, mask=non_terminal)
     value_loss = value_huber_loss(values, value_targets)
-    entropy_loss = entropy_regularization(logits)
+    entropy_loss = entropy_regularization(logits[non_terminal]) if non_terminal.any() else torch.tensor(0.0, device=logits.device)
     total = action_loss + (value_weight * value_loss) + (entropy_weight * entropy_loss)
     return total, {
         "action_loss": float(action_loss.detach()),
