@@ -328,6 +328,24 @@ State-conditional localization inference (also negative):
 
 So the best mixed-family result is still the simpler always-on inference penalty on recovered HyperKAN (`24/60` greedy, `36/60` beam at penalty `2.0`). This conditional heuristic is too weak: it avoids hurting seen families, but it does not trigger the compositional rescue.
 
+Unconditional-penalty rescue analysis:
+
+- Added [scripts/analyze_penalty_rescue_paths.py](scripts/analyze_penalty_rescue_paths.py) and saved the result in `artifacts/scoped_structural_probe_search_checkpoints/hyperkan/penalty_rescue_analysis.json`.
+- Under the best recovered HyperKAN checkpoint, default mixed-family top-3 is always:
+- `expr@root::expand`
+- `expr@root::cancel`
+- `expr@root::together`
+- Under unconditional root penalty `2.0`, the top-1 action changes on **all** 60 mixed-family rows, and it changes both site and op every time.
+- But that first-step shift alone does not explain success:
+- solved rows under beam: top-1 is always `expr@0::trigsimp`
+- unsolved rows under beam: top-1 is also always `expr@0::trigsimp`
+- What separates the 36 solved rows is the early path pattern after that first shift:
+- `24` solved rows collapse immediately through `expr@2::cancel`
+- `11` solved rows follow `expr@1::expand -> expr@0::trigsimp -> expr@2::cancel`
+- `1` solved row follows `expr@0::trigsimp -> expr@1::expand -> expr@2::cancel`
+
+Interpretation: the unconditional penalty does more than choose a better first local site. It changes the frontier enough for beam search to reach the hidden-cancel branch early; solved and unsolved rows still share the same penalized top-1. So the next mechanism should probably target subgoal sequencing / early hidden-branch access, not just site selection in isolation.
+
 ## One Guided Scoped Trajectory
 
 <details>
@@ -388,6 +406,7 @@ Proven:
 - Root-penalized localization-aware inference is a meaningful official eval condition on the scoped structural probe.
 - A factorized site/op HyperKAN head improves seen-family efficiency but still fails `0/60` on held-out mixed composition and preserves the same root-action bias.
 - A simple state-conditional localization heuristic preserves seen-family behavior but still fails `0/60` on held-out mixed composition.
+- The unconditional rescue on recovered HyperKAN changes the early search frontier, but solved and unsolved rows still share the same penalized top-1 action.
 
 Not yet proven:
 
@@ -399,6 +418,7 @@ Not yet proven:
 - That a simple training-time `expr@root` avoidance loss can replace inference-time localization bias.
 - That a basic factorized site/op head is sufficient to teach mixed-family localization or compositional subgoal choice.
 - That a simple mixed-signature conditional inference rule can replace the stronger always-on localization bias.
+- That the unconditional rescue can be explained by first-step site choice alone.
 
 ## Next Steps
 
@@ -408,6 +428,7 @@ Not yet proven:
 - Replace the failed root-avoidance auxiliary loss with a stronger localization mechanism, likely site-first decoding or a more explicit site-selection objective.
 - Move past simple site-first factorization and test a mechanism that can change subgoal sequencing, not just the action parametrization.
 - Move past simple conditional penalties and test an explicit subgoal-progress signal or another mechanism that can change the default ranking on mixed compositions.
+- Analyze or model the early hidden-branch access directly, since the current rescue seems to come from frontier reshaping after the first local move rather than from a unique top-1 action.
 - Add more structurally different scoped families, not just action-order variants or more rows.
 - Restore strict composed verification.
 - Recover shortest-action ties for accepted scoped rows.
