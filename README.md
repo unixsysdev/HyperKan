@@ -1,6 +1,6 @@
 # Mathy
 
-> **Branch status:** This README is preserved for the branch historical experiment state. For the frozen submission artifact, use `release/paper-v1` or tag `paper-v1.0`. Later results supersede parts of the branch-local narrative below: the paper story is the moderate-depth frontier-reranker rescue, the depth-7 failure boundary, and negative learned-frontier/RL frontier-controller diagnostics.
+> **Branch status:** This README is preserved for the branch historical experiment state. For the frozen submission artifact, **Scoped Actions Expose Compositional Failures in Verified Symbolic Rewrite Search**, use `release/paper-v1` or tag `paper-v1.0`. Later results supersede parts of the branch-local narrative below: the paper story is the moderate-depth frontier-reranker rescue, the depth-7 failure boundary, and negative learned-frontier/RL frontier-controller diagnostics.
 
 
 Goal-conditioned HyperKAN for verified algebraic rewriting.
