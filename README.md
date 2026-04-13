@@ -2,6 +2,14 @@
 
 This repo trains policy/value models for verified symbolic rewrite search. The original global-action benchmark worked end to end and showed **Static KAN > MLP** on verified solve rate; the initial HyperKAN underperformed, then a reduced-capacity recovered HyperKAN nearly matched Static KAN after ablations. The important follow-up result is that the global SymPy action semantics turned out too shallow for robust depth-4+ composition, so the main branch of the project has moved to **scoped actions**: `action = (site, op)`. Scoped smoke, medium, and diverse guided benchmarks validated the pipeline, but they were too clean to separate models by solve rate. The new structural scoped probe is the first benchmark slice with real compositional pressure: seen families are learnable, but both models fail completely on a held-out mixed composition family.
 
+## Current Best Results
+
+| Result | Best condition | Outcome |
+|---|---|---|
+| Global benchmark | Static KAN | `163/274` (`59.5%`) |
+| Mixed-family scoped benchmark | Recovered HyperKAN + root penalty `2.0` | `36/60` beam, `24/60` greedy |
+| Key mechanism | Early hidden-branch access | solved beam rows: `36/36` reach `expr@2::cancel` within first 3 actions; unsolved: `12/24` |
+
 ## What This Project Is
 
 The task is goal-directed symbolic rewriting with formal execution:
@@ -224,149 +232,29 @@ Split:
 - Test family: `mixed_trig_hidden`
 - Dataset size: `48` trajectories, `204` rows, `12` scoped actions
 
-Results from the current loss-selected checkpoints:
+Headline result:
 
-| Split | Static KAN beam1 | Static KAN beam4 | HyperKAN beam1 | HyperKAN beam4 |
-|---|---:|---:|---:|---:|
-| Train | 60/80 | 80/80 | 70/80 | 80/80 |
-| Val | 12/16 | 16/16 | 14/16 | 16/16 |
-| Test (`mixed_trig_hidden`) | 0/60 | 0/60 | 0/60 | 0/60 |
+- Search-selected rerun still gives `0/60` on `mixed_trig_hidden` for both Static KAN and recovered HyperKAN by default.
+- Failure mode: root-collapse.
+  - Static KAN top-1 first action: `expr@root::together`
+  - HyperKAN top-1 first action: `expr@root::expand`
+- Best mixed-family rescue:
+  - Static KAN + root penalty `2.0`: still `0/60`
+  - Recovered HyperKAN + root penalty `2.0`: `24/60` greedy, `36/60` beam
+- Measured mechanism:
+  - solved beam rows reaching `expr@2::cancel` within first 3 actions: `36/36`
+  - unsolved beam rows reaching `expr@2::cancel` within first 3 actions: `12/24`
+- Training-time localization fixes did not replace the inference rescue.
+- A first sequencing-aware bonus reduced beam expansions but did not improve solve rate.
 
-Interpretation:
+The detailed structural-probe chain now lives in:
 
-- The benchmark is no longer saturated.
-- Both models learn the seen single-block structural families.
-- Beam rescues seen-family performance.
-- Both models fail completely on the held-out mixed composition family.
-- This is the first scoped result showing a real compositional generalization gap instead of interpolation success.
-
-The current trainer now saves epoch checkpoints, and the repo now includes a search-based checkpoint selector:
-
-- [scripts/select_scoped_checkpoint.py](scripts/select_scoped_checkpoint.py)
-
-That selector was added after the first structural probe run. A rerun with epoch checkpointing and search-based selection is now also available under `artifacts/scoped_structural_probe_search_checkpoints/`.
-
-Search-selected rerun:
-
-- Static KAN selected `epoch_5`
-- HyperKAN selected `epoch_2` instead of the loss-selected `best.pt`
-- Search selection did **not** rescue held-out composition.
-- Static KAN: `0/60` on `mixed_trig_hidden` for both beam 1 and beam 4
-- HyperKAN: `0/60` on `mixed_trig_hidden` for both beam 1 and beam 4
-
-The failure mode is now clearer. On held-out mixed-family states, the selected checkpoints default to whole-expression actions instead of local subgoal actions:
-
-- Static KAN top-1 first action: always `expr@root::together`
-- HyperKAN top-1 first action: always `expr@root::expand`
-
-So the current limitation is not just lack of beam width. The learned heuristics are not localizing onto the independent subproblems inside the mixed family.
-
-Targeted mixed-family failure analysis plus one minimal localization intervention are now also saved under `artifacts/scoped_structural_probe_search_checkpoints/*/mixed_failure_analysis.json` using [scripts/analyze_mixed_family_failures.py](scripts/analyze_mixed_family_failures.py).
-
-That analysis confirms:
-
-- Static KAN step-2 top action is always `expr@root::expand`
-- HyperKAN step-2 top action is always `expr@root::cancel`
-- Both greedy rollouts remain entirely on global whole-expression actions and never switch into local blockwise behavior
-
-Minimal intervention: penalize whole-expression root actions at inference.
-
-- Static KAN does not improve:
-- Static KAN, root penalty `1.0`: `0/60` greedy, `0/60` beam
-- Static KAN, root penalty `2.0`: `0/60` greedy, `0/60` beam
-- HyperKAN does improve:
-- HyperKAN, root penalty `1.0`: `0/60` greedy, `24/60` beam
-- HyperKAN, root penalty `2.0`: `24/60` greedy, `36/60` beam
-
-Interpretation: HyperKAN’s held-out mixed-family failure is at least partly an inference-time global-action bias. A small localization bias at search time unlocks nontrivial mixed-family solves. Static KAN does not show the same behavior.
-
-Localization-aware inference is now wired directly into the main scoped eval path:
-
-- [search/scoped_beam_search.py](search/scoped_beam_search.py)
-- [eval/run_scoped_smoke_eval.py](eval/run_scoped_smoke_eval.py)
-- [scripts/select_scoped_checkpoint.py](scripts/select_scoped_checkpoint.py)
-
-Training-time localization fix (negative result):
-
-- Added a small `expr@root` avoidance loss and retrained recovered HyperKAN with [configs/scoped_structural_probe_hyper_local.yaml](configs/scoped_structural_probe_hyper_local.yaml).
-- Search-based selection picked `epoch_4` from `artifacts/scoped_structural_probe_localized_checkpoints/hyperkan/`.
-- Seen-family validation under beam 4:
-- default: `15/16`
-- root penalty `1.0`: `16/16`
-- root penalty `2.0`: `12/16`
-- Held-out `mixed_trig_hidden`:
-- default: `0/60` greedy, `0/60` beam
-- root penalty `1.0`: `0/60` beam
-- root penalty `2.0`: `0/60` greedy, `24/60` beam
-
-Compared with the baseline recovered HyperKAN, this is worse: the baseline model reached `36/60` on held-out mixed composition under beam with root penalty `2.0`. So the first training-time localization loss does not improve default compositional generalization, and it weakens the stronger inference-only rescue rather than replacing it.
-
-Second training-time localization fix (site-first factorized head, also negative):
-
-- Added an optional factorized HyperKAN action head that scores each flat scoped action as `site_logit(site) + op_logit(op)`, with auxiliary site/op losses derived from the existing shortest-action labels.
-- Config: [configs/scoped_structural_probe_hyper_sitefirst.yaml](configs/scoped_structural_probe_hyper_sitefirst.yaml)
-- Artifacts: `artifacts/scoped_structural_probe_sitefirst_checkpoints/hyperkan/`
-- Search-based selection picked `epoch_5`.
-- Seen-family validation under beam 4 improved to `16/16` with much lower mean expansions (`25.81` vs `51.63` for the previous recovered HyperKAN run).
-- Held-out `mixed_trig_hidden` stayed completely unsolved:
-- default: `0/60` greedy, `0/60` beam
-- root penalty `2.0`: `0/60` greedy, `0/60` beam
-- First-action diagnosis on the mixed family did not change:
-- step 1 top action: always `expr@root::together`
-- step 2 top action: always `expr@root::expand`
-
-Interpretation: the factorized site/op head improved efficiency on seen families but did not fix the held-out compositional failure or even alter the root-action bias on the mixed family. So the next intervention should not be "more site-first loss of the same kind"; it needs a stronger mechanism for localized subgoal choice or subgoal switching.
-
-State-conditional localization inference (also negative):
-
-- Added an official conditional root-penalty mode in scoped search/eval that only downweights root actions on states matching a simple mixed-signature heuristic: a root `Add` with both a trig addend and a separate factorized rational addend.
-- This preserves seen-family behavior for recovered HyperKAN:
-- validation beam 4, root penalty `2.0`, `mixed_signatures` mode: `16/16`
-- mean expansions: `29.31`
-- But it does **not** reproduce the held-out mixed-family rescue:
-- held-out `mixed_trig_hidden`, root penalty `2.0`, `mixed_signatures` mode: `0/60` greedy, `0/60` beam
-
-So the best mixed-family result is still the simpler always-on inference penalty on recovered HyperKAN (`24/60` greedy, `36/60` beam at penalty `2.0`). This conditional heuristic is too weak: it avoids hurting seen families, but it does not trigger the compositional rescue.
-
-Unconditional-penalty rescue analysis:
-
-- Added [scripts/analyze_penalty_rescue_paths.py](scripts/analyze_penalty_rescue_paths.py) and saved the result in `artifacts/scoped_structural_probe_search_checkpoints/hyperkan/penalty_rescue_analysis.json`.
-- The current mechanism note is also summarized in [docs/early_frontier_hypothesis.md](docs/early_frontier_hypothesis.md).
-- Under the best recovered HyperKAN checkpoint, default mixed-family top-3 is always:
-- `expr@root::expand`
-- `expr@root::cancel`
-- `expr@root::together`
-- Under unconditional root penalty `2.0`, the top-1 action changes on **all** 60 mixed-family rows, and it changes both site and op every time.
-- But that first-step shift alone does not explain success:
-- solved rows under beam: top-1 is always `expr@0::trigsimp`
-- unsolved rows under beam: top-1 is also always `expr@0::trigsimp`
-- What separates the 36 solved rows is the early path pattern after that first shift:
-- `24` solved rows collapse immediately through `expr@2::cancel`
-- `11` solved rows follow `expr@1::expand -> expr@0::trigsimp -> expr@2::cancel`
-- `1` solved row follows `expr@0::trigsimp -> expr@1::expand -> expr@2::cancel`
-- Early hidden-branch metric:
-- solved beam rows reaching any hidden-block site within the first 3 actions: `36/36`
-- solved beam rows reaching `expr@2::cancel` within the first 3 actions: `36/36`
-- unsolved beam rows reaching any hidden-block site within the first 3 actions: `12/24`
-- unsolved beam rows reaching `expr@2::cancel` within the first 3 actions: `12/24`
-
-Interpretation: the unconditional penalty does more than choose a better first local site. It changes the frontier enough for beam search to reach the hidden-cancel branch early; solved and unsolved rows still share the same penalized top-1. So the next mechanism should probably target subgoal sequencing / early hidden-branch access, not just site selection in isolation.
-
-First sequencing-aware inference tweak:
-
-- Added an optional early hidden-branch bonus in scoped search/eval.
-- Condition tested:
-- root penalty `2.0`
-- early hidden bonus `0.5`
-- early hidden bonus window `3` steps
-- Result on recovered HyperKAN:
-- held-out mixed greedy: `24/60` with mean expansions `24.8`
-- held-out mixed beam: `36/60` with mean expansions `56.38`
-- seen-family val beam: `14/16`
-
-Interpretation: this first sequencing-aware tweak does not improve solve count beyond the unconditional-penalty baseline, but it does reduce beam expansions on the mixed family. It is therefore evidence that early hidden-branch access is a real lever, even though this first bonus is too blunt to become the new default eval condition.
+- [docs/scoped_structural_results.md](docs/scoped_structural_results.md)
+- [docs/early_frontier_hypothesis.md](docs/early_frontier_hypothesis.md)
 
 ## One Guided Scoped Trajectory
+
+This is a concrete guided scoped example showing site selection and blockwise progress inside one trajectory.
 
 <details>
 <summary>Guided depth-4 A3+B1 trajectory from artifacts/scoped_medium/test.parquet</summary>
@@ -444,19 +332,10 @@ Not yet proven:
 
 ## Next Steps
 
-- Use search-based checkpoint selection on the structural probe.
-- Run failure analysis on held-out `mixed_trig_hidden` trajectories.
-- Test localization-biased search or site-first decoding as the next minimal intervention.
-- Replace the failed root-avoidance auxiliary loss with a stronger localization mechanism, likely site-first decoding or a more explicit site-selection objective.
-- Move past simple site-first factorization and test a mechanism that can change subgoal sequencing, not just the action parametrization.
-- Move past simple conditional penalties and test an explicit subgoal-progress signal or another mechanism that can change the default ranking on mixed compositions.
-- Analyze or model the early hidden-branch access directly, since the current rescue seems to come from frontier reshaping after the first local move rather than from a unique top-1 action.
-- Use the early hidden-branch metric as a first-class diagnostic for future sequencing-aware search tweaks.
-- Add more structurally different scoped families, not just action-order variants or more rows.
-- Restore strict composed verification.
-- Recover shortest-action ties for accepted scoped rows.
-- Use structurally harder held-out splits.
-- Compare Static KAN vs recovered HyperKAN again on a harder scoped benchmark.
+- Add more structurally different scoped families, not just more rows or action-order variants.
+- Restore stricter composed verification and shortest-action tie recovery.
+- Keep early hidden-branch access as a first-class diagnostic for scoped search.
+- Re-compare recovered HyperKAN vs Static KAN on the harder scoped benchmark once those pieces are in place.
 
 ## Reproduction
 
