@@ -1,5 +1,8 @@
 # Mathy — Goal-conditioned HyperKAN for Verified Algebraic Rewriting
 
+> **Branch status:** This README is preserved for the branch historical experiment state. For the frozen submission artifact, use `release/paper-v1` or tag `paper-v1.0`. Later results supersede parts of the branch-local narrative below: the paper story is the moderate-depth frontier-reranker rescue, the depth-7 failure boundary, and negative learned-frontier/RL frontier-controller diagnostics.
+
+
 > **Mathy** is the project. The repository is **HyperKan**. Run it from wherever you cloned it — the instructions below use `$REPO` as the root.
 
 A local-first POC on Strix Halo (ROCm 7.2) for learning symbolic rewrite policies using KAN architectures.
