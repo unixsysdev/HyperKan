@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections import defaultdict
 from pathlib import Path
 
 import pandas as pd
@@ -24,15 +25,22 @@ def evaluate_dataset(
     revisit_penalty: float,
     policy_temperature: float,
     device: torch.device,
-) -> dict[str, float]:
+) -> dict[str, object]:
     solved = 0
     solved_steps = 0
+    solved_expansions = 0
     attempts = 0
+    total_expansions = 0
+    per_family: dict[str, dict[str, float]] = defaultdict(
+        lambda: {"attempts": 0, "solved": 0, "solved_steps": 0, "total_expansions": 0, "solved_expansions": 0}
+    )
 
     for row in frame.itertuples(index=False):
         if row.distance_to_goal == 0:
             continue
         attempts += 1
+        family = getattr(row, "expr_family", "unknown")
+        per_family[family]["attempts"] += 1
         outcome = run_scoped_beam_search(
             model=model,
             tokenizer=tokenizer,
@@ -47,13 +55,45 @@ def evaluate_dataset(
             policy_temperature=policy_temperature,
             device=device,
         )
+        expansions = len(outcome.get("explored", ()))
+        total_expansions += expansions
+        per_family[family]["total_expansions"] += expansions
         if outcome["success"]:
             solved += 1
-            solved_steps += len(outcome["node"].steps) if outcome["node"] is not None else 0
+            steps = len(outcome["node"].steps) if outcome["node"] is not None else 0
+            solved_steps += steps
+            solved_expansions += expansions
+            per_family[family]["solved"] += 1
+            per_family[family]["solved_steps"] += steps
+            per_family[family]["solved_expansions"] += expansions
 
     solve_rate = solved / attempts if attempts else 0.0
     mean_steps = solved_steps / solved if solved else 0.0
-    return {"attempts": attempts, "solved": solved, "solve_rate": solve_rate, "mean_solved_steps": mean_steps}
+    mean_expansions = total_expansions / attempts if attempts else 0.0
+    mean_solved_expansions = solved_expansions / solved if solved else 0.0
+
+    family_metrics: dict[str, dict[str, float]] = {}
+    for family, stats in sorted(per_family.items()):
+        family_attempts = int(stats["attempts"])
+        family_solved = int(stats["solved"])
+        family_metrics[family] = {
+            "attempts": family_attempts,
+            "solved": family_solved,
+            "solve_rate": family_solved / family_attempts if family_attempts else 0.0,
+            "mean_solved_steps": stats["solved_steps"] / family_solved if family_solved else 0.0,
+            "mean_expansions": stats["total_expansions"] / family_attempts if family_attempts else 0.0,
+            "mean_solved_expansions": stats["solved_expansions"] / family_solved if family_solved else 0.0,
+        }
+
+    return {
+        "attempts": attempts,
+        "solved": solved,
+        "solve_rate": solve_rate,
+        "mean_solved_steps": mean_steps,
+        "mean_expansions": mean_expansions,
+        "mean_solved_expansions": mean_solved_expansions,
+        "per_family": family_metrics,
+    }
 
 
 def main() -> None:

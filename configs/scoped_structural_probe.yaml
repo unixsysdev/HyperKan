@@ -19,7 +19,7 @@ model:
   spline_points: 16
   spline_basis_dim: 8
   spline_templates: 4
-  hyper_hidden_dim: 128
+  hyper_hidden_dim: 64
   hyperkan_condition_kan1: true
   mixture_temperature: 1.0
 
