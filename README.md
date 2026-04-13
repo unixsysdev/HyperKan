@@ -307,7 +307,20 @@ The same Static KAN transfer diagnostic gives the same broad conclusion:
 
 Conclusion: the learned frontier head can fit the local supervision target in both recovered HyperKAN and Static KAN, but this target is not enough to solve the depth-7 transfer problem. Static KAN's heuristic reranker gets one shallow solve on this diagnostic slice; the learned frontier score does not. This result should stay as a negative appendix-style diagnostic. The main story remains the moderate-depth frontier-reranker rescue and the depth-7 failure boundary.
 
-A follow-up local branch tests a small RL frontier-controller fine-tune: freeze the supervised recovered HyperKAN policy, update only the auxiliary frontier head with a REINFORCE-style solve/expansion reward, and evaluate on the same 12-row transfer slice. This also remains negative: RL frontier `0.1` gives `0/12` with mean expansions `264.17`, compared with `0/12` and `258.42` for the supervised learned-frontier score. This validates the RL plumbing, but not a depth-7 rescue.
+### RL Frontier Controller Diagnostic
+
+This branch extends the negative learned-frontier result with one bounded RL check: freeze the supervised recovered HyperKAN policy, update only the auxiliary frontier head, and use a REINFORCE-style solve/expansion reward for early beam control.
+
+The RL plumbing works, but it does not move the transfer behavior. Training rollouts stay flat at `68/130` solves in both epochs, and the same first-12 held-out depth-7 diagnostic remains unsolved:
+
+| Condition | Solves | Mean expansions |
+|---|---:|---:|
+| Supervised learned frontier `0.1`, first 4 steps | `0/12` | `258.42` |
+| RL frontier `0.1`, first 4 steps | `0/12` | `264.17` |
+| Root penalty `2.0` + supervised learned frontier `0.1` | `0/12` | `316.67` |
+| Root penalty `2.0` + RL frontier `0.1` | `0/12` | `319.00` |
+
+Conclusion: frontier-head-only RL is a useful diagnostic, but not a depth-7 rescue. The remaining bottleneck is probably not just a missing learned score on top of a frozen base policy; it likely requires policy adaptation, stronger subgoal/state representation, or a richer search-control objective.
 
 ## What Is Proven vs Not Yet Proven
 
@@ -327,6 +340,7 @@ Proven:
 - Early hidden-branch access within the first 3 actions is a real discriminator between solved and unsolved mixed-family beam cases.
 - The depth-7 scoped expansion exposes a limit of the current inference-side rescue: root penalty still gives a shallow partial rescue, but the frontier reranker does not improve solve rate.
 - A learned auxiliary frontier head can fit the local short-horizon label in recovered HyperKAN and Static KAN, but the current label/score does not rescue the initial depth-7 transfer diagnostic.
+- A bounded frontier-head-only REINFORCE fine-tune validates RL wiring, but it also does not rescue the initial depth-7 transfer diagnostic.
 
 Not yet proven:
 
@@ -341,6 +355,7 @@ Not yet proven:
 - That a simple hidden-branch bonus can improve solve count beyond the unconditional-penalty baseline without hurting seen families.
 - That the current frontier reranker transfers from moderate-depth mixed composition to full depth-7 traversal.
 - That learned frontier supervision, as currently defined, improves held-out depth-7 compositional transfer.
+- That RL fine-tuning limited to a frozen-policy frontier head is sufficient for held-out depth-7 compositional transfer.
 
 ## Next Steps
 
