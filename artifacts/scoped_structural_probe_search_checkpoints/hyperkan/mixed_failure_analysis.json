@@ -1,0 +1,4022 @@
+{
+  "model_type": "hyperkan",
+  "checkpoint": "artifacts/scoped_structural_probe_search_checkpoints/hyperkan/best_search.pt",
+  "dataset": "artifacts/scoped_structural_probe/test.parquet",
+  "analysis": {
+    "attempts": 60,
+    "first_action_counts": [
+      [
+        "expr@root::expand",
+        60
+      ]
+    ],
+    "first_action_classification_counts": {
+      "global_collapse_bias": 60
+    },
+    "first_action_block_counts": {
+      "global": 60
+    },
+    "step2_first_action_counts": [
+      [
+        "expr@root::cancel",
+        60
+      ]
+    ],
+    "rows": [
+      {
+        "trajectory_id": "mixed_trig_hidden_3",
+        "distance_to_goal": 5,
+        "state_str": "(4/(x + 4) + 3/(x + 3))*(sin(y)**2 + cos(y)**2) + (z**2 + 9*z + 14)/(((z + 1)*(z + 2)**2))",
+        "goal_str": "7*x/(x**2 + 7*x + 12) + (z + 7)/(z**2 + 3*z + 2) + 24/(x**2 + 7*x + 12)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1864081472158432,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14600136876106262,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.1006350889801979,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11763068288564682,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.09234941005706787,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09094048291444778,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_3",
+        "distance_to_goal": 4,
+        "state_str": "(4/(x + 4) + 3/(x + 3)) + (z**2 + 9*z + 14)/(((z + 1)*(z + 2)**2))",
+        "goal_str": "7*x/(x**2 + 7*x + 12) + (z + 7)/(z**2 + 3*z + 2) + 24/(x**2 + 7*x + 12)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18761883676052094,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1447332203388214,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10128290206193924,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11763068288564682,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09094048291444778,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07948969304561615,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_3",
+        "distance_to_goal": 3,
+        "state_str": "(7*x + 24)/((x + 3)*(x + 4)) + (z**2 + 9*z + 14)/(((z + 1)*(z + 2)**2))",
+        "goal_str": "7*x/(x**2 + 7*x + 12) + (z + 7)/(z**2 + 3*z + 2) + 24/(x**2 + 7*x + 12)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1886371523141861,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14512600004673004,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09939651936292648,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12853208184242249,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09350486099720001,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07938194274902344,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_3",
+        "distance_to_goal": 2,
+        "state_str": "(7*x/(x**2 + 7*x + 12) + 24/(x**2 + 7*x + 12)) + (z**2 + 9*z + 14)/(((z + 1)*(z + 2)**2))",
+        "goal_str": "7*x/(x**2 + 7*x + 12) + (z + 7)/(z**2 + 3*z + 2) + 24/(x**2 + 7*x + 12)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18609610199928284,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14503097534179688,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10174623876810074,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12853208184242249,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09350486099720001,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07938194274902344,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_3",
+        "distance_to_goal": 1,
+        "state_str": "7*x/(x**2 + 7*x + 12) + 24/(x**2 + 7*x + 12) + ((z + 2)*(z + 7))/(((z + 1)*(z + 2)**2))",
+        "goal_str": "7*x/(x**2 + 7*x + 12) + (z + 7)/(z**2 + 3*z + 2) + 24/(x**2 + 7*x + 12)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1886950582265854,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14388307929039001,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10045946389436722,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12853208184242249,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09350486099720001,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07938194274902344,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_7",
+        "distance_to_goal": 5,
+        "state_str": "(3/(x + 5) + 4/(x + 2))*(sin(y)**2 + cos(y)**2) + (z**2 + 12*z + 32)/(((z + 1)*(z + 4)**2))",
+        "goal_str": "7*x/(x**2 + 7*x + 10) + (z + 8)/(z**2 + 5*z + 4) + 26/(x**2 + 7*x + 10)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18640542030334473,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14609481394290924,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10054961591959,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11869851499795914,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.093899667263031,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.08953557163476944,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_7",
+        "distance_to_goal": 4,
+        "state_str": "(3/(x + 5) + 4/(x + 2)) + (z**2 + 12*z + 32)/(((z + 1)*(z + 4)**2))",
+        "goal_str": "7*x/(x**2 + 7*x + 10) + (z + 8)/(z**2 + 5*z + 4) + 26/(x**2 + 7*x + 10)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18764452636241913,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14475630223751068,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10124611109495163,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11869851499795914,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.08953557163476944,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07871616631746292,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_7",
+        "distance_to_goal": 3,
+        "state_str": "(7*x + 26)/((x + 2)*(x + 5)) + (z**2 + 12*z + 32)/(((z + 1)*(z + 4)**2))",
+        "goal_str": "7*x/(x**2 + 7*x + 10) + (z + 8)/(z**2 + 5*z + 4) + 26/(x**2 + 7*x + 10)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18688906729221344,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1461683213710785,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10003139823675156,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12855510413646698,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09352675080299377,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07940057665109634,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_7",
+        "distance_to_goal": 2,
+        "state_str": "(7*x/(x**2 + 7*x + 10) + 26/(x**2 + 7*x + 10)) + (z**2 + 12*z + 32)/(((z + 1)*(z + 4)**2))",
+        "goal_str": "7*x/(x**2 + 7*x + 10) + (z + 8)/(z**2 + 5*z + 4) + 26/(x**2 + 7*x + 10)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18606163561344147,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14503486454486847,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10178511589765549,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12855510413646698,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09352675080299377,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07940057665109634,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_7",
+        "distance_to_goal": 1,
+        "state_str": "7*x/(x**2 + 7*x + 10) + 26/(x**2 + 7*x + 10) + ((z + 4)*(z + 8))/(((z + 1)*(z + 4)**2))",
+        "goal_str": "7*x/(x**2 + 7*x + 10) + (z + 8)/(z**2 + 5*z + 4) + 26/(x**2 + 7*x + 10)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18802510201931,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14401264488697052,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.1006208211183548,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12855510413646698,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09352675080299377,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07940057665109634,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_11",
+        "distance_to_goal": 5,
+        "state_str": "(3/(x + 3) + 1/(x + 2))*(sin(y)**2 + cos(y)**2) + (z**2 + 10*z + 21)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 5*x + 6) + (z + 7)/(z**2 + 4*z + 3) + 9/(x**2 + 5*x + 6)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18753525614738464,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14526984095573425,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10117241740226746,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11756786704063416,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.09151322394609451,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09075886756181717,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_11",
+        "distance_to_goal": 4,
+        "state_str": "(3/(x + 3) + 1/(x + 2)) + (z**2 + 10*z + 21)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 5*x + 6) + (z + 7)/(z**2 + 4*z + 3) + 9/(x**2 + 5*x + 6)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18880663812160492,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14463980495929718,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10028848052024841,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11756786704063416,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09075886756181717,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07878778874874115,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_11",
+        "distance_to_goal": 3,
+        "state_str": "(4*x + 9)/((x + 2)*(x + 3)) + (z**2 + 10*z + 21)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 5*x + 6) + (z + 7)/(z**2 + 4*z + 3) + 9/(x**2 + 5*x + 6)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1888607293367386,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14567437767982483,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09824171662330627,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12855468690395355,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.093477763235569,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939328253269196,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_11",
+        "distance_to_goal": 2,
+        "state_str": "(4*x/(x**2 + 5*x + 6) + 9/(x**2 + 5*x + 6)) + (z**2 + 10*z + 21)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 5*x + 6) + (z + 7)/(z**2 + 4*z + 3) + 9/(x**2 + 5*x + 6)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18728938698768616,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14410671591758728,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10256489366292953,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12855468690395355,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.093477763235569,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939328253269196,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_11",
+        "distance_to_goal": 1,
+        "state_str": "4*x/(x**2 + 5*x + 6) + 9/(x**2 + 5*x + 6) + ((z + 3)*(z + 7))/(((z + 1)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 5*x + 6) + (z + 7)/(z**2 + 4*z + 3) + 9/(x**2 + 5*x + 6)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1887243092060089,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14388272166252136,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10044616460800171,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12855468690395355,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.093477763235569,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939328253269196,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_15",
+        "distance_to_goal": 5,
+        "state_str": "(1/(x + 5) + 3/(x + 1))*(sin(y)**2 + cos(y)**2) + (z**2 + 13*z + 36)/(((z + 3)*(z + 4)**2))",
+        "goal_str": "4*x/(x**2 + 6*x + 5) + (z + 9)/(z**2 + 7*z + 12) + 16/(x**2 + 6*x + 5)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18737608194351196,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14527814090251923,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09917939454317093,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1186903640627861,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.09203240275382996,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.08960894495248795,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_15",
+        "distance_to_goal": 4,
+        "state_str": "(1/(x + 5) + 3/(x + 1)) + (z**2 + 13*z + 36)/(((z + 3)*(z + 4)**2))",
+        "goal_str": "4*x/(x**2 + 6*x + 5) + (z + 9)/(z**2 + 7*z + 12) + 16/(x**2 + 6*x + 5)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1875719577074051,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14479613304138184,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10114002972841263,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1186903640627861,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.08960894495248795,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.0789308100938797,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_15",
+        "distance_to_goal": 3,
+        "state_str": "4*(x + 4)/((x + 1)*(x + 5)) + (z**2 + 13*z + 36)/(((z + 3)*(z + 4)**2))",
+        "goal_str": "4*x/(x**2 + 6*x + 5) + (z + 9)/(z**2 + 7*z + 12) + 16/(x**2 + 6*x + 5)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1906796097755432,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14435650408267975,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09787645190954208,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1285378336906433,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09346981346607208,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939518988132477,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_15",
+        "distance_to_goal": 2,
+        "state_str": "(4*x/(x**2 + 6*x + 5) + 16/(x**2 + 6*x + 5)) + (z**2 + 13*z + 36)/(((z + 3)*(z + 4)**2))",
+        "goal_str": "4*x/(x**2 + 6*x + 5) + (z + 9)/(z**2 + 7*z + 12) + 16/(x**2 + 6*x + 5)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1873847097158432,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14441373944282532,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10032767057418823,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1285378336906433,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09346981346607208,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939518988132477,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_15",
+        "distance_to_goal": 1,
+        "state_str": "4*x/(x**2 + 6*x + 5) + 16/(x**2 + 6*x + 5) + ((z + 4)*(z + 9))/(((z + 3)*(z + 4)**2))",
+        "goal_str": "4*x/(x**2 + 6*x + 5) + (z + 9)/(z**2 + 7*z + 12) + 16/(x**2 + 6*x + 5)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1881965547800064,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14448806643486023,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.1000295877456665,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1285378336906433,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09346981346607208,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939518988132477,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_19",
+        "distance_to_goal": 5,
+        "state_str": "(2/(x + 5) + 2/(x + 4))*(sin(y)**2 + cos(y)**2) + (z**2 + 9*z + 18)/(((z + 2)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 9*x + 20) + (z + 6)/(z**2 + 5*z + 6) + 18/(x**2 + 9*x + 20)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18755614757537842,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1449710875749588,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10045023262500763,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11770052462816238,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.09269747138023376,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09027218073606491,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_19",
+        "distance_to_goal": 4,
+        "state_str": "(2/(x + 5) + 2/(x + 4)) + (z**2 + 9*z + 18)/(((z + 2)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 9*x + 20) + (z + 6)/(z**2 + 5*z + 6) + 18/(x**2 + 9*x + 20)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1875763237476349,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14483173191547394,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10110431164503098,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11770052462816238,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09027218073606491,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.078537717461586,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_19",
+        "distance_to_goal": 3,
+        "state_str": "2*(2*x + 9)/((x + 4)*(x + 5)) + (z**2 + 9*z + 18)/(((z + 2)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 9*x + 20) + (z + 6)/(z**2 + 5*z + 6) + 18/(x**2 + 9*x + 20)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18807998299598694,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14509625732898712,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09982963651418686,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1285661906003952,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09347952902317047,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07938921451568604,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_19",
+        "distance_to_goal": 2,
+        "state_str": "(4*x/(x**2 + 9*x + 20) + 18/(x**2 + 9*x + 20)) + (z**2 + 9*z + 18)/(((z + 2)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 9*x + 20) + (z + 6)/(z**2 + 5*z + 6) + 18/(x**2 + 9*x + 20)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18734312057495117,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14389489591121674,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.101728156208992,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1285661906003952,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09347952902317047,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07938921451568604,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_19",
+        "distance_to_goal": 1,
+        "state_str": "4*x/(x**2 + 9*x + 20) + 18/(x**2 + 9*x + 20) + ((z + 3)*(z + 6))/(((z + 2)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 9*x + 20) + (z + 6)/(z**2 + 5*z + 6) + 18/(x**2 + 9*x + 20)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1883198618888855,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14440502226352692,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10118650645017624,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1285661906003952,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09347952902317047,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07938921451568604,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_23",
+        "distance_to_goal": 5,
+        "state_str": "(3/(x + 5) + 2/(x + 2))*(sin(y)**2 + cos(y)**2) + (z**2 + 13*z + 40)/(((z + 2)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 7*x + 10) + (z + 8)/(z**2 + 7*z + 10) + 16/(x**2 + 7*x + 10)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18848161399364471,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1457442045211792,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09899122267961502,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11881095170974731,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09217512607574463,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.09171175211668015,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_23",
+        "distance_to_goal": 4,
+        "state_str": "(3/(x + 5) + 2/(x + 2)) + (z**2 + 13*z + 40)/(((z + 2)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 7*x + 10) + (z + 8)/(z**2 + 7*z + 10) + 16/(x**2 + 7*x + 10)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1874665915966034,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1446569561958313,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10145055502653122,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11881095170974731,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09217512607574463,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07891591638326645,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_23",
+        "distance_to_goal": 3,
+        "state_str": "(5*x + 16)/((x + 2)*(x + 5)) + (z**2 + 13*z + 40)/(((z + 2)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 7*x + 10) + (z + 8)/(z**2 + 7*z + 10) + 16/(x**2 + 7*x + 10)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.19051723182201385,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1441849172115326,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09827043861150742,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12851938605308533,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09369229525327682,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939979434013367,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_23",
+        "distance_to_goal": 2,
+        "state_str": "(5*x/(x**2 + 7*x + 10) + 16/(x**2 + 7*x + 10)) + (z**2 + 13*z + 40)/(((z + 2)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 7*x + 10) + (z + 8)/(z**2 + 7*z + 10) + 16/(x**2 + 7*x + 10)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18816117942333221,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14474719762802124,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10015099495649338,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12851938605308533,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09369229525327682,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939979434013367,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_23",
+        "distance_to_goal": 1,
+        "state_str": "5*x/(x**2 + 7*x + 10) + 16/(x**2 + 7*x + 10) + ((z + 5)*(z + 8))/(((z + 2)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 7*x + 10) + (z + 8)/(z**2 + 7*z + 10) + 16/(x**2 + 7*x + 10)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18785612285137177,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14397898316383362,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10077787935733795,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12851938605308533,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09369229525327682,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939979434013367,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_27",
+        "distance_to_goal": 5,
+        "state_str": "(3/(x + 4) + 2/(x + 3))*(sin(y)**2 + cos(y)**2) + (z**2 + 14*z + 45)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 7*x + 12) + (z + 9)/(z**2 + 6*z + 5) + 17/(x**2 + 7*x + 12)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1862543225288391,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14599135518074036,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.1007310077548027,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11856210231781006,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.09195225685834885,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.08991461992263794,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_27",
+        "distance_to_goal": 4,
+        "state_str": "(3/(x + 4) + 2/(x + 3)) + (z**2 + 14*z + 45)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 7*x + 12) + (z + 9)/(z**2 + 6*z + 5) + 17/(x**2 + 7*x + 12)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1874372810125351,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1446344256401062,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10149144381284714,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11856210231781006,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.08991461992263794,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07891606539487839,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_27",
+        "distance_to_goal": 3,
+        "state_str": "(5*x + 17)/((x + 3)*(x + 4)) + (z**2 + 14*z + 45)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 7*x + 12) + (z + 9)/(z**2 + 6*z + 5) + 17/(x**2 + 7*x + 12)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1867406815290451,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14606255292892456,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10021106898784637,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12849612534046173,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09366917610168457,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.0793825313448906,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_27",
+        "distance_to_goal": 2,
+        "state_str": "(5*x/(x**2 + 7*x + 12) + 17/(x**2 + 7*x + 12)) + (z**2 + 14*z + 45)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 7*x + 12) + (z + 9)/(z**2 + 6*z + 5) + 17/(x**2 + 7*x + 12)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1859150230884552,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14500179886817932,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.1019124686717987,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12849612534046173,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09366917610168457,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.0793825313448906,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_27",
+        "distance_to_goal": 1,
+        "state_str": "5*x/(x**2 + 7*x + 12) + 17/(x**2 + 7*x + 12) + ((z + 5)*(z + 9))/(((z + 1)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 7*x + 12) + (z + 9)/(z**2 + 6*z + 5) + 17/(x**2 + 7*x + 12)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18799301981925964,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1444668471813202,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10020357370376587,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12849612534046173,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09366917610168457,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.0793825313448906,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_31",
+        "distance_to_goal": 5,
+        "state_str": "(1/(x + 4) + 1/(x + 3))*(sin(y)**2 + cos(y)**2) + (z**2 + 12*z + 35)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "2*x/(x**2 + 7*x + 12) + (z + 7)/(z**2 + 6*z + 5) + 7/(x**2 + 7*x + 12)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18853342533111572,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14487336575984955,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09932265430688858,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11865070462226868,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.09201110154390335,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.08963847160339355,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_31",
+        "distance_to_goal": 4,
+        "state_str": "(1/(x + 4) + 1/(x + 3)) + (z**2 + 12*z + 35)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "2*x/(x**2 + 7*x + 12) + (z + 7)/(z**2 + 6*z + 5) + 7/(x**2 + 7*x + 12)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.188897043466568,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14450767636299133,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10040512681007385,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11865070462226868,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.08963847160339355,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07895591855049133,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_31",
+        "distance_to_goal": 3,
+        "state_str": "(2*x + 7)/((x + 3)*(x + 4)) + (z**2 + 12*z + 35)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "2*x/(x**2 + 7*x + 12) + (z + 7)/(z**2 + 6*z + 5) + 7/(x**2 + 7*x + 12)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18956737220287323,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14496558904647827,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09866183251142502,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1286335438489914,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.0934784859418869,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07940781861543655,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_31",
+        "distance_to_goal": 2,
+        "state_str": "(2*x/(x**2 + 7*x + 12) + 7/(x**2 + 7*x + 12)) + (z**2 + 12*z + 35)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "2*x/(x**2 + 7*x + 12) + (z + 7)/(z**2 + 6*z + 5) + 7/(x**2 + 7*x + 12)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18838189542293549,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14418430626392365,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10041753947734833,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1286335438489914,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.0934784859418869,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07940781861543655,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_31",
+        "distance_to_goal": 1,
+        "state_str": "2*x/(x**2 + 7*x + 12) + 7/(x**2 + 7*x + 12) + ((z + 5)*(z + 7))/(((z + 1)*(z + 5)**2))",
+        "goal_str": "2*x/(x**2 + 7*x + 12) + (z + 7)/(z**2 + 6*z + 5) + 7/(x**2 + 7*x + 12)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18871095776557922,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14398649334907532,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10041444003582001,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1286335438489914,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.0934784859418869,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07940781861543655,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_35",
+        "distance_to_goal": 5,
+        "state_str": "(1/(x + 5) + 2/(x + 3))*(sin(y)**2 + cos(y)**2) + (z**2 + 9*z + 18)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "3*x/(x**2 + 8*x + 15) + (z + 6)/(z**2 + 4*z + 3) + 13/(x**2 + 8*x + 15)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18723762035369873,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1445033699274063,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10101361572742462,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11739964038133621,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.0913873240351677,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09103666245937347,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_35",
+        "distance_to_goal": 4,
+        "state_str": "(1/(x + 5) + 2/(x + 3)) + (z**2 + 9*z + 18)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "3*x/(x**2 + 8*x + 15) + (z + 6)/(z**2 + 4*z + 3) + 13/(x**2 + 8*x + 15)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18749797344207764,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14456422626972198,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10156646370887756,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11739964038133621,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09103666245937347,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07893949747085571,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_35",
+        "distance_to_goal": 3,
+        "state_str": "(3*x + 13)/((x + 3)*(x + 5)) + (z**2 + 9*z + 18)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "3*x/(x**2 + 8*x + 15) + (z + 6)/(z**2 + 4*z + 3) + 13/(x**2 + 8*x + 15)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18827341496944427,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14518268406391144,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09928415715694427,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12873412668704987,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09346306324005127,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07945044338703156,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_35",
+        "distance_to_goal": 2,
+        "state_str": "(3*x/(x**2 + 8*x + 15) + 13/(x**2 + 8*x + 15)) + (z**2 + 9*z + 18)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "3*x/(x**2 + 8*x + 15) + (z + 6)/(z**2 + 4*z + 3) + 13/(x**2 + 8*x + 15)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18736647069454193,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1440744698047638,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10170863568782806,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12873412668704987,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09346306324005127,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07945044338703156,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_35",
+        "distance_to_goal": 1,
+        "state_str": "3*x/(x**2 + 8*x + 15) + 13/(x**2 + 8*x + 15) + ((z + 3)*(z + 6))/(((z + 1)*(z + 3)**2))",
+        "goal_str": "3*x/(x**2 + 8*x + 15) + (z + 6)/(z**2 + 4*z + 3) + 13/(x**2 + 8*x + 15)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18833813071250916,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1445818841457367,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10116663575172424,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12873412668704987,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09346306324005127,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07945044338703156,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_39",
+        "distance_to_goal": 5,
+        "state_str": "(1/(x + 4) + 4/(x + 1))*(sin(y)**2 + cos(y)**2) + (z**2 + 12*z + 35)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 5*x + 4) + (z + 7)/(z**2 + 6*z + 5) + 17/(x**2 + 5*x + 4)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18821600079536438,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1447836309671402,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09968182444572449,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11856329441070557,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.0919409766793251,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.08992664515972137,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_39",
+        "distance_to_goal": 4,
+        "state_str": "(1/(x + 4) + 4/(x + 1)) + (z**2 + 12*z + 35)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 5*x + 4) + (z + 7)/(z**2 + 6*z + 5) + 17/(x**2 + 5*x + 4)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18739749491214752,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14463402330875397,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10153152793645859,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11856329441070557,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.08992664515972137,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07892577350139618,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_39",
+        "distance_to_goal": 3,
+        "state_str": "(5*x + 17)/((x + 1)*(x + 4)) + (z**2 + 12*z + 35)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 5*x + 4) + (z + 7)/(z**2 + 6*z + 5) + 17/(x**2 + 5*x + 4)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18670503795146942,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1460753232240677,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10022589564323425,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12851163744926453,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09368196129798889,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939006388187408,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_39",
+        "distance_to_goal": 2,
+        "state_str": "(5*x/(x**2 + 5*x + 4) + 17/(x**2 + 5*x + 4)) + (z**2 + 12*z + 35)/(((z + 1)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 5*x + 4) + (z + 7)/(z**2 + 6*z + 5) + 17/(x**2 + 5*x + 4)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1881614625453949,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14405809342861176,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10063618421554565,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12851163744926453,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09368196129798889,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939006388187408,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_39",
+        "distance_to_goal": 1,
+        "state_str": "5*x/(x**2 + 5*x + 4) + 17/(x**2 + 5*x + 4) + ((z + 5)*(z + 7))/(((z + 1)*(z + 5)**2))",
+        "goal_str": "5*x/(x**2 + 5*x + 4) + (z + 7)/(z**2 + 6*z + 5) + 17/(x**2 + 5*x + 4)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18849287927150726,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14385977387428284,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10063313692808151,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12851163744926453,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09368196129798889,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939006388187408,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_43",
+        "distance_to_goal": 5,
+        "state_str": "(1/(x + 5) + 3/(x + 3))*(sin(y)**2 + cos(y)**2) + (z**2 + 10*z + 21)/(((z + 2)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 8*x + 15) + (z + 7)/(z**2 + 5*z + 6) + 18/(x**2 + 8*x + 15)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18724270164966583,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14501376450061798,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10137724131345749,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11770239472389221,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.0926782563328743,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09027575701475143,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_43",
+        "distance_to_goal": 4,
+        "state_str": "(1/(x + 5) + 3/(x + 3)) + (z**2 + 10*z + 21)/(((z + 2)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 8*x + 15) + (z + 7)/(z**2 + 5*z + 6) + 18/(x**2 + 8*x + 15)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18754972517490387,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1448376476764679,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10111275315284729,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11770239472389221,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09027575701475143,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07853546738624573,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_43",
+        "distance_to_goal": 3,
+        "state_str": "2*(2*x + 9)/((x + 3)*(x + 5)) + (z**2 + 10*z + 21)/(((z + 2)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 8*x + 15) + (z + 7)/(z**2 + 5*z + 6) + 18/(x**2 + 8*x + 15)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18805372714996338,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14510098099708557,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09984102845191956,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12856435775756836,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09348227083683014,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07938749343156815,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_43",
+        "distance_to_goal": 2,
+        "state_str": "(4*x/(x**2 + 8*x + 15) + 18/(x**2 + 8*x + 15)) + (z**2 + 10*z + 21)/(((z + 2)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 8*x + 15) + (z + 7)/(z**2 + 5*z + 6) + 18/(x**2 + 8*x + 15)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18727417290210724,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.1441187709569931,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.1025610864162445,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12856435775756836,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09348227083683014,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07938749343156815,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_43",
+        "distance_to_goal": 1,
+        "state_str": "4*x/(x**2 + 8*x + 15) + 18/(x**2 + 8*x + 15) + ((z + 3)*(z + 7))/(((z + 2)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 8*x + 15) + (z + 7)/(z**2 + 5*z + 6) + 18/(x**2 + 8*x + 15)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18870916962623596,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14389534294605255,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10044246912002563,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12856435775756836,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09348227083683014,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07938749343156815,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_47",
+        "distance_to_goal": 5,
+        "state_str": "(2/(x + 3) + 2/(x + 2))*(sin(y)**2 + cos(y)**2) + (z**2 + 12*z + 27)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 5*x + 6) + (z + 9)/(z**2 + 4*z + 3) + 10/(x**2 + 5*x + 6)",
+        "intended_action_step1": "expr@0::trigsimp",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.1885957270860672,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14543932676315308,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09953989088535309,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11756785213947296,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::trigsimp",
+            "probability": 0.09151320904493332,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09075889736413956,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_47",
+        "distance_to_goal": 4,
+        "state_str": "(2/(x + 3) + 2/(x + 2)) + (z**2 + 12*z + 27)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 5*x + 6) + (z + 9)/(z**2 + 4*z + 3) + 10/(x**2 + 5*x + 6)",
+        "intended_action_step1": "add_slice@root[0:2]::together",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18761685490608215,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14484471082687378,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.1010574921965599,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.11756785213947296,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09075889736413956,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07878773659467697,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_47",
+        "distance_to_goal": 3,
+        "state_str": "2*(2*x + 5)/((x + 2)*(x + 3)) + (z**2 + 12*z + 27)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 5*x + 6) + (z + 9)/(z**2 + 4*z + 3) + 10/(x**2 + 5*x + 6)",
+        "intended_action_step1": "expr@1::expand",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18893083930015564,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14516784250736237,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.09894143790006638,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12855468690395355,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.0934777557849884,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939327508211136,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_47",
+        "distance_to_goal": 2,
+        "state_str": "(4*x/(x**2 + 5*x + 6) + 10/(x**2 + 5*x + 6)) + (z**2 + 12*z + 27)/(((z + 1)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 5*x + 6) + (z + 9)/(z**2 + 4*z + 3) + 10/(x**2 + 5*x + 6)",
+        "intended_action_step1": "numerator@2::factor",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18840035796165466,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14433906972408295,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10080850124359131,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12855468690395355,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.0934777557849884,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939327508211136,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      },
+      {
+        "trajectory_id": "mixed_trig_hidden_47",
+        "distance_to_goal": 1,
+        "state_str": "4*x/(x**2 + 5*x + 6) + 10/(x**2 + 5*x + 6) + ((z + 3)*(z + 9))/(((z + 1)*(z + 3)**2))",
+        "goal_str": "4*x/(x**2 + 5*x + 6) + (z + 9)/(z**2 + 4*z + 3) + 10/(x**2 + 5*x + 6)",
+        "intended_action_step1": "expr@2::cancel",
+        "top3_step1": [
+          {
+            "action_id": "expr@root::expand",
+            "probability": 0.18818803131580353,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.14450635015964508,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.10003088414669037,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "chosen_action_step1": "expr@root::expand",
+        "first_action_classification": "global_collapse_bias",
+        "intended_action_step2_if_on_path": null,
+        "top3_step2_after_chosen_step1": [
+          {
+            "action_id": "expr@root::cancel",
+            "probability": 0.12855468690395355,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::together",
+            "probability": 0.0934777557849884,
+            "block": "global",
+            "is_global_root": true
+          },
+          {
+            "action_id": "expr@root::apart",
+            "probability": 0.07939327508211136,
+            "block": "global",
+            "is_global_root": true
+          }
+        ],
+        "greedy_action_sequence": [
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand",
+          "expr@root::cancel",
+          "expr@root::expand"
+        ],
+        "greedy_block_sequence": [
+          "global",
+          "global",
+          "global",
+          "global",
+          "global"
+        ],
+        "ever_switches_blocks": false,
+        "greedy_success": false
+      }
+    ]
+  },
+  "root_penalty_results": [
+    {
+      "attempts": 60,
+      "solved": 0,
+      "solve_rate": 0.0,
+      "mean_expansions": 32.63333333333333,
+      "beam_width": 1,
+      "root_penalty": 1.0
+    },
+    {
+      "attempts": 60,
+      "solved": 24,
+      "solve_rate": 0.4,
+      "mean_expansions": 65.46666666666667,
+      "beam_width": 4,
+      "root_penalty": 1.0
+    },
+    {
+      "attempts": 60,
+      "solved": 24,
+      "solve_rate": 0.4,
+      "mean_expansions": 27.6,
+      "beam_width": 1,
+      "root_penalty": 2.0
+    },
+    {
+      "attempts": 60,
+      "solved": 36,
+      "solve_rate": 0.6,
+      "mean_expansions": 66.66666666666667,
+      "beam_width": 4,
+      "root_penalty": 2.0
+    }
+  ]
+}

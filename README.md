@@ -261,6 +261,25 @@ The failure mode is now clearer. On held-out mixed-family states, the selected c
 
 So the current limitation is not just lack of beam width. The learned heuristics are not localizing onto the independent subproblems inside the mixed family.
 
+Targeted mixed-family failure analysis plus one minimal localization intervention are now also saved under `artifacts/scoped_structural_probe_search_checkpoints/*/mixed_failure_analysis.json` using [scripts/analyze_mixed_family_failures.py](scripts/analyze_mixed_family_failures.py).
+
+That analysis confirms:
+
+- Static KAN step-2 top action is always `expr@root::expand`
+- HyperKAN step-2 top action is always `expr@root::cancel`
+- Both greedy rollouts remain entirely on global whole-expression actions and never switch into local blockwise behavior
+
+Minimal intervention: penalize whole-expression root actions at inference.
+
+- Static KAN does not improve:
+- Static KAN, root penalty `1.0`: `0/60` greedy, `0/60` beam
+- Static KAN, root penalty `2.0`: `0/60` greedy, `0/60` beam
+- HyperKAN does improve:
+- HyperKAN, root penalty `1.0`: `0/60` greedy, `24/60` beam
+- HyperKAN, root penalty `2.0`: `24/60` greedy, `36/60` beam
+
+Interpretation: HyperKAN’s held-out mixed-family failure is at least partly an inference-time global-action bias. A small localization bias at search time unlocks nontrivial mixed-family solves. Static KAN does not show the same behavior.
+
 ## One Guided Scoped Trajectory
 
 <details>
@@ -331,6 +350,7 @@ Not yet proven:
 
 - Use search-based checkpoint selection on the structural probe.
 - Run failure analysis on held-out `mixed_trig_hidden` trajectories.
+- Test localization-biased search or site-first decoding as the next minimal intervention.
 - Add more structurally different scoped families, not just action-order variants or more rows.
 - Restore strict composed verification.
 - Recover shortest-action ties for accepted scoped rows.
