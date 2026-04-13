@@ -17,6 +17,10 @@ def create_model(model_type: str, config: dict[str, Any]):
         "hidden_dim": model_cfg["hidden_dim"],
         "encoder_layers": model_cfg["encoder_layers"],
         "dropout": model_cfg["dropout"],
+        "encoder_type": model_cfg.get("encoder_type", "bigru"),
+        "transformer_heads": int(model_cfg.get("transformer_heads", 4)),
+        "transformer_ff_dim": model_cfg.get("transformer_ff_dim"),
+        "transformer_max_positions": int(model_cfg.get("transformer_max_positions", 512)),
     }
 
     if model_type == "mlp":

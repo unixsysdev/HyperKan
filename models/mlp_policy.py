@@ -3,7 +3,7 @@ from __future__ import annotations
 import torch
 from torch import Tensor, nn
 
-from models.encoder_bigru import SharedBiGRUEncoder, fuse_state_goal
+from models.encoder_bigru import create_shared_encoder, fuse_state_goal
 
 
 class MLPPolicy(nn.Module):
@@ -16,15 +16,23 @@ class MLPPolicy(nn.Module):
         hidden_dim: int = 256,
         encoder_layers: int = 2,
         dropout: float = 0.1,
+        encoder_type: str = "bigru",
+        transformer_heads: int = 4,
+        transformer_ff_dim: int | None = None,
+        transformer_max_positions: int = 512,
     ) -> None:
         super().__init__()
-        self.encoder = SharedBiGRUEncoder(
+        self.encoder = create_shared_encoder(
+            encoder_type=encoder_type,
             vocab_size=vocab_size,
             pad_id=pad_id,
             embed_dim=embed_dim,
             hidden_dim=hidden_dim,
             layers=encoder_layers,
             dropout=dropout,
+            transformer_heads=transformer_heads,
+            transformer_ff_dim=transformer_ff_dim,
+            transformer_max_positions=transformer_max_positions,
         )
         fused_dim = hidden_dim * 4
         self.policy_head = nn.Sequential(
@@ -57,4 +65,3 @@ class MLPPolicy(nn.Module):
             "state_embedding": state_out.pooled,
             "goal_embedding": goal_out.pooled,
         }
-

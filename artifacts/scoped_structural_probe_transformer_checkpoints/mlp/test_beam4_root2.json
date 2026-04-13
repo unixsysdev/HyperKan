@@ -1,0 +1,28 @@
+{
+  "attempts": 60,
+  "solved": 3,
+  "solve_rate": 0.05,
+  "mean_solved_steps": 2.0,
+  "mean_expansions": 101.45,
+  "mean_solved_expansions": 50.0,
+  "per_family": {
+    "mixed_trig_hidden": {
+      "attempts": 60,
+      "solved": 3,
+      "solve_rate": 0.05,
+      "mean_solved_steps": 2.0,
+      "mean_expansions": 101.45,
+      "mean_solved_expansions": 50.0
+    }
+  },
+  "root_action_penalty": 2.0,
+  "root_action_penalty_mode": "always",
+  "early_hidden_bonus": 0.0,
+  "early_hidden_bonus_steps": 0,
+  "frontier_bonus": 0.0,
+  "frontier_bonus_steps": 0,
+  "frontier_bonus_mode": "none",
+  "learned_frontier_weight": 0.0,
+  "learned_frontier_steps": 0,
+  "limit_attempts": 0
+}

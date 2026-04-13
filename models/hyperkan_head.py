@@ -4,7 +4,7 @@ import torch
 from torch import Tensor, nn
 from torch.nn import functional as F
 
-from models.encoder_bigru import SharedBiGRUEncoder, fuse_state_goal
+from models.encoder_bigru import create_shared_encoder, fuse_state_goal
 from models.kan_head import KANSplineState, SimpleKANLayer
 
 
@@ -30,6 +30,10 @@ class HyperKANPolicy(nn.Module):
         action_to_site_idx: list[int] | None = None,
         action_to_op_idx: list[int] | None = None,
         use_frontier_head: bool = False,
+        encoder_type: str = "bigru",
+        transformer_heads: int = 4,
+        transformer_ff_dim: int | None = None,
+        transformer_max_positions: int = 512,
     ) -> None:
         super().__init__()
         self.num_templates = num_templates
@@ -37,13 +41,17 @@ class HyperKANPolicy(nn.Module):
         self.mixture_temperature = float(mixture_temperature)
         self.site_op_factorized = bool(site_op_factorized)
         self.use_frontier_head = bool(use_frontier_head)
-        self.encoder = SharedBiGRUEncoder(
+        self.encoder = create_shared_encoder(
+            encoder_type=encoder_type,
             vocab_size=vocab_size,
             pad_id=pad_id,
             embed_dim=embed_dim,
             hidden_dim=hidden_dim,
             layers=encoder_layers,
             dropout=dropout,
+            transformer_heads=transformer_heads,
+            transformer_ff_dim=transformer_ff_dim,
+            transformer_max_positions=transformer_max_positions,
         )
         fused_dim = hidden_dim * 4
         self.pre = nn.Sequential(nn.LayerNorm(fused_dim), nn.Linear(fused_dim, kan_hidden_dim), nn.GELU())
