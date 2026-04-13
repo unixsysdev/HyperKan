@@ -1,6 +1,7 @@
 # Paper Draft
 
-This directory contains the frozen paper draft artifacts for `paper-v1.0`.
+This directory contains the frozen paper draft artifacts for `paper-v1.0`:
+**Scoped Actions Expose Compositional Failures in Verified Symbolic Rewrite Search**.
 
 - `hyperkan_verified_symbolic_rewrite_search.tex`: TeX source
 - `hyperkan_verified_symbolic_rewrite_search.pdf`: compiled PDF

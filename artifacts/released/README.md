@@ -1,6 +1,6 @@
 # Released Paper Artifacts
 
-This directory is the manifest for the frozen `paper-v1.0` artifact. The large datasets and checkpoints remain in their original checked-in locations so existing scripts keep working, but the paper-facing subset is listed here explicitly.
+This directory is the manifest for the frozen `paper-v1.0` artifact for **Scoped Actions Expose Compositional Failures in Verified Symbolic Rewrite Search**. The large datasets and checkpoints remain in their original checked-in locations so existing scripts keep working, but the paper-facing subset is listed here explicitly.
 
 ## Global Benchmark
 
