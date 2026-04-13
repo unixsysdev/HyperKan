@@ -2,6 +2,11 @@
 
 Branch: `feature/early-frontier-reranker`
 
+Status:
+
+- First reranker result is in [early_frontier_reranker_results.md](./early_frontier_reranker_results.md).
+- Current best branch result: recovered HyperKAN + root penalty `2.0` + frontier reranker = `48/60` beam on held-out `mixed_trig_hidden`, with a seen-family validation cost (`14/16` vs `16/16` for the root-penalty baseline).
+
 ## Thesis
 
 The current scoped structural result suggests that the main bottleneck is not generic localization, but early frontier shaping:

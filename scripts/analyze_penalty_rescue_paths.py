@@ -17,7 +17,11 @@ if str(REPO_ROOT) not in sys.path:
 from data_gen.canonicalize import structural_string
 from data_gen.scoped_actions import apply_scoped_action_unchecked, parse_scoped_action_id
 from models.factory import create_model
-from search.scoped_beam_search import build_scoped_action_factorization, load_scoped_action_vocab
+from search.scoped_beam_search import (
+    build_scoped_action_factorization,
+    load_scoped_action_vocab,
+    state_has_hidden_access,
+)
 from tokenizer.srepr_tokenizer import SReprTokenizer
 
 
@@ -55,6 +59,9 @@ def ranked_valid_actions(
     max_length: int,
     device: torch.device,
     root_penalty: float = 0.0,
+    frontier_bonus: float = 0.0,
+    frontier_bonus_steps_remaining: int = 0,
+    frontier_bonus_mode: str = "none",
     top_k: int | None = None,
 ) -> list[dict[str, object]]:
     state_ids, state_lengths, goal_ids, goal_lengths = encode_single(tokenizer, expression, goal, max_length, device)
@@ -78,17 +85,25 @@ def ranked_valid_actions(
         next_expr_str = str(next_expr)
         if next_expr_str == expression:
             continue
+        score = float(probabilities[idx].item())
+        if frontier_bonus and frontier_bonus_steps_remaining > 0 and state_has_hidden_access(next_expr_str, frontier_bonus_mode):
+            score *= math.exp(float(frontier_bonus))
         ranked.append(
             {
                 "action_id": action_id,
                 "probability": float(probabilities[idx].item()),
+                "adjusted_score": score,
                 "block": classify_block(action_id),
                 "is_global_root": is_global_root_action(action_id),
                 "next_expr": next_expr_str,
+                "has_frontier_bonus": bool(
+                    frontier_bonus and frontier_bonus_steps_remaining > 0 and state_has_hidden_access(next_expr_str, frontier_bonus_mode)
+                ),
             }
         )
         if top_k is not None and len(ranked) >= top_k:
             break
+    ranked.sort(key=lambda item: (float(item["adjusted_score"]), float(item["probability"])), reverse=True)
     return ranked
 
 
@@ -103,6 +118,9 @@ def run_beam_search_with_penalty(
     beam_width: int,
     max_steps: int,
     root_penalty: float,
+    frontier_bonus: float,
+    frontier_bonus_steps: int,
+    frontier_bonus_mode: str,
 ) -> dict[str, object]:
     goal_struct = structural_string(goal_expr)
     beam = [{"expr": start_expr, "steps": [], "score": 0.0}]
@@ -123,11 +141,14 @@ def run_beam_search_with_penalty(
                 max_length=max_length,
                 device=device,
                 root_penalty=root_penalty,
+                frontier_bonus=frontier_bonus,
+                frontier_bonus_steps_remaining=max(frontier_bonus_steps - len(node["steps"]), 0),
+                frontier_bonus_mode=frontier_bonus_mode,
                 top_k=None,
             )
             for action in ranked:
                 explored += 1
-                score = node["score"] + math.log(float(action["probability"]) + 1e-8)
+                score = node["score"] + math.log(float(action["adjusted_score"]) + 1e-8)
                 candidates.append(
                     {
                         "expr": action["next_expr"],
@@ -192,6 +213,9 @@ def main() -> None:
     parser.add_argument("--beam-width", type=int, default=4)
     parser.add_argument("--max-steps", type=int, default=5)
     parser.add_argument("--root-penalty", type=float, default=2.0)
+    parser.add_argument("--frontier-bonus", type=float, default=0.0)
+    parser.add_argument("--frontier-bonus-steps", type=int, default=0)
+    parser.add_argument("--frontier-bonus-mode", choices=("none", "hidden_cancel_access", "hidden_site_access"), default="none")
     parser.add_argument("--max-length", type=int, default=None)
     args = parser.parse_args()
 
@@ -242,6 +266,9 @@ def main() -> None:
             max_length=max_length,
             device=device,
             root_penalty=0.0,
+            frontier_bonus=0.0,
+            frontier_bonus_steps_remaining=0,
+            frontier_bonus_mode="none",
             top_k=3,
         )
         penalized_top3 = ranked_valid_actions(
@@ -253,6 +280,9 @@ def main() -> None:
             max_length=max_length,
             device=device,
             root_penalty=float(args.root_penalty),
+            frontier_bonus=float(args.frontier_bonus),
+            frontier_bonus_steps_remaining=int(args.frontier_bonus_steps),
+            frontier_bonus_mode=str(args.frontier_bonus_mode),
             top_k=3,
         )
         outcome = run_beam_search_with_penalty(
@@ -266,6 +296,9 @@ def main() -> None:
             beam_width=args.beam_width,
             max_steps=args.max_steps,
             root_penalty=float(args.root_penalty),
+            frontier_bonus=float(args.frontier_bonus),
+            frontier_bonus_steps=int(args.frontier_bonus_steps),
+            frontier_bonus_mode=str(args.frontier_bonus_mode),
         )
 
         default_first = str(default_top3[0]["action_id"])
@@ -330,6 +363,9 @@ def main() -> None:
         "beam_width": int(args.beam_width),
         "max_steps": int(args.max_steps),
         "root_penalty": float(args.root_penalty),
+        "frontier_bonus": float(args.frontier_bonus),
+        "frontier_bonus_steps": int(args.frontier_bonus_steps),
+        "frontier_bonus_mode": str(args.frontier_bonus_mode),
         "attempts": attempts,
         "solved": solved,
         "solve_rate": (solved / attempts) if attempts else 0.0,

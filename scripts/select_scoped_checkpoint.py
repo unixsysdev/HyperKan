@@ -40,6 +40,9 @@ def evaluate_checkpoint(
     root_action_penalty_mode: str,
     early_hidden_bonus: float | None,
     early_hidden_bonus_steps: int | None,
+    frontier_bonus: float | None,
+    frontier_bonus_steps: int | None,
+    frontier_bonus_mode: str,
 ) -> dict[str, object]:
     payload = torch.load(checkpoint_path, map_location="cpu")
     config = payload["config"]
@@ -78,6 +81,9 @@ def evaluate_checkpoint(
         root_action_penalty_mode=root_action_penalty_mode,
         early_hidden_bonus=float(early_hidden_bonus or 0.0),
         early_hidden_bonus_steps=int(early_hidden_bonus_steps or 0),
+        frontier_bonus=float(frontier_bonus or 0.0),
+        frontier_bonus_steps=int(frontier_bonus_steps or 0),
+        frontier_bonus_mode=frontier_bonus_mode,
         device=device,
     )
 
@@ -107,6 +113,9 @@ def main() -> None:
     parser.add_argument("--root-action-penalty-mode", choices=("always", "mixed_signatures"), default="always")
     parser.add_argument("--early-hidden-bonus", type=float, default=0.0)
     parser.add_argument("--early-hidden-bonus-steps", type=int, default=0)
+    parser.add_argument("--frontier-bonus", type=float, default=0.0)
+    parser.add_argument("--frontier-bonus-steps", type=int, default=0)
+    parser.add_argument("--frontier-bonus-mode", choices=("none", "hidden_cancel_access", "hidden_site_access"), default="none")
     args = parser.parse_args()
 
     checkpoints = sorted(args.checkpoint_dir.glob("epoch_*.pt"))
@@ -132,6 +141,9 @@ def main() -> None:
             root_action_penalty_mode=args.root_action_penalty_mode,
             early_hidden_bonus=args.early_hidden_bonus,
             early_hidden_bonus_steps=args.early_hidden_bonus_steps,
+            frontier_bonus=args.frontier_bonus,
+            frontier_bonus_steps=args.frontier_bonus_steps,
+            frontier_bonus_mode=args.frontier_bonus_mode,
         )
         for checkpoint_path in checkpoints
     ]
@@ -147,6 +159,9 @@ def main() -> None:
         "root_action_penalty_mode": args.root_action_penalty_mode,
         "early_hidden_bonus": args.early_hidden_bonus,
         "early_hidden_bonus_steps": args.early_hidden_bonus_steps,
+        "frontier_bonus": args.frontier_bonus,
+        "frontier_bonus_steps": args.frontier_bonus_steps,
+        "frontier_bonus_mode": args.frontier_bonus_mode,
         "best": best,
         "results": ranked,
     }

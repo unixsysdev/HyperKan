@@ -28,6 +28,9 @@ def evaluate_dataset(
     root_action_penalty_mode: str,
     early_hidden_bonus: float,
     early_hidden_bonus_steps: int,
+    frontier_bonus: float,
+    frontier_bonus_steps: int,
+    frontier_bonus_mode: str,
     device: torch.device,
 ) -> dict[str, object]:
     solved = 0
@@ -61,6 +64,9 @@ def evaluate_dataset(
             root_action_penalty_mode=root_action_penalty_mode,
             early_hidden_bonus=early_hidden_bonus,
             early_hidden_bonus_steps=early_hidden_bonus_steps,
+            frontier_bonus=frontier_bonus,
+            frontier_bonus_steps=frontier_bonus_steps,
+            frontier_bonus_mode=frontier_bonus_mode,
             device=device,
         )
         expansions = len(outcome.get("explored", ()))
@@ -120,6 +126,9 @@ def main() -> None:
     parser.add_argument("--root-action-penalty-mode", choices=("always", "mixed_signatures"), default="always")
     parser.add_argument("--early-hidden-bonus", type=float, default=0.0)
     parser.add_argument("--early-hidden-bonus-steps", type=int, default=0)
+    parser.add_argument("--frontier-bonus", type=float, default=0.0)
+    parser.add_argument("--frontier-bonus-steps", type=int, default=0)
+    parser.add_argument("--frontier-bonus-mode", choices=("none", "hidden_cancel_access", "hidden_site_access"), default="none")
     args = parser.parse_args()
 
     payload = torch.load(args.checkpoint, map_location="cpu")
@@ -158,12 +167,18 @@ def main() -> None:
         root_action_penalty_mode=args.root_action_penalty_mode,
         early_hidden_bonus=float(args.early_hidden_bonus),
         early_hidden_bonus_steps=int(args.early_hidden_bonus_steps),
+        frontier_bonus=float(args.frontier_bonus),
+        frontier_bonus_steps=int(args.frontier_bonus_steps),
+        frontier_bonus_mode=str(args.frontier_bonus_mode),
         device=device,
     )
     metrics["root_action_penalty"] = float(args.root_action_penalty)
     metrics["root_action_penalty_mode"] = str(args.root_action_penalty_mode)
     metrics["early_hidden_bonus"] = float(args.early_hidden_bonus)
     metrics["early_hidden_bonus_steps"] = int(args.early_hidden_bonus_steps)
+    metrics["frontier_bonus"] = float(args.frontier_bonus)
+    metrics["frontier_bonus_steps"] = int(args.frontier_bonus_steps)
+    metrics["frontier_bonus_mode"] = str(args.frontier_bonus_mode)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     print(json.dumps(metrics, indent=2))

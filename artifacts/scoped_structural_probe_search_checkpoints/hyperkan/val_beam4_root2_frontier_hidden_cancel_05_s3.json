@@ -1,0 +1,41 @@
+{
+  "attempts": 16,
+  "solved": 14,
+  "solve_rate": 0.875,
+  "mean_solved_steps": 3.142857142857143,
+  "mean_expansions": 67.25,
+  "mean_solved_expansions": 58.785714285714285,
+  "per_family": {
+    "apart_normalize": {
+      "attempts": 4,
+      "solved": 4,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 4.5,
+      "mean_expansions": 92.0,
+      "mean_solved_expansions": 92.0
+    },
+    "hidden_cancel": {
+      "attempts": 6,
+      "solved": 6,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 3.3333333333333335,
+      "mean_expansions": 58.666666666666664,
+      "mean_solved_expansions": 58.666666666666664
+    },
+    "trig_merge": {
+      "attempts": 6,
+      "solved": 4,
+      "solve_rate": 0.6666666666666666,
+      "mean_solved_steps": 1.5,
+      "mean_expansions": 59.333333333333336,
+      "mean_solved_expansions": 25.75
+    }
+  },
+  "root_action_penalty": 2.0,
+  "root_action_penalty_mode": "always",
+  "early_hidden_bonus": 0.0,
+  "early_hidden_bonus_steps": 0,
+  "frontier_bonus": 0.5,
+  "frontier_bonus_steps": 3,
+  "frontier_bonus_mode": "hidden_cancel_access"
+}

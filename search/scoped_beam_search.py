@@ -81,6 +81,22 @@ def is_hidden_branch_action_id(action_id: str) -> bool:
 
 
 @lru_cache(maxsize=200_000)
+def state_has_hidden_access(expression: str, mode: str) -> bool:
+    if mode == "none":
+        return False
+    if mode == "hidden_cancel_access":
+        candidate = apply_scoped_action_unchecked(expression, "expr@2", "cancel")
+        return candidate is not None and str(candidate) != expression
+    if mode == "hidden_site_access":
+        candidate = apply_scoped_action_unchecked(expression, "expr@2", "cancel")
+        if candidate is not None and str(candidate) != expression:
+            return True
+        candidate = apply_scoped_action_unchecked(expression, "expr@2", "factor")
+        return candidate is not None and str(candidate) != expression
+    raise ValueError(f"Unknown frontier bonus mode: {mode}")
+
+
+@lru_cache(maxsize=200_000)
 def should_apply_conditional_root_penalty(expression: str, mode: str) -> bool:
     if mode == "always":
         return True
@@ -121,6 +137,9 @@ def run_scoped_beam_search(
     root_action_penalty_mode: str = "always",
     early_hidden_bonus: float = 0.0,
     early_hidden_bonus_steps: int = 0,
+    frontier_bonus: float = 0.0,
+    frontier_bonus_steps: int = 0,
+    frontier_bonus_mode: str = "none",
     device: torch.device | None = None,
 ) -> dict[str, object]:
     if device is None:
@@ -178,6 +197,8 @@ def run_scoped_beam_search(
                 score = node.score + log(float(probabilities[action_idx]) + 1e-8) - (value_weight * value)
                 if early_hidden_bonus and len(node.steps) < int(early_hidden_bonus_steps) and is_hidden_branch_action_id(action_id):
                     score += float(early_hidden_bonus)
+                if frontier_bonus and len(node.steps) < int(frontier_bonus_steps) and state_has_hidden_access(next_expr, frontier_bonus_mode):
+                    score += float(frontier_bonus)
                 visited = node.visited
                 if next_hash in visited:
                     score -= revisit_penalty
