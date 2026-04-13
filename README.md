@@ -301,6 +301,22 @@ Training-time localization fix (negative result):
 
 Compared with the baseline recovered HyperKAN, this is worse: the baseline model reached `36/60` on held-out mixed composition under beam with root penalty `2.0`. So the first training-time localization loss does not improve default compositional generalization, and it weakens the stronger inference-only rescue rather than replacing it.
 
+Second training-time localization fix (site-first factorized head, also negative):
+
+- Added an optional factorized HyperKAN action head that scores each flat scoped action as `site_logit(site) + op_logit(op)`, with auxiliary site/op losses derived from the existing shortest-action labels.
+- Config: [configs/scoped_structural_probe_hyper_sitefirst.yaml](configs/scoped_structural_probe_hyper_sitefirst.yaml)
+- Artifacts: `artifacts/scoped_structural_probe_sitefirst_checkpoints/hyperkan/`
+- Search-based selection picked `epoch_5`.
+- Seen-family validation under beam 4 improved to `16/16` with much lower mean expansions (`25.81` vs `51.63` for the previous recovered HyperKAN run).
+- Held-out `mixed_trig_hidden` stayed completely unsolved:
+- default: `0/60` greedy, `0/60` beam
+- root penalty `2.0`: `0/60` greedy, `0/60` beam
+- First-action diagnosis on the mixed family did not change:
+- step 1 top action: always `expr@root::together`
+- step 2 top action: always `expr@root::expand`
+
+Interpretation: the factorized site/op head improved efficiency on seen families but did not fix the held-out compositional failure or even alter the root-action bias on the mixed family. So the next intervention should not be "more site-first loss of the same kind"; it needs a stronger mechanism for localized subgoal choice or subgoal switching.
+
 ## One Guided Scoped Trajectory
 
 <details>
@@ -359,6 +375,7 @@ Proven:
 - A held-out-family guided scoped split can be built, trained, and evaluated.
 - The structural scoped probe is non-saturated and exposes a real held-out composition gap.
 - Root-penalized localization-aware inference is a meaningful official eval condition on the scoped structural probe.
+- A factorized site/op HyperKAN head improves seen-family efficiency but still fails `0/60` on held-out mixed composition and preserves the same root-action bias.
 
 Not yet proven:
 
@@ -368,6 +385,7 @@ Not yet proven:
 - That guided action-order variants are hard enough to test compositional scoped reasoning.
 - That scoped performance transfers to held-out mixed composition once search-based selection is used.
 - That a simple training-time `expr@root` avoidance loss can replace inference-time localization bias.
+- That a basic factorized site/op head is sufficient to teach mixed-family localization or compositional subgoal choice.
 
 ## Next Steps
 
@@ -375,6 +393,7 @@ Not yet proven:
 - Run failure analysis on held-out `mixed_trig_hidden` trajectories.
 - Test localization-biased search or site-first decoding as the next minimal intervention.
 - Replace the failed root-avoidance auxiliary loss with a stronger localization mechanism, likely site-first decoding or a more explicit site-selection objective.
+- Move past simple site-first factorization and test a mechanism that can change subgoal sequencing, not just the action parametrization.
 - Add more structurally different scoped families, not just action-order variants or more rows.
 - Restore strict composed verification.
 - Recover shortest-action ties for accepted scoped rows.
@@ -462,6 +481,11 @@ python3 -m train.run_experiment \
   --config configs/scoped_structural_probe_hyper_local.yaml \
   --model-type hyperkan \
   --output-dir artifacts/scoped_structural_probe_localized_checkpoints
+
+python3 -m train.run_experiment \
+  --config configs/scoped_structural_probe_hyper_sitefirst.yaml \
+  --model-type hyperkan \
+  --output-dir artifacts/scoped_structural_probe_sitefirst_checkpoints
 ```
 
 Run scoped eval:
@@ -546,6 +570,16 @@ python3 scripts/select_scoped_checkpoint.py \
   --include-best-pt \
   --output artifacts/scoped_structural_probe_localized_checkpoints/hyperkan/search_selection_val_beam4.json \
   --copy-best-to artifacts/scoped_structural_probe_localized_checkpoints/hyperkan/best_search.pt
+
+python3 scripts/select_scoped_checkpoint.py \
+  --checkpoint-dir artifacts/scoped_structural_probe_sitefirst_checkpoints/hyperkan \
+  --dataset artifacts/scoped_structural_probe/val.parquet \
+  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
+  --beam-width 4 \
+  --max-steps 5 \
+  --include-best-pt \
+  --output artifacts/scoped_structural_probe_sitefirst_checkpoints/hyperkan/search_selection_val_beam4.json \
+  --copy-best-to artifacts/scoped_structural_probe_sitefirst_checkpoints/hyperkan/best_search.pt
 ```
 
 For the original global benchmark and historical plots, see:

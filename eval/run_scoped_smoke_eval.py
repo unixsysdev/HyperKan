@@ -9,7 +9,7 @@ import pandas as pd
 import torch
 
 from models.factory import create_model
-from search.scoped_beam_search import load_scoped_action_vocab, run_scoped_beam_search
+from search.scoped_beam_search import build_scoped_action_factorization, load_scoped_action_vocab, run_scoped_beam_search
 from tokenizer.srepr_tokenizer import SReprTokenizer
 
 
@@ -120,6 +120,12 @@ def main() -> None:
     config["model"]["vocab_size"] = tokenizer.vocab_size
     config["model"]["pad_id"] = tokenizer.pad_id
     config["model"]["num_actions"] = len(action_vocab)
+    if bool(config["model"].get("site_op_factorized", False)) and "num_sites" not in config["model"]:
+        factorization = build_scoped_action_factorization(action_vocab)
+        config["model"]["num_sites"] = int(factorization["num_sites"])
+        config["model"]["num_ops"] = int(factorization["num_ops"])
+        config["model"]["action_to_site_idx"] = list(factorization["action_to_site_idx"])
+        config["model"]["action_to_op_idx"] = list(factorization["action_to_op_idx"])
     search_cfg = config.get("search", {})
     model = create_model(payload["model_type"], config)
     model.load_state_dict(payload["state_dict"])

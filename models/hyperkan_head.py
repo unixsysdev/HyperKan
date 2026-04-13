@@ -24,11 +24,17 @@ class HyperKANPolicy(nn.Module):
         hyper_hidden_dim: int | None = None,
         condition_kan1: bool = True,
         mixture_temperature: float = 1.0,
+        site_op_factorized: bool = False,
+        num_sites: int | None = None,
+        num_ops: int | None = None,
+        action_to_site_idx: list[int] | None = None,
+        action_to_op_idx: list[int] | None = None,
     ) -> None:
         super().__init__()
         self.num_templates = num_templates
         self.condition_kan1 = condition_kan1
         self.mixture_temperature = float(mixture_temperature)
+        self.site_op_factorized = bool(site_op_factorized)
         self.encoder = SharedBiGRUEncoder(
             vocab_size=vocab_size,
             pad_id=pad_id,
@@ -47,7 +53,18 @@ class HyperKANPolicy(nn.Module):
             nn.Linear(hyper_hidden_dim, num_templates * 2),
         )
         self.kan_1 = SimpleKANLayer(kan_hidden_dim, kan_hidden_dim, basis_dim=basis_dim, num_templates=num_templates)
-        self.kan_2 = SimpleKANLayer(kan_hidden_dim, num_actions, basis_dim=basis_dim, num_templates=num_templates)
+        if self.site_op_factorized:
+            if num_sites is None or num_ops is None or action_to_site_idx is None or action_to_op_idx is None:
+                raise ValueError("Factorized HyperKAN requires site/op metadata")
+            self.site_head = SimpleKANLayer(kan_hidden_dim, num_sites, basis_dim=basis_dim, num_templates=num_templates)
+            self.op_head = SimpleKANLayer(kan_hidden_dim, num_ops, basis_dim=basis_dim, num_templates=num_templates)
+            self.register_buffer("action_to_site_idx", torch.tensor(action_to_site_idx, dtype=torch.long), persistent=False)
+            self.register_buffer("action_to_op_idx", torch.tensor(action_to_op_idx, dtype=torch.long), persistent=False)
+            self.kan_2 = None
+        else:
+            self.kan_2 = SimpleKANLayer(kan_hidden_dim, num_actions, basis_dim=basis_dim, num_templates=num_templates)
+            self.site_head = None
+            self.op_head = None
         self.value_head = nn.Sequential(
             nn.LayerNorm(fused_dim),
             nn.Linear(fused_dim, hidden_dim),
@@ -81,12 +98,22 @@ class HyperKANPolicy(nn.Module):
             uniform = torch.full_like(mix_1, 1.0 / float(self.num_templates))
             hidden, spline_1 = self.kan_1(hidden, mixture_weights=uniform)
         hidden = self.dropout(F.gelu(hidden))
-        logits, spline_2 = self.kan_2(hidden, mixture_weights=mix_2)
-        return {
-            "logits": logits,
+        result = {
             "value": self.value_head(fused).squeeze(-1),
             "state_embedding": state_out.pooled,
             "goal_embedding": goal_out.pooled,
-            "spline_states": [spline_1, spline_2],
             "mixture_weights": [mix_1, mix_2],
         }
+        if self.site_op_factorized:
+            site_logits, spline_site = self.site_head(hidden, mixture_weights=mix_2)
+            op_logits, spline_op = self.op_head(hidden, mixture_weights=mix_2)
+            logits = site_logits[:, self.action_to_site_idx] + op_logits[:, self.action_to_op_idx]
+            result["logits"] = logits
+            result["site_logits"] = site_logits
+            result["op_logits"] = op_logits
+            result["spline_states"] = [spline_1, spline_site, spline_op]
+            return result
+        logits, spline_2 = self.kan_2(hidden, mixture_weights=mix_2)
+        result["logits"] = logits
+        result["spline_states"] = [spline_1, spline_2]
+        return result

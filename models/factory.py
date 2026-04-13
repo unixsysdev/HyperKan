@@ -37,5 +37,10 @@ def create_model(model_type: str, config: dict[str, Any]):
             hyper_hidden_dim=model_cfg.get("hyper_hidden_dim"),
             condition_kan1=bool(model_cfg.get("hyperkan_condition_kan1", True)),
             mixture_temperature=float(model_cfg.get("mixture_temperature", 1.0)),
+            site_op_factorized=bool(model_cfg.get("site_op_factorized", False)),
+            num_sites=model_cfg.get("num_sites"),
+            num_ops=model_cfg.get("num_ops"),
+            action_to_site_idx=model_cfg.get("action_to_site_idx"),
+            action_to_op_idx=model_cfg.get("action_to_op_idx"),
         )
     raise ValueError(f"Unknown model type: {model_type}")

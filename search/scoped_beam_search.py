@@ -26,6 +26,35 @@ def load_scoped_action_vocab(path: str | Path) -> list[str]:
     return [action_id for action_id, _ in sorted(payload.items(), key=lambda item: int(item[1]))]
 
 
+def build_scoped_action_factorization(action_vocab: list[str]) -> dict[str, object]:
+    site_vocab: list[str] = []
+    op_vocab: list[str] = []
+    site_to_idx: dict[str, int] = {}
+    op_to_idx: dict[str, int] = {}
+    action_to_site_idx: list[int] = []
+    action_to_op_idx: list[int] = []
+
+    for action_id in action_vocab:
+        site_id, _, op_name = action_id.partition("::")
+        site_idx = site_to_idx.setdefault(site_id, len(site_vocab))
+        if site_idx == len(site_vocab):
+            site_vocab.append(site_id)
+        op_idx = op_to_idx.setdefault(op_name, len(op_vocab))
+        if op_idx == len(op_vocab):
+            op_vocab.append(op_name)
+        action_to_site_idx.append(site_idx)
+        action_to_op_idx.append(op_idx)
+
+    return {
+        "site_vocab": site_vocab,
+        "op_vocab": op_vocab,
+        "num_sites": len(site_vocab),
+        "num_ops": len(op_vocab),
+        "action_to_site_idx": action_to_site_idx,
+        "action_to_op_idx": action_to_op_idx,
+    }
+
+
 def _encode_single(tokenizer: SReprTokenizer, expression: str, goal: str, max_length: int, device: torch.device):
     encoded = tokenizer.encode_pair(expression, goal, max_length=max_length)
     state_ids = torch.tensor([encoded.state_ids], dtype=torch.long, device=device)

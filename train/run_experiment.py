@@ -10,7 +10,7 @@ import torch
 import yaml
 
 from models.factory import create_model
-from search.scoped_beam_search import load_scoped_action_vocab
+from search.scoped_beam_search import build_scoped_action_factorization, load_scoped_action_vocab
 from train.train_one_epoch import build_dataloader, build_tokenizer, run_epoch
 from tokenizer.srepr_tokenizer import SReprTokenizer
 
@@ -68,6 +68,21 @@ def build_expr_root_action_mask(action_vocab_path: str | Path) -> torch.Tensor:
     )
 
 
+def build_action_membership_matrices(action_vocab_path: str | Path) -> tuple[torch.Tensor, torch.Tensor, dict[str, object]]:
+    action_vocab = load_scoped_action_vocab(action_vocab_path)
+    factorization = build_scoped_action_factorization(action_vocab)
+    num_actions = len(action_vocab)
+    num_sites = int(factorization["num_sites"])
+    num_ops = int(factorization["num_ops"])
+    action_site = torch.zeros((num_actions, num_sites), dtype=torch.float32)
+    action_op = torch.zeros((num_actions, num_ops), dtype=torch.float32)
+    for action_idx, site_idx in enumerate(factorization["action_to_site_idx"]):
+        action_site[action_idx, int(site_idx)] = 1.0
+    for action_idx, op_idx in enumerate(factorization["action_to_op_idx"]):
+        action_op[action_idx, int(op_idx)] = 1.0
+    return action_site, action_op, factorization
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Train one model variant for verified algebraic rewriting")
     parser.add_argument("--config", type=Path, default=Path("configs/local_poc.yaml"))
@@ -85,6 +100,16 @@ def main() -> None:
     config["model"]["vocab_size"] = tokenizer.vocab_size
     config["model"]["pad_id"] = tokenizer.pad_id
     expr_root_action_mask = build_expr_root_action_mask(config["data"]["action_vocab_path"])
+    action_site_membership = None
+    action_op_membership = None
+    if bool(config["model"].get("site_op_factorized", False)):
+        action_site_membership, action_op_membership, factorization = build_action_membership_matrices(
+            config["data"]["action_vocab_path"]
+        )
+        config["model"]["num_sites"] = int(factorization["num_sites"])
+        config["model"]["num_ops"] = int(factorization["num_ops"])
+        config["model"]["action_to_site_idx"] = list(factorization["action_to_site_idx"])
+        config["model"]["action_to_op_idx"] = list(factorization["action_to_op_idx"])
 
     train_loader = build_dataloader(
         config["data"]["train_path"],
@@ -128,6 +153,10 @@ def main() -> None:
             grad_clip_norm=config["train"]["grad_clip_norm"],
             expr_root_action_mask=expr_root_action_mask,
             expr_root_avoidance_weight=float(config["train"].get("expr_root_avoidance_weight", 0.0)),
+            action_site_membership=action_site_membership,
+            action_op_membership=action_op_membership,
+            site_loss_weight=float(config["train"].get("site_loss_weight", 0.0)),
+            op_loss_weight=float(config["train"].get("op_loss_weight", 0.0)),
         )
         val_metrics = run_epoch(
             model,
@@ -140,6 +169,10 @@ def main() -> None:
             grad_clip_norm=config["train"]["grad_clip_norm"],
             expr_root_action_mask=expr_root_action_mask,
             expr_root_avoidance_weight=float(config["train"].get("expr_root_avoidance_weight", 0.0)),
+            action_site_membership=action_site_membership,
+            action_op_membership=action_op_membership,
+            site_loss_weight=float(config["train"].get("site_loss_weight", 0.0)),
+            op_loss_weight=float(config["train"].get("op_loss_weight", 0.0)),
         )
         record = {"epoch": epoch, "train": train_metrics, "val": val_metrics}
         history.append(record)
