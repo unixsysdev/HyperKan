@@ -294,7 +294,18 @@ That split is too easy to prove search improvement. A harder curriculum/transfer
 | Learned frontier `0.1`, first 4 steps | `0/12` | `258.42` |
 | Learned frontier `0.25`, first 4 steps | `0/12` | `278.58` |
 
-Conclusion: the learned frontier head can fit the local supervision target, but this target is not enough to solve the depth-7 transfer problem. This result should stay as a negative appendix-style diagnostic. The main story remains the moderate-depth frontier-reranker rescue and the depth-7 failure boundary.
+The same Static KAN transfer diagnostic gives the same broad conclusion:
+
+| Static KAN condition | Solves | Mean expansions |
+|---|---:|---:|
+| Default | `0/12` | `296.83` |
+| Root penalty `2.0` | `0/12` | `327.75` |
+| Root penalty `2.0` + heuristic frontier reranker | `1/12` | `314.08` |
+| Learned frontier `0.05`, first 4 steps | `0/12` | `306.50` |
+| Learned frontier `0.1`, first 4 steps | `0/12` | `305.92` |
+| Learned frontier `0.25`, first 4 steps | `0/12` | `293.67` |
+
+Conclusion: the learned frontier head can fit the local supervision target in both recovered HyperKAN and Static KAN, but this target is not enough to solve the depth-7 transfer problem. Static KAN's heuristic reranker gets one shallow solve on this diagnostic slice; the learned frontier score does not. This result should stay as a negative appendix-style diagnostic. The main story remains the moderate-depth frontier-reranker rescue and the depth-7 failure boundary.
 
 ## What Is Proven vs Not Yet Proven
 
@@ -313,7 +324,7 @@ Proven:
 - The unconditional rescue on recovered HyperKAN changes the early search frontier, but solved and unsolved rows still share the same penalized top-1 action.
 - Early hidden-branch access within the first 3 actions is a real discriminator between solved and unsolved mixed-family beam cases.
 - The depth-7 scoped expansion exposes a limit of the current inference-side rescue: root penalty still gives a shallow partial rescue, but the frontier reranker does not improve solve rate.
-- A learned auxiliary frontier head can fit the local short-horizon label, but the current label/score does not rescue the initial depth-7 transfer diagnostic.
+- A learned auxiliary frontier head can fit the local short-horizon label in recovered HyperKAN and Static KAN, but the current label/score does not rescue the initial depth-7 transfer diagnostic.
 
 Not yet proven:
 

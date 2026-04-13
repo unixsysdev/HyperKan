@@ -27,6 +27,7 @@ def create_model(model_type: str, config: dict[str, Any]):
             kan_hidden_dim=model_cfg["kan_hidden_dim"],
             basis_dim=model_cfg["spline_basis_dim"],
             num_templates=model_cfg["spline_templates"],
+            use_frontier_head=bool(model_cfg.get("use_frontier_head", False)),
         )
     if model_type == "hyperkan":
         return HyperKANPolicy(

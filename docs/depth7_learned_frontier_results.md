@@ -59,7 +59,7 @@ The in-family split above is too easy, so the next check uses a harder curriculu
 - Rows: 300 total, 170 train, 34 validation, 96 test
 - Frontier positives: 30 train, 6 validation, 36 test
 
-The model trains cleanly here too:
+The recovered HyperKAN model trains cleanly here too:
 
 - train frontier loss: 0.569 -> 0.053
 - validation frontier loss: 0.427 -> 0.078
@@ -79,3 +79,38 @@ Full held-out depth-7 beam evaluation is slow on this split because failed beams
 This is a stronger scientific checkpoint than the in-family run, and it is negative so far.  The learned frontier head learns the moderate-depth target but does not transfer into solved depth-7 held-out rows on this diagnostic slice.  Small learned-frontier weights are mostly neutral at 0.05 and 0.1, while 0.25 starts to increase expansions.  Root penalty and the heuristic reranker also do not solve the first 12 transfer rows for this trained model.
 
 The current conclusion remains: the auxiliary head is technically wired and learnable, but this implementation has not yet improved the depth-7 transfer problem.
+
+## Static KAN Transfer Diagnostic
+
+The same auxiliary frontier head was also added to Static KAN and trained on the same transfer split.
+
+Command:
+
+```bash
+PYTHONPATH=. LD_LIBRARY_PATH=/opt/rocm/lib:/opt/rocm/lib64:$LD_LIBRARY_PATH \
+  python3 train/run_experiment.py \
+  --config configs/scoped_depth7_frontier_transfer_static.yaml \
+  --model-type static_kan \
+  --output-dir artifacts/scoped_depth7_frontier_transfer_checkpoints
+```
+
+The Static KAN frontier label is also learnable:
+
+- train frontier loss: 0.486 -> 0.046
+- validation frontier loss: 0.322 -> 0.067
+
+On the same first 12 non-terminal held-out depth-7 attempts:
+
+| Condition | Solves | Mean expansions |
+| --- | ---: | ---: |
+| Default | 0/12 | 296.83 |
+| Root penalty 2.0 | 0/12 | 327.75 |
+| Root penalty 2.0 + heuristic frontier reranker 0.5 | 1/12 | 314.08 |
+| Learned frontier 0.05, first 4 steps | 0/12 | 306.50 |
+| Learned frontier 0.1, first 4 steps | 0/12 | 305.92 |
+| Learned frontier 0.25, first 4 steps | 0/12 | 293.67 |
+| Root penalty 2.0 + learned frontier 0.1, first 4 steps | 0/12 | 324.42 |
+
+This adds a small model-comparison insight: the heuristic reranker can still find one shallow Static KAN solve on this diagnostic slice, but the learned frontier head does not.  The learned score slightly reduces expansions at weight 0.25, but it still does not convert transfer rows into solves.
+
+The conclusion is unchanged across recovered HyperKAN and Static KAN: local short-horizon frontier supervision is learnable, but the current label is too weak or too local to solve held-out depth-7 transfer.
