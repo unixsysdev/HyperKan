@@ -163,6 +163,14 @@ def first_non_root_block(path: list[str]) -> str | None:
     return None
 
 
+def reaches_hidden_site_early(path: list[str], max_actions: int) -> bool:
+    return any(classify_block(action_id) == "hidden" for action_id in path[:max_actions])
+
+
+def reaches_hidden_cancel_early(path: list[str], max_actions: int) -> bool:
+    return any(action_id == "expr@2::cancel" for action_id in path[:max_actions])
+
+
 def compare_first_action(default_action: str, penalized_action: str) -> str:
     default_site, default_op = parse_scoped_action_id(default_action)
     penalized_site, penalized_op = parse_scoped_action_id(penalized_action)
@@ -216,6 +224,8 @@ def main() -> None:
     first_non_root_site_counter: Counter[str] = Counter()
     first_non_root_block_counter: Counter[str] = Counter()
     solved_path_prefix_counter: Counter[str] = Counter()
+    solved_hidden_access_counter: Counter[str] = Counter()
+    unsolved_hidden_access_counter: Counter[str] = Counter()
     solved = 0
     attempts = 0
 
@@ -265,10 +275,14 @@ def main() -> None:
         first_local_site = first_non_root_site(path)
         first_local_block = first_non_root_block(path)
         path_prefix = " -> ".join(path[:3]) if path else "<empty>"
+        reaches_hidden3 = reaches_hidden_site_early(path, 3)
+        reaches_cancel3 = reaches_hidden_cancel_early(path, 3)
 
         if outcome["success"]:
             solved += 1
             solved_counter[first_action_delta] += 1
+            solved_hidden_access_counter[f"hidden_site<=3:{reaches_hidden3}"] += 1
+            solved_hidden_access_counter[f"hidden_cancel<=3:{reaches_cancel3}"] += 1
             if first_local_site is not None:
                 first_non_root_site_counter[first_local_site] += 1
             if first_local_block is not None:
@@ -276,6 +290,8 @@ def main() -> None:
             solved_path_prefix_counter[path_prefix] += 1
         else:
             unsolved_counter[first_action_delta] += 1
+            unsolved_hidden_access_counter[f"hidden_site<=3:{reaches_hidden3}"] += 1
+            unsolved_hidden_access_counter[f"hidden_cancel<=3:{reaches_cancel3}"] += 1
 
         rows.append(
             {
@@ -303,6 +319,8 @@ def main() -> None:
                 "first_non_root_site": first_local_site,
                 "first_non_root_block": first_local_block,
                 "path_prefix_3": path_prefix,
+                "reaches_hidden_site_within_3": reaches_hidden3,
+                "reaches_hidden_cancel_within_3": reaches_cancel3,
             }
         )
 
@@ -321,6 +339,8 @@ def main() -> None:
             "solved_first_non_root_site_counts": dict(first_non_root_site_counter),
             "solved_first_non_root_block_counts": dict(first_non_root_block_counter),
             "solved_path_prefix_counts": dict(solved_path_prefix_counter.most_common(10)),
+            "solved_early_hidden_access_counts": dict(solved_hidden_access_counter),
+            "unsolved_early_hidden_access_counts": dict(unsolved_hidden_access_counter),
         },
         "rows": rows,
     }

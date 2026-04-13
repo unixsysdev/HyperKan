@@ -75,6 +75,11 @@ def is_root_action_id(action_id: str) -> bool:
     return site_id in {"expr@root", "numerator@root", "denominator@root"}
 
 
+def is_hidden_branch_action_id(action_id: str) -> bool:
+    site_id, _, _ = action_id.partition("::")
+    return site_id.startswith("expr@2") or site_id.startswith("numerator@2")
+
+
 @lru_cache(maxsize=200_000)
 def should_apply_conditional_root_penalty(expression: str, mode: str) -> bool:
     if mode == "always":
@@ -114,6 +119,8 @@ def run_scoped_beam_search(
     policy_temperature: float = 1.0,
     root_action_penalty: float = 0.0,
     root_action_penalty_mode: str = "always",
+    early_hidden_bonus: float = 0.0,
+    early_hidden_bonus_steps: int = 0,
     device: torch.device | None = None,
 ) -> dict[str, object]:
     if device is None:
@@ -169,6 +176,8 @@ def run_scoped_beam_search(
                     continue
                 next_hash = _cheap_hash(next_expr)
                 score = node.score + log(float(probabilities[action_idx]) + 1e-8) - (value_weight * value)
+                if early_hidden_bonus and len(node.steps) < int(early_hidden_bonus_steps) and is_hidden_branch_action_id(action_id):
+                    score += float(early_hidden_bonus)
                 visited = node.visited
                 if next_hash in visited:
                     score -= revisit_penalty

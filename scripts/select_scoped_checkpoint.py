@@ -38,6 +38,8 @@ def evaluate_checkpoint(
     policy_temperature: float | None,
     root_action_penalty: float | None,
     root_action_penalty_mode: str,
+    early_hidden_bonus: float | None,
+    early_hidden_bonus_steps: int | None,
 ) -> dict[str, object]:
     payload = torch.load(checkpoint_path, map_location="cpu")
     config = payload["config"]
@@ -74,6 +76,8 @@ def evaluate_checkpoint(
         policy_temperature=policy_temperature if policy_temperature is not None else search_cfg.get("policy_temperature", 1.0),
         root_action_penalty=float(root_action_penalty or 0.0),
         root_action_penalty_mode=root_action_penalty_mode,
+        early_hidden_bonus=float(early_hidden_bonus or 0.0),
+        early_hidden_bonus_steps=int(early_hidden_bonus_steps or 0),
         device=device,
     )
 
@@ -101,6 +105,8 @@ def main() -> None:
     parser.add_argument("--policy-temperature", type=float, default=None)
     parser.add_argument("--root-action-penalty", type=float, default=0.0)
     parser.add_argument("--root-action-penalty-mode", choices=("always", "mixed_signatures"), default="always")
+    parser.add_argument("--early-hidden-bonus", type=float, default=0.0)
+    parser.add_argument("--early-hidden-bonus-steps", type=int, default=0)
     args = parser.parse_args()
 
     checkpoints = sorted(args.checkpoint_dir.glob("epoch_*.pt"))
@@ -124,6 +130,8 @@ def main() -> None:
             policy_temperature=args.policy_temperature,
             root_action_penalty=args.root_action_penalty,
             root_action_penalty_mode=args.root_action_penalty_mode,
+            early_hidden_bonus=args.early_hidden_bonus,
+            early_hidden_bonus_steps=args.early_hidden_bonus_steps,
         )
         for checkpoint_path in checkpoints
     ]
@@ -137,6 +145,8 @@ def main() -> None:
         "max_steps": args.max_steps,
         "root_action_penalty": args.root_action_penalty,
         "root_action_penalty_mode": args.root_action_penalty_mode,
+        "early_hidden_bonus": args.early_hidden_bonus,
+        "early_hidden_bonus_steps": args.early_hidden_bonus_steps,
         "best": best,
         "results": ranked,
     }

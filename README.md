@@ -331,6 +331,7 @@ So the best mixed-family result is still the simpler always-on inference penalty
 Unconditional-penalty rescue analysis:
 
 - Added [scripts/analyze_penalty_rescue_paths.py](scripts/analyze_penalty_rescue_paths.py) and saved the result in `artifacts/scoped_structural_probe_search_checkpoints/hyperkan/penalty_rescue_analysis.json`.
+- The current mechanism note is also summarized in [docs/early_frontier_hypothesis.md](docs/early_frontier_hypothesis.md).
 - Under the best recovered HyperKAN checkpoint, default mixed-family top-3 is always:
 - `expr@root::expand`
 - `expr@root::cancel`
@@ -343,8 +344,27 @@ Unconditional-penalty rescue analysis:
 - `24` solved rows collapse immediately through `expr@2::cancel`
 - `11` solved rows follow `expr@1::expand -> expr@0::trigsimp -> expr@2::cancel`
 - `1` solved row follows `expr@0::trigsimp -> expr@1::expand -> expr@2::cancel`
+- Early hidden-branch metric:
+- solved beam rows reaching any hidden-block site within the first 3 actions: `36/36`
+- solved beam rows reaching `expr@2::cancel` within the first 3 actions: `36/36`
+- unsolved beam rows reaching any hidden-block site within the first 3 actions: `12/24`
+- unsolved beam rows reaching `expr@2::cancel` within the first 3 actions: `12/24`
 
 Interpretation: the unconditional penalty does more than choose a better first local site. It changes the frontier enough for beam search to reach the hidden-cancel branch early; solved and unsolved rows still share the same penalized top-1. So the next mechanism should probably target subgoal sequencing / early hidden-branch access, not just site selection in isolation.
+
+First sequencing-aware inference tweak:
+
+- Added an optional early hidden-branch bonus in scoped search/eval.
+- Condition tested:
+- root penalty `2.0`
+- early hidden bonus `0.5`
+- early hidden bonus window `3` steps
+- Result on recovered HyperKAN:
+- held-out mixed greedy: `24/60` with mean expansions `24.8`
+- held-out mixed beam: `36/60` with mean expansions `56.38`
+- seen-family val beam: `14/16`
+
+Interpretation: this first sequencing-aware tweak does not improve solve count beyond the unconditional-penalty baseline, but it does reduce beam expansions on the mixed family. It is therefore evidence that early hidden-branch access is a real lever, even though this first bonus is too blunt to become the new default eval condition.
 
 ## One Guided Scoped Trajectory
 
@@ -407,6 +427,7 @@ Proven:
 - A factorized site/op HyperKAN head improves seen-family efficiency but still fails `0/60` on held-out mixed composition and preserves the same root-action bias.
 - A simple state-conditional localization heuristic preserves seen-family behavior but still fails `0/60` on held-out mixed composition.
 - The unconditional rescue on recovered HyperKAN changes the early search frontier, but solved and unsolved rows still share the same penalized top-1 action.
+- Early hidden-branch access within the first 3 actions is a real discriminator between solved and unsolved mixed-family beam cases.
 
 Not yet proven:
 
@@ -419,6 +440,7 @@ Not yet proven:
 - That a basic factorized site/op head is sufficient to teach mixed-family localization or compositional subgoal choice.
 - That a simple mixed-signature conditional inference rule can replace the stronger always-on localization bias.
 - That the unconditional rescue can be explained by first-step site choice alone.
+- That a simple hidden-branch bonus can improve solve count beyond the unconditional-penalty baseline without hurting seen families.
 
 ## Next Steps
 
@@ -429,6 +451,7 @@ Not yet proven:
 - Move past simple site-first factorization and test a mechanism that can change subgoal sequencing, not just the action parametrization.
 - Move past simple conditional penalties and test an explicit subgoal-progress signal or another mechanism that can change the default ranking on mixed compositions.
 - Analyze or model the early hidden-branch access directly, since the current rescue seems to come from frontier reshaping after the first local move rather than from a unique top-1 action.
+- Use the early hidden-branch metric as a first-class diagnostic for future sequencing-aware search tweaks.
 - Add more structurally different scoped families, not just action-order variants or more rows.
 - Restore strict composed verification.
 - Recover shortest-action ties for accepted scoped rows.

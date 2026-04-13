@@ -26,6 +26,8 @@ def evaluate_dataset(
     policy_temperature: float,
     root_action_penalty: float,
     root_action_penalty_mode: str,
+    early_hidden_bonus: float,
+    early_hidden_bonus_steps: int,
     device: torch.device,
 ) -> dict[str, object]:
     solved = 0
@@ -57,6 +59,8 @@ def evaluate_dataset(
             policy_temperature=policy_temperature,
             root_action_penalty=root_action_penalty,
             root_action_penalty_mode=root_action_penalty_mode,
+            early_hidden_bonus=early_hidden_bonus,
+            early_hidden_bonus_steps=early_hidden_bonus_steps,
             device=device,
         )
         expansions = len(outcome.get("explored", ()))
@@ -114,6 +118,8 @@ def main() -> None:
     parser.add_argument("--policy-temperature", type=float, default=None)
     parser.add_argument("--root-action-penalty", type=float, default=0.0)
     parser.add_argument("--root-action-penalty-mode", choices=("always", "mixed_signatures"), default="always")
+    parser.add_argument("--early-hidden-bonus", type=float, default=0.0)
+    parser.add_argument("--early-hidden-bonus-steps", type=int, default=0)
     args = parser.parse_args()
 
     payload = torch.load(args.checkpoint, map_location="cpu")
@@ -150,10 +156,14 @@ def main() -> None:
         policy_temperature=args.policy_temperature if args.policy_temperature is not None else search_cfg.get("policy_temperature", 1.0),
         root_action_penalty=float(args.root_action_penalty),
         root_action_penalty_mode=args.root_action_penalty_mode,
+        early_hidden_bonus=float(args.early_hidden_bonus),
+        early_hidden_bonus_steps=int(args.early_hidden_bonus_steps),
         device=device,
     )
     metrics["root_action_penalty"] = float(args.root_action_penalty)
     metrics["root_action_penalty_mode"] = str(args.root_action_penalty_mode)
+    metrics["early_hidden_bonus"] = float(args.early_hidden_bonus)
+    metrics["early_hidden_bonus_steps"] = int(args.early_hidden_bonus_steps)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     print(json.dumps(metrics, indent=2))
