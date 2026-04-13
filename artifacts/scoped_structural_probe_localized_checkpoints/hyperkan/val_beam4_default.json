@@ -1,0 +1,35 @@
+{
+  "attempts": 16,
+  "solved": 15,
+  "solve_rate": 0.9375,
+  "mean_solved_steps": 2.1333333333333333,
+  "mean_expansions": 51.625,
+  "mean_solved_expansions": 47.93333333333333,
+  "per_family": {
+    "apart_normalize": {
+      "attempts": 4,
+      "solved": 4,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 1.0,
+      "mean_expansions": 24.0,
+      "mean_solved_expansions": 24.0
+    },
+    "hidden_cancel": {
+      "attempts": 6,
+      "solved": 5,
+      "solve_rate": 0.8333333333333334,
+      "mean_solved_steps": 2.8,
+      "mean_expansions": 66.66666666666667,
+      "mean_solved_expansions": 58.6
+    },
+    "trig_merge": {
+      "attempts": 6,
+      "solved": 6,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 2.3333333333333335,
+      "mean_expansions": 55.0,
+      "mean_solved_expansions": 55.0
+    }
+  },
+  "root_action_penalty": 0.0
+}

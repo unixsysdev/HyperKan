@@ -39,6 +39,11 @@ def _cheap_hash(expression: str) -> str:
     return sha1(expression.encode("utf-8")).hexdigest()
 
 
+def is_root_action_id(action_id: str) -> bool:
+    site_id, _, _ = action_id.partition("::")
+    return site_id in {"expr@root", "numerator@root", "denominator@root"}
+
+
 def run_scoped_beam_search(
     model: torch.nn.Module,
     tokenizer: SReprTokenizer,
@@ -51,6 +56,7 @@ def run_scoped_beam_search(
     value_weight: float = 0.5,
     revisit_penalty: float = 1.5,
     policy_temperature: float = 1.0,
+    root_action_penalty: float = 0.0,
     device: torch.device | None = None,
 ) -> dict[str, object]:
     if device is None:
@@ -83,7 +89,11 @@ def run_scoped_beam_search(
             )
             with torch.no_grad():
                 outputs = model(state_ids, state_lengths, goal_ids, goal_lengths)
-            logits = outputs["logits"][0]
+            logits = outputs["logits"][0].detach().clone()
+            if root_action_penalty:
+                for action_idx, action_id in enumerate(action_vocab):
+                    if is_root_action_id(action_id):
+                        logits[action_idx] -= float(root_action_penalty)
             value = float(outputs["value"][0])
             temperature = max(float(policy_temperature), 1e-6)
             probabilities = torch.softmax(logits / temperature, dim=-1)

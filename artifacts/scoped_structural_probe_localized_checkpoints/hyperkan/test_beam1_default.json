@@ -1,0 +1,19 @@
+{
+  "attempts": 60,
+  "solved": 0,
+  "solve_rate": 0.0,
+  "mean_solved_steps": 0.0,
+  "mean_expansions": 37.0,
+  "mean_solved_expansions": 0.0,
+  "per_family": {
+    "mixed_trig_hidden": {
+      "attempts": 60,
+      "solved": 0,
+      "solve_rate": 0.0,
+      "mean_solved_steps": 0.0,
+      "mean_expansions": 37.0,
+      "mean_solved_expansions": 0.0
+    }
+  },
+  "root_action_penalty": 0.0
+}

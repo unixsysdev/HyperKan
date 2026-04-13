@@ -280,6 +280,27 @@ Minimal intervention: penalize whole-expression root actions at inference.
 
 Interpretation: HyperKAN’s held-out mixed-family failure is at least partly an inference-time global-action bias. A small localization bias at search time unlocks nontrivial mixed-family solves. Static KAN does not show the same behavior.
 
+Localization-aware inference is now wired directly into the main scoped eval path:
+
+- [search/scoped_beam_search.py](search/scoped_beam_search.py)
+- [eval/run_scoped_smoke_eval.py](eval/run_scoped_smoke_eval.py)
+- [scripts/select_scoped_checkpoint.py](scripts/select_scoped_checkpoint.py)
+
+Training-time localization fix (negative result):
+
+- Added a small `expr@root` avoidance loss and retrained recovered HyperKAN with [configs/scoped_structural_probe_hyper_local.yaml](configs/scoped_structural_probe_hyper_local.yaml).
+- Search-based selection picked `epoch_4` from `artifacts/scoped_structural_probe_localized_checkpoints/hyperkan/`.
+- Seen-family validation under beam 4:
+- default: `15/16`
+- root penalty `1.0`: `16/16`
+- root penalty `2.0`: `12/16`
+- Held-out `mixed_trig_hidden`:
+- default: `0/60` greedy, `0/60` beam
+- root penalty `1.0`: `0/60` beam
+- root penalty `2.0`: `0/60` greedy, `24/60` beam
+
+Compared with the baseline recovered HyperKAN, this is worse: the baseline model reached `36/60` on held-out mixed composition under beam with root penalty `2.0`. So the first training-time localization loss does not improve default compositional generalization, and it weakens the stronger inference-only rescue rather than replacing it.
+
 ## One Guided Scoped Trajectory
 
 <details>
@@ -337,6 +358,7 @@ Proven:
 - Guided scoped depth-4 trajectories can be trained and solved.
 - A held-out-family guided scoped split can be built, trained, and evaluated.
 - The structural scoped probe is non-saturated and exposes a real held-out composition gap.
+- Root-penalized localization-aware inference is a meaningful official eval condition on the scoped structural probe.
 
 Not yet proven:
 
@@ -345,12 +367,14 @@ Not yet proven:
 - A search-selected scoped benchmark that cleanly separates Static KAN and HyperKAN on held-out composition.
 - That guided action-order variants are hard enough to test compositional scoped reasoning.
 - That scoped performance transfers to held-out mixed composition once search-based selection is used.
+- That a simple training-time `expr@root` avoidance loss can replace inference-time localization bias.
 
 ## Next Steps
 
 - Use search-based checkpoint selection on the structural probe.
 - Run failure analysis on held-out `mixed_trig_hidden` trajectories.
 - Test localization-biased search or site-first decoding as the next minimal intervention.
+- Replace the failed root-avoidance auxiliary loss with a stronger localization mechanism, likely site-first decoding or a more explicit site-selection objective.
 - Add more structurally different scoped families, not just action-order variants or more rows.
 - Restore strict composed verification.
 - Recover shortest-action ties for accepted scoped rows.
@@ -433,6 +457,11 @@ python3 -m train.run_experiment \
   --config configs/scoped_structural_probe.yaml \
   --model-type hyperkan \
   --output-dir artifacts/scoped_structural_probe_checkpoints
+
+python3 -m train.run_experiment \
+  --config configs/scoped_structural_probe_hyper_local.yaml \
+  --model-type hyperkan \
+  --output-dir artifacts/scoped_structural_probe_localized_checkpoints
 ```
 
 Run scoped eval:
@@ -485,6 +514,15 @@ python3 -m eval.run_scoped_smoke_eval \
   --output artifacts/scoped_structural_probe_checkpoints/hyperkan/test_beam4.json \
   --beam-width 4 \
   --max-steps 5
+
+python3 -m eval.run_scoped_smoke_eval \
+  --dataset artifacts/scoped_structural_probe/test.parquet \
+  --checkpoint artifacts/scoped_structural_probe_search_checkpoints/hyperkan/best_search.pt \
+  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
+  --output artifacts/scoped_structural_probe_search_checkpoints/hyperkan/test_beam4_root2.json \
+  --beam-width 4 \
+  --max-steps 5 \
+  --root-action-penalty 2.0
 ```
 
 Select checkpoints by scoped search metric:
@@ -498,6 +536,16 @@ python3 scripts/select_scoped_checkpoint.py \
   --max-steps 5 \
   --output artifacts/scoped_structural_probe_checkpoints/static_kan/search_selection.json \
   --copy-best-to artifacts/scoped_structural_probe_checkpoints/static_kan/best_search.pt
+
+python3 scripts/select_scoped_checkpoint.py \
+  --checkpoint-dir artifacts/scoped_structural_probe_localized_checkpoints/hyperkan \
+  --dataset artifacts/scoped_structural_probe/val.parquet \
+  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
+  --beam-width 4 \
+  --max-steps 5 \
+  --include-best-pt \
+  --output artifacts/scoped_structural_probe_localized_checkpoints/hyperkan/search_selection_val_beam4.json \
+  --copy-best-to artifacts/scoped_structural_probe_localized_checkpoints/hyperkan/best_search.pt
 ```
 
 For the original global benchmark and historical plots, see:

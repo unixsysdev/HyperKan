@@ -113,6 +113,8 @@ def run_epoch(
     entropy_weight: float = 0.05,
     mixture_entropy_weight: float = 0.0,
     grad_clip_norm: float = 1.0,
+    expr_root_action_mask: Tensor | None = None,
+    expr_root_avoidance_weight: float = 0.0,
 ) -> dict[str, float]:
     training = optimizer is not None
     model.train(training)
@@ -132,6 +134,8 @@ def run_epoch(
             entropy_weight=entropy_weight,
             mixture_weights=mixture_weights if isinstance(mixture_weights, list) else None,
             mixture_entropy_weight=mixture_entropy_weight,
+            expr_root_action_mask=expr_root_action_mask,
+            expr_root_avoidance_weight=expr_root_avoidance_weight,
         )
         if training:
             optimizer.zero_grad(set_to_none=True)

@@ -41,19 +41,37 @@ def multi_task_loss(
     entropy_weight: float = 0.05,
     mixture_weights: list[Tensor] | None = None,
     mixture_entropy_weight: float = 0.0,
+    expr_root_action_mask: Tensor | None = None,
+    expr_root_avoidance_weight: float = 0.0,
 ) -> tuple[Tensor, dict[str, float]]:
     non_terminal = value_targets > 0
     action_loss = masked_bce_with_logits(logits, action_targets, mask=non_terminal)
     value_loss = value_huber_loss(values, value_targets)
     entropy_loss = entropy_regularization(logits[non_terminal]) if non_terminal.any() else torch.tensor(0.0, device=logits.device)
     mixture_entropy = torch.tensor(0.0, device=logits.device)
+    expr_root_avoidance = torch.tensor(0.0, device=logits.device)
     if mixture_weights is not None and mixture_entropy_weight != 0.0:
         mixture_entropy = sum(mixture_entropy_regularization(item) for item in mixture_weights) / float(len(mixture_weights))
-    total = action_loss + (value_weight * value_loss) + (entropy_weight * entropy_loss) + (mixture_entropy_weight * mixture_entropy)
+    if expr_root_action_mask is not None and expr_root_avoidance_weight != 0.0:
+        root_mass_mask = expr_root_action_mask.to(device=logits.device, dtype=torch.bool)
+        if root_mass_mask.any():
+            root_allowed = action_targets[:, root_mass_mask].sum(dim=-1) > 0
+            avoid_mask = non_terminal & (~root_allowed)
+            if avoid_mask.any():
+                probs = torch.softmax(logits, dim=-1)
+                expr_root_avoidance = probs[:, root_mass_mask].sum(dim=-1)[avoid_mask].mean()
+    total = (
+        action_loss
+        + (value_weight * value_loss)
+        + (entropy_weight * entropy_loss)
+        + (mixture_entropy_weight * mixture_entropy)
+        + (expr_root_avoidance_weight * expr_root_avoidance)
+    )
     return total, {
         "action_loss": float(action_loss.detach()),
         "value_loss": float(value_loss.detach()),
         "entropy_loss": float(entropy_loss.detach()),
         "mixture_entropy_loss": float(mixture_entropy.detach()),
+        "expr_root_avoidance_loss": float(expr_root_avoidance.detach()),
         "total_loss": float(total.detach()),
     }

@@ -24,6 +24,7 @@ def evaluate_dataset(
     value_weight: float,
     revisit_penalty: float,
     policy_temperature: float,
+    root_action_penalty: float,
     device: torch.device,
 ) -> dict[str, object]:
     solved = 0
@@ -53,6 +54,7 @@ def evaluate_dataset(
             value_weight=value_weight,
             revisit_penalty=revisit_penalty,
             policy_temperature=policy_temperature,
+            root_action_penalty=root_action_penalty,
             device=device,
         )
         expansions = len(outcome.get("explored", ()))
@@ -108,6 +110,7 @@ def main() -> None:
     parser.add_argument("--value-weight", type=float, default=None)
     parser.add_argument("--revisit-penalty", type=float, default=None)
     parser.add_argument("--policy-temperature", type=float, default=None)
+    parser.add_argument("--root-action-penalty", type=float, default=0.0)
     args = parser.parse_args()
 
     payload = torch.load(args.checkpoint, map_location="cpu")
@@ -136,8 +139,10 @@ def main() -> None:
         value_weight=args.value_weight if args.value_weight is not None else search_cfg.get("value_weight", 0.5),
         revisit_penalty=args.revisit_penalty if args.revisit_penalty is not None else search_cfg.get("revisit_penalty", 1.5),
         policy_temperature=args.policy_temperature if args.policy_temperature is not None else search_cfg.get("policy_temperature", 1.0),
+        root_action_penalty=float(args.root_action_penalty),
         device=device,
     )
+    metrics["root_action_penalty"] = float(args.root_action_penalty)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     print(json.dumps(metrics, indent=2))

@@ -10,6 +10,7 @@ import torch
 import yaml
 
 from models.factory import create_model
+from search.scoped_beam_search import load_scoped_action_vocab
 from train.train_one_epoch import build_dataloader, build_tokenizer, run_epoch
 from tokenizer.srepr_tokenizer import SReprTokenizer
 
@@ -59,6 +60,14 @@ def save_checkpoint(
     )
 
 
+def build_expr_root_action_mask(action_vocab_path: str | Path) -> torch.Tensor:
+    action_vocab = load_scoped_action_vocab(action_vocab_path)
+    return torch.tensor(
+        [action_id.startswith("expr@root::") for action_id in action_vocab],
+        dtype=torch.bool,
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Train one model variant for verified algebraic rewriting")
     parser.add_argument("--config", type=Path, default=Path("configs/local_poc.yaml"))
@@ -75,6 +84,7 @@ def main() -> None:
     tokenizer = SReprTokenizer.load(tokenizer_path)
     config["model"]["vocab_size"] = tokenizer.vocab_size
     config["model"]["pad_id"] = tokenizer.pad_id
+    expr_root_action_mask = build_expr_root_action_mask(config["data"]["action_vocab_path"])
 
     train_loader = build_dataloader(
         config["data"]["train_path"],
@@ -116,6 +126,8 @@ def main() -> None:
             entropy_weight=config["train"]["entropy_weight"],
             mixture_entropy_weight=float(config["train"].get("mixture_entropy_weight", 0.0)),
             grad_clip_norm=config["train"]["grad_clip_norm"],
+            expr_root_action_mask=expr_root_action_mask,
+            expr_root_avoidance_weight=float(config["train"].get("expr_root_avoidance_weight", 0.0)),
         )
         val_metrics = run_epoch(
             model,
@@ -126,6 +138,8 @@ def main() -> None:
             entropy_weight=config["train"]["entropy_weight"],
             mixture_entropy_weight=float(config["train"].get("mixture_entropy_weight", 0.0)),
             grad_clip_norm=config["train"]["grad_clip_norm"],
+            expr_root_action_mask=expr_root_action_mask,
+            expr_root_avoidance_weight=float(config["train"].get("expr_root_avoidance_weight", 0.0)),
         )
         record = {"epoch": epoch, "train": train_metrics, "val": val_metrics}
         history.append(record)
