@@ -1,6 +1,6 @@
 # HyperKan: Verified Symbolic Rewrite Search
 
-This repo trains policy/value models for verified symbolic rewrite search. The original global-action benchmark worked end to end and showed **Static KAN > MLP** on verified solve rate; the initial HyperKAN underperformed, then a reduced-capacity recovered HyperKAN nearly matched Static KAN after ablations. The important follow-up result is that the global SymPy action semantics turned out too shallow for robust depth-4+ composition, so the main branch of the project has moved to **scoped actions**: `action = (site, op)`. Scoped smoke, medium, and diverse guided benchmarks now train and evaluate end to end, but the guided scoped tasks are still too clean to separate Static KAN from recovered HyperKAN by solve rate.
+This repo trains policy/value models for verified symbolic rewrite search. The original global-action benchmark worked end to end and showed **Static KAN > MLP** on verified solve rate; the initial HyperKAN underperformed, then a reduced-capacity recovered HyperKAN nearly matched Static KAN after ablations. The important follow-up result is that the global SymPy action semantics turned out too shallow for robust depth-4+ composition, so the main branch of the project has moved to **scoped actions**: `action = (site, op)`. Scoped smoke, medium, and diverse guided benchmarks validated the pipeline, but they were too clean to separate models by solve rate. The new structural scoped probe is the first benchmark slice with real compositional pressure: seen families are learnable, but both models fail completely on a held-out mixed composition family.
 
 ## What This Project Is
 
@@ -200,6 +200,52 @@ Training did show a harder generalization signal: both models fit train quickly 
 
 Conclusion: adding action-order families is a useful next benchmark step, but these variants are still too templated. The current diverse guided split creates validation-loss pressure but does not yet create solve-rate pressure, even with greedy scoped search.
 
+## Scoped Structural Probe
+
+The structural probe replaces action-order variants with different algebraic mechanisms and holds out a composed family at test time.
+
+Artifacts:
+
+- Dataset: `artifacts/scoped_structural_probe/`
+- Config: [configs/scoped_structural_probe.yaml](configs/scoped_structural_probe.yaml)
+- Builder: [scripts/build_scoped_structural_dataset.py](scripts/build_scoped_structural_dataset.py)
+- Checkpoints/evals: `artifacts/scoped_structural_probe_checkpoints/`
+
+Families:
+
+- `trig_merge`: `trigsimp -> together -> expand`
+- `hidden_cancel`: `numerator factor -> cancel -> expand`
+- `apart_normalize`: `denominator factor -> apart`
+- `mixed_trig_hidden`: trig block plus hidden-factor block in one expression
+
+Split:
+
+- Train/val families: `trig_merge`, `hidden_cancel`, `apart_normalize`
+- Test family: `mixed_trig_hidden`
+- Dataset size: `48` trajectories, `204` rows, `12` scoped actions
+
+Results from the current loss-selected checkpoints:
+
+| Split | Static KAN beam1 | Static KAN beam4 | HyperKAN beam1 | HyperKAN beam4 |
+|---|---:|---:|---:|---:|
+| Train | 60/80 | 80/80 | 70/80 | 80/80 |
+| Val | 12/16 | 16/16 | 14/16 | 16/16 |
+| Test (`mixed_trig_hidden`) | 0/60 | 0/60 | 0/60 | 0/60 |
+
+Interpretation:
+
+- The benchmark is no longer saturated.
+- Both models learn the seen single-block structural families.
+- Beam rescues seen-family performance.
+- Both models fail completely on the held-out mixed composition family.
+- This is the first scoped result showing a real compositional generalization gap instead of interpolation success.
+
+The current trainer now saves epoch checkpoints, and the repo now includes a search-based checkpoint selector:
+
+- [scripts/select_scoped_checkpoint.py](scripts/select_scoped_checkpoint.py)
+
+That selector was added after the first structural probe run. The numbers above still come from validation-loss-selected `best.pt` checkpoints, so the next structural pass should use search-based model selection directly.
+
 ## One Guided Scoped Trajectory
 
 <details>
@@ -256,18 +302,21 @@ Proven:
 - Scoped action infrastructure works end to end: dataset generation, training, checkpointing, and scoped beam eval.
 - Guided scoped depth-4 trajectories can be trained and solved.
 - A held-out-family guided scoped split can be built, trained, and evaluated.
+- The structural scoped probe is non-saturated and exposes a real held-out composition gap.
 
 Not yet proven:
 
 - Robust strict depth-4+ density under scoped verification.
 - Shortest-action multi-label tie recovery for composed scoped cases.
-- A scoped benchmark that cleanly separates Static KAN and HyperKAN.
+- A search-selected scoped benchmark that cleanly separates Static KAN and HyperKAN on held-out composition.
 - That guided action-order variants are hard enough to test compositional scoped reasoning.
-- That guided scoped performance transfers to less templated or stricter scoped families.
+- That scoped performance transfers to held-out mixed composition once search-based selection is used.
 
 ## Next Steps
 
-- Add structurally different scoped families, not just action-order variants or more rows.
+- Use search-based checkpoint selection on the structural probe.
+- Run failure analysis on held-out `mixed_trig_hidden` trajectories.
+- Add more structurally different scoped families, not just action-order variants or more rows.
 - Restore strict composed verification.
 - Recover shortest-action ties for accepted scoped rows.
 - Use structurally harder held-out splits.
@@ -299,6 +348,12 @@ python3 scripts/build_scoped_smoke_dataset.py \
   --split-mode heldout_family \
   --families b_first_a3_b1 trig_b_a2 trig_together_b_expand a_first_b_last \
   --output-dir artifacts/scoped_diverse
+
+python3 scripts/build_scoped_structural_dataset.py \
+  --samples 48 \
+  --split-mode heldout_test_family \
+  --families trig_merge hidden_cancel apart_normalize mixed_trig_hidden \
+  --output-dir artifacts/scoped_structural_probe
 ```
 
 Train scoped models:
@@ -333,6 +388,16 @@ python3 -m train.run_experiment \
   --config configs/scoped_diverse.yaml \
   --model-type hyperkan \
   --output-dir artifacts/scoped_diverse_checkpoints
+
+python3 -m train.run_experiment \
+  --config configs/scoped_structural_probe.yaml \
+  --model-type static_kan \
+  --output-dir artifacts/scoped_structural_probe_checkpoints
+
+python3 -m train.run_experiment \
+  --config configs/scoped_structural_probe.yaml \
+  --model-type hyperkan \
+  --output-dir artifacts/scoped_structural_probe_checkpoints
 ```
 
 Run scoped eval:
@@ -369,6 +434,35 @@ python3 -m eval.run_scoped_smoke_eval \
   --output artifacts/scoped_diverse_checkpoints/hyperkan/scoped_diverse_eval.json \
   --beam-width 4 \
   --max-steps 4
+
+python3 -m eval.run_scoped_smoke_eval \
+  --dataset artifacts/scoped_structural_probe/test.parquet \
+  --checkpoint artifacts/scoped_structural_probe_checkpoints/static_kan/best.pt \
+  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
+  --output artifacts/scoped_structural_probe_checkpoints/static_kan/test_beam4.json \
+  --beam-width 4 \
+  --max-steps 5
+
+python3 -m eval.run_scoped_smoke_eval \
+  --dataset artifacts/scoped_structural_probe/test.parquet \
+  --checkpoint artifacts/scoped_structural_probe_checkpoints/hyperkan/best.pt \
+  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
+  --output artifacts/scoped_structural_probe_checkpoints/hyperkan/test_beam4.json \
+  --beam-width 4 \
+  --max-steps 5
+```
+
+Select checkpoints by scoped search metric:
+
+```bash
+python3 scripts/select_scoped_checkpoint.py \
+  --checkpoint-dir artifacts/scoped_structural_probe_checkpoints/static_kan \
+  --dataset artifacts/scoped_structural_probe/val.parquet \
+  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
+  --beam-width 4 \
+  --max-steps 5 \
+  --output artifacts/scoped_structural_probe_checkpoints/static_kan/search_selection.json \
+  --copy-best-to artifacts/scoped_structural_probe_checkpoints/static_kan/best_search.pt
 ```
 
 For the original global benchmark and historical plots, see:

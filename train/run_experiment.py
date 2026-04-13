@@ -35,6 +35,30 @@ def ensure_tokenizer(config: dict, output_dir: Path) -> Path:
     return tokenizer_path
 
 
+def save_checkpoint(
+    path: Path,
+    model_type: str,
+    config: dict,
+    model: torch.nn.Module,
+    tokenizer_path: Path,
+    epoch: int,
+    train_metrics: dict[str, float],
+    val_metrics: dict[str, float],
+) -> None:
+    torch.save(
+        {
+            "model_type": model_type,
+            "config": config,
+            "state_dict": model.state_dict(),
+            "tokenizer_path": str(tokenizer_path),
+            "epoch": epoch,
+            "train_metrics": train_metrics,
+            "val_metrics": val_metrics,
+        },
+        path,
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Train one model variant for verified algebraic rewriting")
     parser.add_argument("--config", type=Path, default=Path("configs/local_poc.yaml"))
@@ -80,6 +104,7 @@ def main() -> None:
     history = []
     best_val = float("inf")
     best_checkpoint = output_dir / "best.pt"
+    save_every_epoch = bool(config["train"].get("save_every_epoch", True))
 
     for epoch in range(1, config["train"]["max_epochs"] + 1):
         train_metrics = run_epoch(
@@ -106,16 +131,29 @@ def main() -> None:
         history.append(record)
         print(json.dumps(record))
 
+        if save_every_epoch:
+            save_checkpoint(
+                output_dir / f"epoch_{epoch}.pt",
+                args.model_type,
+                config,
+                model,
+                tokenizer_path,
+                epoch,
+                train_metrics,
+                val_metrics,
+            )
+
         if val_metrics["total_loss"] < best_val:
             best_val = val_metrics["total_loss"]
-            torch.save(
-                {
-                    "model_type": args.model_type,
-                    "config": config,
-                    "state_dict": model.state_dict(),
-                    "tokenizer_path": str(tokenizer_path),
-                },
+            save_checkpoint(
                 best_checkpoint,
+                args.model_type,
+                config,
+                model,
+                tokenizer_path,
+                epoch,
+                train_metrics,
+                val_metrics,
             )
 
     (output_dir / "history.json").write_text(json.dumps(history, indent=2), encoding="utf-8")

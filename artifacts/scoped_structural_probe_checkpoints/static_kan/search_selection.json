@@ -1,0 +1,86 @@
+{
+  "selection_metric": "solve_rate_then_low_expansions",
+  "dataset": "artifacts/scoped_structural_probe/val.parquet",
+  "beam_width": 4,
+  "max_steps": 5,
+  "best": {
+    "checkpoint": "artifacts/scoped_structural_probe_checkpoints/static_kan/best.pt",
+    "epoch": null,
+    "model_type": "static_kan",
+    "metrics": {
+      "attempts": 16,
+      "solved": 16,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 1.625,
+      "mean_expansions": 26.5,
+      "mean_solved_expansions": 26.5,
+      "per_family": {
+        "apart_normalize": {
+          "attempts": 4,
+          "solved": 4,
+          "solve_rate": 1.0,
+          "mean_solved_steps": 1.0,
+          "mean_expansions": 12.5,
+          "mean_solved_expansions": 12.5
+        },
+        "hidden_cancel": {
+          "attempts": 6,
+          "solved": 6,
+          "solve_rate": 1.0,
+          "mean_solved_steps": 1.6666666666666667,
+          "mean_expansions": 29.666666666666668,
+          "mean_solved_expansions": 29.666666666666668
+        },
+        "trig_merge": {
+          "attempts": 6,
+          "solved": 6,
+          "solve_rate": 1.0,
+          "mean_solved_steps": 2.0,
+          "mean_expansions": 32.666666666666664,
+          "mean_solved_expansions": 32.666666666666664
+        }
+      }
+    }
+  },
+  "results": [
+    {
+      "checkpoint": "artifacts/scoped_structural_probe_checkpoints/static_kan/best.pt",
+      "epoch": null,
+      "model_type": "static_kan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 16,
+        "solve_rate": 1.0,
+        "mean_solved_steps": 1.625,
+        "mean_expansions": 26.5,
+        "mean_solved_expansions": 26.5,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 12.5,
+            "mean_solved_expansions": 12.5
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.6666666666666667,
+            "mean_expansions": 29.666666666666668,
+            "mean_solved_expansions": 29.666666666666668
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 2.0,
+            "mean_expansions": 32.666666666666664,
+            "mean_solved_expansions": 32.666666666666664
+          }
+        }
+      }
+    }
+  ]
+}
