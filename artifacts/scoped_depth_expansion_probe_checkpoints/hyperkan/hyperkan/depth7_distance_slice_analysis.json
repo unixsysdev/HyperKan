@@ -1,0 +1,126 @@
+{
+  "root2": {
+    "attempts": 84,
+    "solved": 18,
+    "by_distance": {
+      "1": {
+        "attempts": 12,
+        "solved": 9,
+        "solve_rate": 0.75,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "2": {
+        "attempts": 12,
+        "solved": 0,
+        "solve_rate": 0.0,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "3": {
+        "attempts": 12,
+        "solved": 9,
+        "solve_rate": 0.75,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "4": {
+        "attempts": 12,
+        "solved": 0,
+        "solve_rate": 0.0,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "5": {
+        "attempts": 12,
+        "solved": 0,
+        "solve_rate": 0.0,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "6": {
+        "attempts": 12,
+        "solved": 0,
+        "solve_rate": 0.0,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "7": {
+        "attempts": 12,
+        "solved": 0,
+        "solve_rate": 0.0,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      }
+    },
+    "solved_paths": {
+      "expr@1::apart": 18
+    },
+    "solved_distance_paths": {
+      "d=3: expr@1::apart": 9,
+      "d=1: expr@1::apart": 9
+    }
+  },
+  "root2_frontier": {
+    "attempts": 84,
+    "solved": 18,
+    "by_distance": {
+      "1": {
+        "attempts": 12,
+        "solved": 9,
+        "solve_rate": 0.75,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "2": {
+        "attempts": 12,
+        "solved": 0,
+        "solve_rate": 0.0,
+        "hidden_site_within_3": 3,
+        "hidden_cancel_within_3": 0
+      },
+      "3": {
+        "attempts": 12,
+        "solved": 9,
+        "solve_rate": 0.75,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "4": {
+        "attempts": 12,
+        "solved": 0,
+        "solve_rate": 0.0,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "5": {
+        "attempts": 12,
+        "solved": 0,
+        "solve_rate": 0.0,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "6": {
+        "attempts": 12,
+        "solved": 0,
+        "solve_rate": 0.0,
+        "hidden_site_within_3": 0,
+        "hidden_cancel_within_3": 0
+      },
+      "7": {
+        "attempts": 12,
+        "solved": 0,
+        "solve_rate": 0.0,
+        "hidden_site_within_3": 7,
+        "hidden_cancel_within_3": 0
+      }
+    },
+    "solved_paths": {
+      "expr@1::apart": 18
+    },
+    "solved_distance_paths": {
+      "d=3: expr@1::apart": 9,
+      "d=1: expr@1::apart": 9
+    }
+  }
+}

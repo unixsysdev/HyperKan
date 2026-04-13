@@ -2,6 +2,11 @@
 
 Branch: `feature/scoped-depth-expansion`
 
+Status:
+
+- First result is in [scoped_depth_expansion_results.md](./scoped_depth_expansion_results.md).
+- Current finding: the depth jump weakens the earlier rescue sharply. On the new 7-step held-out family, default inference is `0/84`, root penalty reaches `18/84` under beam, and the frontier reranker does not improve solve rate beyond that.
+
 ## Thesis
 
 The early-frontier reranker branch established the first strong compositional inference result on the scoped structural probe:

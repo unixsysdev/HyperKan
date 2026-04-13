@@ -1,0 +1,16 @@
+{
+  "add_slice@root[1:3]::together": 0,
+  "denominator@1::factor": 1,
+  "denominator@root::factor": 2,
+  "expr@1::apart": 3,
+  "expr@1::trigsimp": 4,
+  "expr@2::expand": 5,
+  "expr@3::cancel": 6,
+  "expr@root::apart": 7,
+  "expr@root::cancel": 8,
+  "expr@root::expand": 9,
+  "expr@root::together": 10,
+  "expr@root::trigsimp": 11,
+  "numerator@3::factor": 12,
+  "numerator@root::factor": 13
+}

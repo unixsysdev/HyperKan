@@ -41,12 +41,22 @@ FAMILY_ACTIONS = {
         "numerator@2::factor",
         "expr@2::cancel",
     ),
+    "mixed_trig_hidden_apart": (
+        "expr@1::trigsimp",
+        "add_slice@root[1:3]::together",
+        "expr@2::expand",
+        "numerator@3::factor",
+        "expr@3::cancel",
+        "denominator@1::factor",
+        "expr@1::apart",
+    ),
 }
 DEFAULT_FAMILIES = (
     "trig_merge",
     "hidden_cancel",
     "apart_normalize",
     "mixed_trig_hidden",
+    "mixed_trig_hidden_apart",
 )
 
 
@@ -163,6 +173,16 @@ def build_mixed_trig_hidden_start(
     return compose_sum(trig_start, hidden_start), f"{trig_key}__{hidden_key}"
 
 
+def build_mixed_trig_hidden_apart_start(
+    params: tuple[tuple[int, int, int, int], tuple[int, int, int], tuple[int, int, int, int]]
+) -> tuple[sympy.Expr, str]:
+    trig_params, hidden_params, apart_params = params
+    trig_start, trig_key = build_trig_merge_start(trig_params)
+    hidden_start, hidden_key = build_hidden_cancel_start(hidden_params)
+    apart_start, apart_key = build_apart_normalize_start(apart_params)
+    return compose_sum(apart_start, trig_start, hidden_start), f"{trig_key}__{hidden_key}__{apart_key}"
+
+
 def sample_trig_merge_params(rng: random.Random) -> tuple[int, int, int, int]:
     shift_0, shift_1 = sorted(rng.sample([1, 2, 3, 4, 5], k=2))
     coeff_0 = rng.choice([1, 2, 3, 4])
@@ -187,11 +207,22 @@ def sample_mixed_trig_hidden_params(rng: random.Random) -> tuple[tuple[int, int,
     return sample_trig_merge_params(rng), sample_hidden_cancel_params(rng)
 
 
+def sample_mixed_trig_hidden_apart_params(
+    rng: random.Random,
+) -> tuple[tuple[int, int, int, int], tuple[int, int, int], tuple[int, int, int, int]]:
+    return (
+        sample_trig_merge_params(rng),
+        sample_hidden_cancel_params(rng),
+        sample_apart_normalize_params(rng),
+    )
+
+
 FAMILY_BUILDERS = {
     "trig_merge": (sample_trig_merge_params, build_trig_merge_start),
     "hidden_cancel": (sample_hidden_cancel_params, build_hidden_cancel_start),
     "apart_normalize": (sample_apart_normalize_params, build_apart_normalize_start),
     "mixed_trig_hidden": (sample_mixed_trig_hidden_params, build_mixed_trig_hidden_start),
+    "mixed_trig_hidden_apart": (sample_mixed_trig_hidden_apart_params, build_mixed_trig_hidden_apart_start),
 }
 
 

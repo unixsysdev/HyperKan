@@ -1,0 +1,249 @@
+{
+  "selection_metric": "solve_rate_then_low_expansions",
+  "dataset": "artifacts/scoped_depth_expansion_probe/val.parquet",
+  "beam_width": null,
+  "max_steps": null,
+  "root_action_penalty": 0.0,
+  "root_action_penalty_mode": "always",
+  "early_hidden_bonus": 0.0,
+  "early_hidden_bonus_steps": 0,
+  "frontier_bonus": 0.0,
+  "frontier_bonus_steps": 0,
+  "frontier_bonus_mode": "none",
+  "best": {
+    "checkpoint": "artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_5.pt",
+    "epoch": 5,
+    "model_type": "hyperkan",
+    "metrics": {
+      "attempts": 16,
+      "solved": 16,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 1.625,
+      "mean_expansions": 28.5,
+      "mean_solved_expansions": 28.5,
+      "per_family": {
+        "apart_normalize": {
+          "attempts": 4,
+          "solved": 4,
+          "solve_rate": 1.0,
+          "mean_solved_steps": 1.0,
+          "mean_expansions": 23.5,
+          "mean_solved_expansions": 23.5
+        },
+        "hidden_cancel": {
+          "attempts": 6,
+          "solved": 6,
+          "solve_rate": 1.0,
+          "mean_solved_steps": 1.6666666666666667,
+          "mean_expansions": 31.0,
+          "mean_solved_expansions": 31.0
+        },
+        "trig_merge": {
+          "attempts": 6,
+          "solved": 6,
+          "solve_rate": 1.0,
+          "mean_solved_steps": 2.0,
+          "mean_expansions": 29.333333333333332,
+          "mean_solved_expansions": 29.333333333333332
+        }
+      }
+    }
+  },
+  "results": [
+    {
+      "checkpoint": "artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_5.pt",
+      "epoch": 5,
+      "model_type": "hyperkan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 16,
+        "solve_rate": 1.0,
+        "mean_solved_steps": 1.625,
+        "mean_expansions": 28.5,
+        "mean_solved_expansions": 28.5,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 23.5,
+            "mean_solved_expansions": 23.5
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.6666666666666667,
+            "mean_expansions": 31.0,
+            "mean_solved_expansions": 31.0
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 2.0,
+            "mean_expansions": 29.333333333333332,
+            "mean_solved_expansions": 29.333333333333332
+          }
+        }
+      }
+    },
+    {
+      "checkpoint": "artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_2.pt",
+      "epoch": 2,
+      "model_type": "hyperkan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 16,
+        "solve_rate": 1.0,
+        "mean_solved_steps": 1.875,
+        "mean_expansions": 33.375,
+        "mean_solved_expansions": 33.375,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 28.0,
+            "mean_solved_expansions": 28.0
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 2.3333333333333335,
+            "mean_expansions": 41.666666666666664,
+            "mean_solved_expansions": 41.666666666666664
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 2.0,
+            "mean_expansions": 28.666666666666668,
+            "mean_solved_expansions": 28.666666666666668
+          }
+        }
+      }
+    },
+    {
+      "checkpoint": "artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_4.pt",
+      "epoch": 4,
+      "model_type": "hyperkan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 16,
+        "solve_rate": 1.0,
+        "mean_solved_steps": 2.0,
+        "mean_expansions": 44.4375,
+        "mean_solved_expansions": 44.4375,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 7.0,
+            "mean_solved_expansions": 7.0
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 2.3333333333333335,
+            "mean_expansions": 61.0,
+            "mean_solved_expansions": 61.0
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 2.3333333333333335,
+            "mean_expansions": 52.833333333333336,
+            "mean_solved_expansions": 52.833333333333336
+          }
+        }
+      }
+    },
+    {
+      "checkpoint": "artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_3.pt",
+      "epoch": 3,
+      "model_type": "hyperkan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 16,
+        "solve_rate": 1.0,
+        "mean_solved_steps": 2.75,
+        "mean_expansions": 60.375,
+        "mean_solved_expansions": 60.375,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 5.5,
+            "mean_expansions": 139.0,
+            "mean_solved_expansions": 139.0
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.6666666666666667,
+            "mean_expansions": 33.0,
+            "mean_solved_expansions": 33.0
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 2.0,
+            "mean_expansions": 35.333333333333336,
+            "mean_solved_expansions": 35.333333333333336
+          }
+        }
+      }
+    },
+    {
+      "checkpoint": "artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_1.pt",
+      "epoch": 1,
+      "model_type": "hyperkan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 13,
+        "solve_rate": 0.8125,
+        "mean_solved_steps": 2.4615384615384617,
+        "mean_expansions": 69.25,
+        "mean_solved_expansions": 44.92307692307692,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 7.0,
+            "mean_solved_expansions": 7.0
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 4,
+            "solve_rate": 0.6666666666666666,
+            "mean_solved_steps": 4.0,
+            "mean_expansions": 106.66666666666667,
+            "mean_solved_expansions": 80.0
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 5,
+            "solve_rate": 0.8333333333333334,
+            "mean_solved_steps": 2.4,
+            "mean_expansions": 73.33333333333333,
+            "mean_solved_expansions": 47.2
+          }
+        }
+      }
+    }
+  ]
+}

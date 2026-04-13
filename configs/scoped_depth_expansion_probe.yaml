@@ -1,0 +1,41 @@
+seed: 17
+
+data:
+  train_path: artifacts/scoped_depth_expansion_probe/train.parquet
+  val_path: artifacts/scoped_depth_expansion_probe/val.parquet
+  test_path: artifacts/scoped_depth_expansion_probe/test.parquet
+  action_vocab_path: artifacts/scoped_depth_expansion_probe/scoped_action_vocab.json
+  max_length: 224
+
+model:
+  vocab_size: 4096
+  pad_id: 0
+  embed_dim: 96
+  hidden_dim: 160
+  encoder_layers: 1
+  dropout: 0.0
+  num_actions: 14
+  kan_hidden_dim: 96
+  spline_points: 16
+  spline_basis_dim: 8
+  spline_templates: 4
+  hyper_hidden_dim: 64
+  hyperkan_condition_kan1: true
+  mixture_temperature: 1.0
+
+train:
+  lr: 0.001
+  weight_decay: 0.01
+  batch_size: 16
+  max_epochs: 5
+  value_loss_weight: 0.3
+  entropy_weight: 0.02
+  mixture_entropy_weight: 0.0
+  grad_clip_norm: 1.0
+
+search:
+  beam_width: 4
+  max_steps: 7
+  value_weight: 0.2
+  revisit_penalty: 1.5
+  policy_temperature: 1.0

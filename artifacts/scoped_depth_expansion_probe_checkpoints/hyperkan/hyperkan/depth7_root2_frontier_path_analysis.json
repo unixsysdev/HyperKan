@@ -1,0 +1,4472 @@
+{
+  "checkpoint": "artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_5.pt",
+  "dataset": "artifacts/scoped_depth_expansion_probe/test.parquet",
+  "beam_width": 4,
+  "max_steps": 7,
+  "root_penalty": 2.0,
+  "frontier_bonus": 0.5,
+  "frontier_bonus_steps": 3,
+  "frontier_bonus_mode": "hidden_cancel_access",
+  "attempts": 84,
+  "solved": 18,
+  "solve_rate": 0.21428571428571427,
+  "summary": {
+    "solved_first_action_delta_counts": {
+      "unchanged": 18
+    },
+    "unsolved_first_action_delta_counts": {
+      "site_only_change": 2,
+      "unchanged": 61,
+      "op_only_change": 2,
+      "site_and_op_change": 1
+    },
+    "solved_first_non_root_site_counts": {
+      "expr@1": 18
+    },
+    "solved_first_non_root_block_counts": {
+      "trig": 18
+    },
+    "solved_path_prefix_counts": {
+      "expr@1::apart": 18
+    },
+    "solved_early_hidden_access_counts": {
+      "hidden_site<=3:False": 18,
+      "hidden_cancel<=3:False": 18
+    },
+    "unsolved_early_hidden_access_counts": {
+      "hidden_site<=3:True": 10,
+      "hidden_cancel<=3:False": 66,
+      "hidden_site<=3:False": 56
+    }
+  },
+  "rows": [
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_3",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15508808195590973,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1535065621137619,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.13242757320404053,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.08556725829839706,
+          "block": "hidden"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1000099778175354,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.09899011999368668,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "site_only_change",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@2::expand",
+        "expr@root::together",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 214,
+      "first_non_root_site": "expr@2",
+      "first_non_root_block": "hidden",
+      "path_prefix_3": "expr@2::expand -> expr@root::together -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": true,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_3",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.3068528473377228,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.14119264483451843,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.0918833464384079,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2363787442445755,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.10876527428627014,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.07078073918819427,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 180,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_3",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2504604458808899,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1696399450302124,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.12340272217988968,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1994129866361618,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09825146198272705,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13506488502025604,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 183,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_3",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2334170639514923,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1426982432603836,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11755594611167908,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16619566082954407,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.10160282254219055,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08370120823383331,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 186,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_3",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.28184974193573,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12527965009212494,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08590196818113327,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.19301632046699524,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.08579400181770325,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.07428675144910812,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 20,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_3",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1851082146167755,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.179779052734375,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.11782027035951614,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1342926025390625,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13042639195919037,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.08547645807266235,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@2::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 189,
+      "first_non_root_site": "expr@2",
+      "first_non_root_block": "hidden",
+      "path_prefix_3": "expr@2::expand -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": true,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_3",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.28184974193573,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12527965009212494,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.08474286645650864,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.19301632046699524,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.06474536657333374,
+          "block": "trig"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.08579400181770325,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 17,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_7",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.18161465227603912,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.16349290311336517,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.157936692237854,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.13780128955841064,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12405132502317429,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11983548849821091,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::trigsimp",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 191,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::trigsimp -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_7",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.30858540534973145,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1404736340045929,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09148447960615158,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.23744405806064606,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.10808879882097244,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.0703936368227005,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 177,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_7",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.26438820362091064,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15972942113876343,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11522801965475082,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2076726108789444,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09050972014665604,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12546485662460327,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 179,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_7",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.23496113717556,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1425388604402542,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.116727314889431,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16767291724681854,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.10171855241060257,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08329890668392181,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 183,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_7",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2828846275806427,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12507353723049164,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08518773317337036,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1937701255083084,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.0856727883219719,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.07424699515104294,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 20,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_7",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.18398608267307281,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18038080632686615,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.11852288991212845,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1337285041809082,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13110804557800293,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.08614721894264221,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 172,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::expand -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_7",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2828846275806427,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12507353723049164,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.08416861295700073,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1937701255083084,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.0856727883219719,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.06473363190889359,
+          "block": "trig"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 29,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_11",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.20181091129779816,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.14147138595581055,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.13060340285301208,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15230613946914673,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10676807165145874,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.09856603294610977,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::apart",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 184,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::apart -> expr@root::trigsimp -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_11",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.27031898498535156,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.23226428031921387,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08642926067113876,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2509528696537018,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.21562451124191284,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08023734390735626,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 179,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_11",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.26461678743362427,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2131234109401703,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11315245926380157,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.24766181409358978,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.19946780800819397,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10590235888957977,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::trigsimp",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 177,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::trigsimp -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_11",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.20536604523658752,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.19307370483875275,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.12260432541370392,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.17278243601322174,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16244040429592133,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10315178334712982,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 183,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::expand -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_11",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2504890263080597,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18526646494865417,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.09919773787260056,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.20670479536056519,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15288281440734863,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.08185847103595734,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 178,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_11",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.2334027886390686,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.14066295325756073,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.12146176397800446,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1904429942369461,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.11477271467447281,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.09910567104816437,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 162,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::expand -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_11",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2504890263080597,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18526646494865417,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.09919773787260056,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15288281440734863,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.20670479536056519,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.08185847103595734,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "op_only_change",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::expand",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::cancel",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 174,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::expand -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_15",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.20548608899116516,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.1579750031232834,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.1361200213432312,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15757280588150024,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.12113989889621735,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.10438085347414017,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::apart",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 188,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::apart -> expr@root::trigsimp -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_15",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.26352354884147644,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.22280685603618622,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10283033549785614,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.24721302092075348,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.20901645720005035,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09646574407815933,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "numerator@root::factor",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 181,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_15",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.28347328305244446,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16688457131385803,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.13888908922672272,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.26640671491622925,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.13052722811698914,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.15683722496032715,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "numerator@root::factor",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 189,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_15",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.22040332853794098,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1540175825357437,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.140827476978302,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18841195106506348,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.131662055850029,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.12038646638393402,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::apart",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 175,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_15",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.21112407743930817,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.2074374407529831,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.10636360943317413,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.17909996211528778,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.17597252130508423,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.09022995829582214,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::apart",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 165,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_15",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.2420959174633026,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.12340939044952393,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.12323490530252457,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.20074644684791565,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.10233134031295776,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.1021866723895073,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::cancel",
+        "expr@root::expand",
+        "expr@root::apart",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 164,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::expand -> expr@root::together -> expr@root::cancel",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_15",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.21112407743930817,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.2074374407529831,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.10636360943317413,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.17909996211528778,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.17597252130508423,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.09022995829582214,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::apart",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 157,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_19",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2092307060956955,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1590302437543869,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11616333574056625,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.15093933045864105,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.11472465842962265,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08380039781332016,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@2::expand",
+        "expr@root::together",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 209,
+      "first_non_root_site": "expr@2",
+      "first_non_root_block": "hidden",
+      "path_prefix_3": "expr@2::expand -> expr@root::together -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": true,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_19",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.3113134205341339,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13894252479076385,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08787589520215988,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2390379011631012,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.10668517649173737,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.0674743503332138,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 180,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_19",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.25946998596191406,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1631394773721695,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11970561742782593,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.20496250689029694,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09455876052379608,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12886837124824524,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 183,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_19",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.23526865243911743,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.14163698256015778,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11629458516836166,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16742870211601257,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.10079581290483475,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08276093006134033,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 187,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_19",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.28320011496543884,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12418556958436966,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08473023027181625,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1934993714094162,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.08485105633735657,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.07460171729326248,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 20,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_19",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1852874904870987,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.17898142337799072,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.11783383041620255,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.13428735733032227,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12971703708171844,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.08540020138025284,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@2::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 189,
+      "first_non_root_site": "expr@2",
+      "first_non_root_block": "hidden",
+      "path_prefix_3": "expr@2::expand -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": true,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_19",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.28320011496543884,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12418556958436966,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.08423496782779694,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1934993714094162,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.06462176144123077,
+          "block": "trig"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.08485105633735657,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 17,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_23",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15573467314243317,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.15287862718105316,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.13328659534454346,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.10074320435523987,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.09889566153287888,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08622177690267563,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@2::expand",
+        "expr@root::together",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 216,
+      "first_non_root_site": "expr@2",
+      "first_non_root_block": "hidden",
+      "path_prefix_3": "expr@2::expand -> expr@root::together -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": true,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_23",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.30613940954208374,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.14178873598575592,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09259838610887527,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2362346649169922,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1094122901558876,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.07145421206951141,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 183,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_23",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.27032893896102905,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15755128860473633,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.1132683977484703,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2120899260044098,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08886613696813583,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12360883504152298,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 185,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_23",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.23506176471710205,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.14258266985416412,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11680354923009872,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1676814705133438,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1017114445567131,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08332189917564392,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 188,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_23",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2830360531806946,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1251412183046341,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.0852704793214798,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.19386814534664154,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.08571663498878479,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.0742824450135231,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 20,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_23",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.18472826480865479,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18029041588306427,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.11804357171058655,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.13427171111106873,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13104599714279175,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.08580122888088226,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 189,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_23",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2830360531806946,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1251412183046341,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.08450692147016525,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.19386814534664154,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.06482618302106857,
+          "block": "trig"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.08571663498878479,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 17,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_27",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16870100796222687,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.14337299764156342,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.1356457620859146,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.09488430619239807,
+          "block": "hidden"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.104493647813797,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.0888054296374321,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "site_and_op_change",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@2::expand",
+        "expr@root::together",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 209,
+      "first_non_root_site": "expr@2",
+      "first_non_root_block": "hidden",
+      "path_prefix_3": "expr@2::expand -> expr@root::together -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": true,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_27",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2930106222629547,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12683458626270294,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09542708843946457,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.19495485723018646,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.08443954586982727,
+          "block": "hidden"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.08438949286937714,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 181,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_27",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2661293148994446,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13920003175735474,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11760260909795761,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.18431679904460907,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08144963532686234,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.09640766680240631,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 194,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_27",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.23139087855815887,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12278839945793152,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.12123625725507736,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1411452293395996,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.08035285770893097,
+          "block": "trig"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.09089843183755875,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 207,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_27",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.26018571853637695,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.11272868514060974,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09110826998949051,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1485062837600708,
+          "block": "global"
+        },
+        {
+          "action_id": "denominator@1::factor",
+          "probability": 0.08343498408794403,
+          "block": "other"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.09536037594079971,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 30,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_27",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.21047767996788025,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1680668592453003,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.10684199631214142,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.150417760014534,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12010888010263443,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.07635459303855896,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "expr@root::cancel",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 190,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_27",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.26018571853637695,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.11272868514060974,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.07818039506673813,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1485062837600708,
+          "block": "global"
+        },
+        {
+          "action_id": "denominator@1::factor",
+          "probability": 0.08343498408794403,
+          "block": "other"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.08012101799249649,
+          "block": "trig"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 27,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_31",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.17761752009391785,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.14995494484901428,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.14696848392486572,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.11459864675998688,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.09675076603889465,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09482391923666,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::trigsimp",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 202,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::trigsimp -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_31",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2881055176258087,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13639700412750244,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10178571194410324,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2033354938030243,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.0962645560503006,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.077018141746521,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 182,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_31",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.23667499423027039,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15567272901535034,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.14244680106639862,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.17150838673114777,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10322518646717072,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.11280945688486099,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 187,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_31",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.21131397783756256,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.1391746699810028,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13412658870220184,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.13541251420974731,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08918480575084686,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.08793456852436066,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 196,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_31",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2568524181842804,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12209893018007278,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10111270844936371,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.15866383910179138,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.0760945975780487,
+          "block": "trig"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.08952369540929794,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 20,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_31",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.185433030128479,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.18003015220165253,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.11295201629400253,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1374433934688568,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.13343878090381622,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.08372030407190323,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 175,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::expand -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_31",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2568524181842804,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12209893018007278,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.08321711421012878,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.15866383910179138,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.0760945975780487,
+          "block": "trig"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.07542340457439423,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 17,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_35",
+      "default_top3": [
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.18427033722400665,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16272035241127014,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15130536258220673,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.1263693869113922,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.11159078776836395,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.10376258939504623,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@2::expand",
+        "expr@root::together",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 210,
+      "first_non_root_site": "expr@2",
+      "first_non_root_block": "hidden",
+      "path_prefix_3": "expr@2::expand -> expr@root::together -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": true,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_35",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.28167855739593506,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13884365558624268,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.1085016056895256,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.19957908987998962,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.09837555885314941,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.07703700661659241,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 191,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_35",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.24774573743343353,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15240882337093353,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.1330219954252243,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1801292598247528,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09671670198440552,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.11081237345933914,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::trigsimp",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 192,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::trigsimp -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_35",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.21075256168842316,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.14002816379070282,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1351974904537201,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.13556799292564392,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09007405489683151,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.0874733030796051,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 204,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_35",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.25643911957740784,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12311860918998718,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10194099694490433,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1590370535850525,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.08912715315818787,
+          "block": "hidden"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.07635505497455597,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 20,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_35",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18664099276065826,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1799662560224533,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.11307735741138458,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13878929615020752,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1338258534669876,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.08408616483211517,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 189,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_35",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.25643911957740784,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12311860918998718,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.08351728320121765,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1590370535850525,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.07631303369998932,
+          "block": "trig"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.07635505497455597,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 17,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_39",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.2031162530183792,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.14138568937778473,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.13097330927848816,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15439780056476593,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10747361183166504,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.09955868870019913,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 195,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::expand -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_39",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.26936984062194824,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.23095454275608063,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08552281558513641,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2505495548248291,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.21481825411319733,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.07954750955104828,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 182,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::expand -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_39",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.26568013429641724,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.21583274006843567,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11073850840330124,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.2490171194076538,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.20229606330394745,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10379316657781601,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::trigsimp",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 185,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::trigsimp -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_39",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.2029428780078888,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.19470255076885223,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.12132461369037628,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.17098291218280792,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16404028236865997,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10221810638904572,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 188,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_39",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.25418198108673096,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18126341700553894,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.09896340221166611,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.21007002890110016,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.14980608224868774,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.0817888155579567,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 176,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_39",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.23203670978546143,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1412368267774582,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.1215389221906662,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18927522003650665,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.11520861834287643,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.09914083033800125,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::expand",
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::expand",
+        "expr@root::apart",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 175,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::expand -> expr@root::together -> numerator@root::factor",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_39",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.25418198108673096,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18126341700553894,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.09896340221166611,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.21007002890110016,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.14980608224868774,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.0817888155579567,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 168,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_43",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15495921671390533,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.15365809202194214,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.1328761875629425,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.08595210313796997,
+          "block": "hidden"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.09986726939678192,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.09902874380350113,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "site_only_change",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@2::expand",
+        "expr@root::together",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 214,
+      "first_non_root_site": "expr@2",
+      "first_non_root_block": "hidden",
+      "path_prefix_3": "expr@2::expand -> expr@root::together -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": true,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_43",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.308608740568161,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.14045900106430054,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09147971123456955,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.23743782937526703,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.10806652903556824,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.07038278132677078,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 177,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_43",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2663644850254059,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1612786501646042,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11572813242673874,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.21002551913261414,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09125038981437683,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1271664947271347,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 179,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_43",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.23443815112113953,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.14263978600502014,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.11686775088310242,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16728830337524414,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1017836406826973,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08339347690343857,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 185,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> expr@root::expand -> expr@root::together",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_43",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.28246966004371643,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12516556680202484,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.08534974604845047,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1935400366783142,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.08575981855392456,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.07423900067806244,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 20,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_43",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.18401220440864563,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18036794662475586,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.11850994825363159,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.13373760879039764,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.131088986992836,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.08613143116235733,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@2::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 189,
+      "first_non_root_site": "expr@2",
+      "first_non_root_block": "hidden",
+      "path_prefix_3": "expr@2::expand -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": true,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_43",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.28246966004371643,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.12516556680202484,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.08437854051589966,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.1935400366783142,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.06474520266056061,
+          "block": "trig"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.08575981855392456,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 17,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_47",
+      "default_top3": [
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.18427033722400665,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16272036731243134,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.15130534768104553,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.1263693869113922,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.11159078031778336,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.10376256704330444,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@2::expand",
+        "expr@root::together",
+        "expr@root::trigsimp",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 208,
+      "first_non_root_site": "expr@2",
+      "first_non_root_block": "hidden",
+      "path_prefix_3": "expr@2::expand -> expr@root::together -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": true,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_47",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.28677886724472046,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13741539418697357,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10286612808704376,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2032718062400818,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.0974014401435852,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.07649675011634827,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 180,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_47",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2311864048242569,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1550728678703308,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.14457766711711884,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10480791330337524,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.16759268939495087,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.11241612583398819,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "op_only_change",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 185,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_47",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.2107514888048172,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.1400291472673416,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13519756495952606,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.13556727766990662,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.09007465839385986,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.08747325837612152,
+          "block": "hidden"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::together",
+        "numerator@root::factor",
+        "expr@root::trigsimp",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together"
+      ],
+      "penalized_beam_expansions": 202,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::together -> numerator@root::factor -> expr@root::trigsimp",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_47",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.25643840432167053,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1231188103556633,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::trigsimp",
+          "probability": 0.10194186866283417,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.15903684496879578,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@2::expand",
+          "probability": 0.08912692964076996,
+          "block": "hidden"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.07635527849197388,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 20,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_47",
+      "default_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.18674308061599731,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.17972679436206818,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.113139308989048,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.13884806632995605,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.13363127410411835,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::cancel",
+          "probability": 0.08412185311317444,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": false,
+      "penalized_beam_path": [
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand",
+        "expr@root::together",
+        "expr@root::expand"
+      ],
+      "penalized_beam_expansions": 175,
+      "first_non_root_site": null,
+      "first_non_root_block": null,
+      "path_prefix_3": "expr@root::expand -> expr@root::together -> expr@root::expand",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    },
+    {
+      "trajectory_id": "mixed_trig_hidden_apart_47",
+      "default_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.25643840432167053,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.1231188103556633,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@root::apart",
+          "probability": 0.08351756632328033,
+          "block": "global"
+        }
+      ],
+      "penalized_top3": [
+        {
+          "action_id": "expr@root::together",
+          "probability": 0.15903684496879578,
+          "block": "global"
+        },
+        {
+          "action_id": "expr@1::apart",
+          "probability": 0.07631305605173111,
+          "block": "trig"
+        },
+        {
+          "action_id": "expr@root::expand",
+          "probability": 0.07635527849197388,
+          "block": "global"
+        }
+      ],
+      "first_action_delta": "unchanged",
+      "penalized_beam_success": true,
+      "penalized_beam_path": [
+        "expr@1::apart"
+      ],
+      "penalized_beam_expansions": 17,
+      "first_non_root_site": "expr@1",
+      "first_non_root_block": "trig",
+      "path_prefix_3": "expr@1::apart",
+      "reaches_hidden_site_within_3": false,
+      "reaches_hidden_cancel_within_3": false
+    }
+  ]
+}
