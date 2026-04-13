@@ -1,14 +1,15 @@
 # HyperKan: Verified Symbolic Rewrite Search
 
-This repo trains policy/value models for verified symbolic rewrite search. The original global-action benchmark worked end to end and showed **Static KAN > MLP** on verified solve rate; the initial HyperKAN underperformed, then a reduced-capacity recovered HyperKAN nearly matched Static KAN after ablations. The important follow-up result is that the global SymPy action semantics turned out too shallow for robust depth-4+ composition, so the main branch of the project has moved to **scoped actions**: `action = (site, op)`. Scoped smoke, medium, and diverse guided benchmarks validated the pipeline, but they were too clean to separate models by solve rate. The new structural scoped probe is the first benchmark slice with real compositional pressure: seen families are learnable, but both models fail completely on a held-out mixed composition family.
+This repo trains policy/value models for verified symbolic rewrite search. The original global-action benchmark worked end to end and showed **Static KAN > MLP** on verified solve rate; the initial HyperKAN underperformed, then a reduced-capacity recovered HyperKAN nearly matched Static KAN after ablations. The important follow-up result is that the global SymPy action semantics turned out too shallow for robust depth-4+ composition, so the main branch of the project has moved to **scoped actions**: `action = (site, op)`. Scoped smoke, medium, and diverse guided benchmarks validated the pipeline, but they were too clean to separate models by solve rate. The structural scoped probe is the first benchmark slice with real compositional pressure: seen families are learnable, but default inference fails completely on a held-out mixed composition family. Localization-aware inference rescues recovered HyperKAN at moderate depth, while the depth-7 expansion shows that this rescue does not yet scale cleanly.
 
 ## Current Best Results
 
 | Result | Best condition | Outcome |
 |---|---|---|
 | Global benchmark | Static KAN | `163/274` (`59.5%`) |
-| Mixed-family scoped benchmark | Recovered HyperKAN + root penalty `2.0` | `36/60` beam, `24/60` greedy |
+| Mixed-family scoped benchmark | Recovered HyperKAN + root penalty `2.0` + frontier reranker | `48/60` beam, `36/60` greedy |
 | Key mechanism | Early hidden-branch access | solved beam rows: `36/36` reach `expr@2::cancel` within first 3 actions; unsolved: `12/24` |
+| Depth-7 scoped expansion | Recovered HyperKAN + root penalty `2.0` | `18/84` beam; frontier reranker also `18/84` |
 
 ## What This Project Is
 
@@ -241,16 +242,61 @@ Headline result:
 - Best mixed-family rescue:
   - Static KAN + root penalty `2.0`: still `0/60`
   - Recovered HyperKAN + root penalty `2.0`: `24/60` greedy, `36/60` beam
+  - Recovered HyperKAN + root penalty `2.0` + frontier reranker: `36/60` greedy, `48/60` beam
 - Measured mechanism:
   - solved beam rows reaching `expr@2::cancel` within first 3 actions: `36/36`
   - unsolved beam rows reaching `expr@2::cancel` within first 3 actions: `12/24`
 - Training-time localization fixes did not replace the inference rescue.
-- A first sequencing-aware bonus reduced beam expansions but did not improve solve rate.
+- An earlier hidden-action bonus reduced beam expansions but did not improve solve rate; the later frontier-state reranker improved the shallower mixed-family solve count at a seen-family validation cost.
 
 The detailed structural-probe chain now lives in:
 
 - [docs/scoped_structural_results.md](docs/scoped_structural_results.md)
 - [docs/early_frontier_hypothesis.md](docs/early_frontier_hypothesis.md)
+- [docs/early_frontier_reranker_results.md](docs/early_frontier_reranker_results.md)
+
+## Scoped Depth Expansion
+
+The depth-expansion branch adds a deeper held-out family, `mixed_trig_hidden_apart`, by composing three structural blocks:
+
+```text
+expr@1::trigsimp
+add_slice@root[1:3]::together
+expr@2::expand
+numerator@3::factor
+expr@3::cancel
+denominator@1::factor
+expr@1::apart
+```
+
+Artifacts:
+
+- Dataset: `artifacts/scoped_depth_expansion_probe/`
+- Config: [configs/scoped_depth_expansion_probe.yaml](configs/scoped_depth_expansion_probe.yaml)
+- Results: [docs/scoped_depth_expansion_results.md](docs/scoped_depth_expansion_results.md)
+
+Dataset:
+
+- `48` trajectories
+- `228` rows
+- `84` non-terminal held-out test attempts
+- `14` scoped actions
+
+Held-out depth-7 result:
+
+| Condition | Greedy | Beam 4 |
+|---|---:|---:|
+| Default | 0/84 | 0/84 |
+| Root penalty `2.0` | 0/84 | 18/84 |
+| Root penalty `2.0` + frontier reranker | 0/84 | 18/84 |
+
+Failure slice:
+
+- both successful beam conditions solve only the one-action path `expr@1::apart`
+- solved rows by guided distance: distance `1` has `9/12`, distance `3` has `9/12`, and distances `2`, `4`, `5`, `6`, `7` all have `0/12`
+- the frontier reranker reaches a hidden site within 3 actions on `10/84` rows, but reaches hidden cancel within 3 actions on `0/84`
+
+Conclusion: the moderate-depth rescue is real, but the depth-7 expansion gives a clear failure boundary. The current reranker changes part of the early frontier without turning deeper hidden-cancel access into additional solves.
 
 ## One Guided Scoped Trajectory
 
@@ -316,6 +362,7 @@ Proven:
 - A simple state-conditional localization heuristic preserves seen-family behavior but still fails `0/60` on held-out mixed composition.
 - The unconditional rescue on recovered HyperKAN changes the early search frontier, but solved and unsolved rows still share the same penalized top-1 action.
 - Early hidden-branch access within the first 3 actions is a real discriminator between solved and unsolved mixed-family beam cases.
+- The depth-7 scoped expansion exposes a limit of the current inference-side rescue: root penalty still gives a shallow partial rescue, but the frontier reranker does not improve solve rate.
 
 Not yet proven:
 
@@ -329,6 +376,7 @@ Not yet proven:
 - That a simple mixed-signature conditional inference rule can replace the stronger always-on localization bias.
 - That the unconditional rescue can be explained by first-step site choice alone.
 - That a simple hidden-branch bonus can improve solve count beyond the unconditional-penalty baseline without hurting seen families.
+- That the current frontier reranker transfers from moderate-depth mixed composition to full depth-7 traversal.
 
 ## Next Steps
 
