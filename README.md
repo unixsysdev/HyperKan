@@ -125,89 +125,15 @@ Current scoped verification state:
 
 So scoped actions are a live path forward, but this is not the final strict scoped benchmark yet.
 
-## Scoped Smoke Benchmark
+## Scoped Guided Milestones
 
-The scoped smoke benchmark uses guided single-path labels for the `A3+B1` family.
+The first scoped datasets were plumbing checks, not the main benchmark claim:
 
-Artifacts:
+- Smoke `A3+B1`: `24` guided trajectories, both Static KAN and HyperKAN solve `16/16`.
+- Medium `A3+B1`: `200` guided trajectories with a held-out coefficient split, both models solve `48/48`.
+- Diverse guided: `400` guided trajectories across four action-order families, both models solve `400/400` even with greedy search.
 
-- Dataset: `artifacts/scoped_smoke/`
-- Config: [configs/scoped_smoke.yaml](configs/scoped_smoke.yaml)
-- Action vocab: `artifacts/scoped_smoke/scoped_action_vocab.json`
-- Eval: [eval/run_scoped_smoke_eval.py](eval/run_scoped_smoke_eval.py)
-
-Dataset:
-
-- `24` guided `A3+B1` trajectories
-- `120` rows
-- `4` scoped actions
-
-Results:
-
-| Model | Non-terminal test solves |
-|---|---:|
-| Static KAN | 16/16 |
-| HyperKAN | 16/16 |
-
-Conclusion: the scoped data, model head, training loop, and beam inference path work end to end. This is a smoke milestone, not a final benchmark result.
-
-## Scoped Medium Guided Benchmark
-
-The medium guided benchmark scales the same guided `A3+B1` family and uses a harder split.
-
-Artifacts:
-
-- Dataset: `artifacts/scoped_medium/`
-- Config: [configs/scoped_medium.yaml](configs/scoped_medium.yaml)
-- Checkpoints: `artifacts/scoped_medium_checkpoints/`
-
-Dataset:
-
-- `200` guided `A3+B1` trajectories
-- `1000` rows
-- Split: `heldout_coeff`
-- Test split holds out `(a_coeff_0, a_coeff_1) = (4, 4)`
-- `48` non-terminal test attempts
-
-Results:
-
-| Model | Held-out test solves |
-|---|---:|
-| Static KAN | 48/48 |
-| HyperKAN | 48/48 |
-
-Conclusion: the scoped benchmark is alive beyond the tiny smoke run, but guided `A3+B1` alone is still too clean to separate Static KAN and HyperKAN. The held-out coefficient split tests interpolation within one guided family, not full compositional generalization across scoped families. The next benchmark needs more scoped families and stricter verification, not just more rows from the same guided family.
-
-## Scoped Diverse Guided Benchmark
-
-The diverse guided benchmark adds action-order family diversity and uses a structural held-out-family split. It is still guided single-path data, not strict composed verification.
-
-Artifacts:
-
-- Dataset: `artifacts/scoped_diverse/`
-- Config: [configs/scoped_diverse.yaml](configs/scoped_diverse.yaml)
-- Checkpoints: `artifacts/scoped_diverse_checkpoints/`
-
-Dataset:
-
-- `400` guided trajectories
-- `2000` rows
-- `4` action-order families: `b_first_a3_b1`, `trig_b_a2`, `trig_together_b_expand`, `a_first_b_last`
-- Split: `heldout_family`
-- Train families: `a_first_b_last`, `b_first_a3_b1`
-- Validation family: `trig_b_a2`
-- Test family: `trig_together_b_expand`
-- `400` non-terminal held-out test attempts
-- `6` scoped actions
-
-Training did show a harder generalization signal: both models fit train quickly while validation loss rose on the held-out validation family. Search still saturated on the held-out test family:
-
-| Model | Beam 4 held-out test solves | Beam 1 held-out test solves |
-|---|---:|---:|
-| Static KAN | 400/400 | 400/400 |
-| HyperKAN | 400/400 | 400/400 |
-
-Conclusion: adding action-order families is a useful next benchmark step, but these variants are still too templated. The current diverse guided split creates validation-loss pressure but does not yet create solve-rate pressure, even with greedy scoped search.
+These runs validated scoped dataset generation, scoped action heads, training, checkpointing, and beam eval. They also showed that guided action-order variants were too templated to test compositional generalization by solve rate. That is why the branch moves to structural held-out families instead of scaling these earlier splits.
 
 ## Scoped Structural Probe
 
@@ -298,52 +224,44 @@ Failure slice:
 
 Conclusion: the moderate-depth rescue is real, but the depth-7 expansion gives a clear failure boundary. The current reranker changes part of the early frontier without turning deeper hidden-cancel access into additional solves.
 
-## One Guided Scoped Trajectory
+## One Depth-7 Example
 
-This is a concrete guided scoped example showing site selection and blockwise progress inside one trajectory.
+This held-out `mixed_trig_hidden_apart` trajectory shows why the depth-expansion result is a boundary condition rather than a win.
 
 <details>
-<summary>Guided depth-4 A3+B1 trajectory from artifacts/scoped_medium/test.parquet</summary>
+<summary>Guided depth-7 trajectory from artifacts/scoped_depth_expansion_probe/test.parquet</summary>
 
 Metadata:
 
-- `trajectory_id = scoped_smoke_10`
-- `parameter_key = 4_4_1_2_1_4_5_7`
-- family: guided scoped `A3+B1`
+- `trajectory_id = mixed_trig_hidden_apart_3`
+- `parameter_key = 3_4_3_4__1_2_7__2_3_2_5`
+- family: `mixed_trig_hidden_apart`
 
 ```text
-distance 4
-(4/(x + 2) + 4/(x + 1))*(sin(y)**2 + cos(y)**2)
-  + (z**2 + 12*z + 35)/(((z + 1)*(z + 4)*(z + 5)))
+distance 7
+(5*z + 16)/(z**2 + 7*z + 10)
+  + (4/(x + 4) + 3/(x + 3))*(sin(y)**2 + cos(y)**2)
+  + (z**2 + 9*z + 14)/(((z + 1)*(z + 2)**2))
 
---[expr@1::factor]-->
+guided path:
+expr@1::trigsimp
+add_slice@root[1:3]::together
+expr@2::expand
+numerator@3::factor
+expr@3::cancel
+denominator@1::factor
+expr@1::apart
 
-distance 3
-(4/(x + 2) + 4/(x + 1))*(sin(y)**2 + cos(y)**2)
-  + (z + 7)/(((z + 1)*(z + 4)))
-
---[expr@0::trigsimp]-->
-
-distance 2
-(4/(x + 2) + 4/(x + 1))
-  + (z + 7)/(((z + 1)*(z + 4)))
-
---[add_slice@root[0:2]::together]-->
-
-distance 1
-4*(2*x + 3)/((x + 1)*(x + 2))
-  + (z + 7)/(((z + 1)*(z + 4)))
-
---[expr@1::expand]-->
-
-distance 0 / goal
-(8*x/(x**2 + 3*x + 2) + 12/(x**2 + 3*x + 2))
-  + (z + 7)/(((z + 1)*(z + 4)))
+goal:
+7*x/(x**2 + 7*x + 12)
+  + (3/(z + 5) + 2/(z + 2))
+  + 24/(x**2 + 7*x + 12)
+  + (z + 7)/(((z + 1)*(z + 2)))
 ```
 
 </details>
 
-This illustrates the scoped benchmark’s main semantic change: the model predicts both the site and the operation.
+Under root-penalized beam search, the solved depth-expansion rows all take only the one-action shortcut `expr@1::apart`. The model does not traverse the full seven-action chain, and the frontier reranker does not fix that.
 
 ## What Is Proven vs Not Yet Proven
 
@@ -354,8 +272,7 @@ Proven:
 - Recovered HyperKAN can nearly match Static KAN on the global benchmark.
 - Verified search metrics can diverge from supervised validation loss.
 - Scoped action infrastructure works end to end: dataset generation, training, checkpointing, and scoped beam eval.
-- Guided scoped depth-4 trajectories can be trained and solved.
-- A held-out-family guided scoped split can be built, trained, and evaluated.
+- Guided scoped trajectories can be trained and solved, but the early guided splits are saturated.
 - The structural scoped probe is non-saturated and exposes a real held-out composition gap.
 - Root-penalized localization-aware inference is a meaningful official eval condition on the scoped structural probe.
 - A factorized site/op HyperKAN head improves seen-family efficiency but still fails `0/60` on held-out mixed composition and preserves the same root-action bias.
@@ -366,11 +283,10 @@ Proven:
 
 Not yet proven:
 
-- Robust strict depth-4+ density under scoped verification.
+- Robust strict depth-4+ density under strict scoped verification.
 - Shortest-action multi-label tie recovery for composed scoped cases.
-- A search-selected scoped benchmark that cleanly separates Static KAN and HyperKAN on held-out composition.
-- That guided action-order variants are hard enough to test compositional scoped reasoning.
-- That scoped performance transfers to held-out mixed composition once search-based selection is used.
+- A learned reranker or training-time mechanism that internalizes the inference-side rescue.
+- Broader structurally distinct held-out families beyond the current mixed trig/hidden/apart constructions.
 - That a simple training-time `expr@root` avoidance loss can replace inference-time localization bias.
 - That a basic factorized site/op head is sufficient to teach mixed-family localization or compositional subgoal choice.
 - That a simple mixed-signature conditional inference rule can replace the stronger always-on localization bias.
@@ -380,10 +296,10 @@ Not yet proven:
 
 ## Next Steps
 
-- Add more structurally different scoped families, not just more rows or action-order variants.
 - Restore stricter composed verification and shortest-action tie recovery.
-- Keep early hidden-branch access as a first-class diagnostic for scoped search.
-- Re-compare recovered HyperKAN vs Static KAN on the harder scoped benchmark once those pieces are in place.
+- Turn the depth-7 failure slice into a search-aligned training target or learned reranker experiment.
+- Add broader structurally distinct held-out families, not just more rows from the same templates.
+- Re-compare recovered HyperKAN vs Static KAN after the deeper-family failure mechanism is better controlled.
 
 ## Reproduction
 
@@ -393,178 +309,84 @@ All ROCm training/eval commands should run inside the toolbox:
 toolbox run -c llama-rocm-7.2 bash -c 'cd /home/marcel/Work/Mathy && source scripts/toolbox_env.sh && <command>'
 ```
 
-Build guided scoped datasets:
+Historical scoped smoke/medium/diverse commands live in the earlier docs and config files. The current branch-specific build is the depth-expansion structural probe:
 
 ```bash
-python3 scripts/build_scoped_smoke_dataset.py \
-  --samples 24 \
-  --split-mode random \
-  --output-dir artifacts/scoped_smoke
-
-python3 scripts/build_scoped_smoke_dataset.py \
-  --samples 200 \
-  --split-mode heldout_coeff \
-  --output-dir artifacts/scoped_medium
-
-python3 scripts/build_scoped_smoke_dataset.py \
-  --samples 400 \
-  --split-mode heldout_family \
-  --families b_first_a3_b1 trig_b_a2 trig_together_b_expand a_first_b_last \
-  --output-dir artifacts/scoped_diverse
-
 python3 scripts/build_scoped_structural_dataset.py \
   --samples 48 \
   --split-mode heldout_test_family \
-  --families trig_merge hidden_cancel apart_normalize mixed_trig_hidden \
-  --output-dir artifacts/scoped_structural_probe
+  --families trig_merge hidden_cancel apart_normalize mixed_trig_hidden_apart \
+  --output-dir artifacts/scoped_depth_expansion_probe
 ```
 
-Train scoped models:
+Train the recovered HyperKAN-style model:
 
 ```bash
 python3 -m train.run_experiment \
-  --config configs/scoped_smoke.yaml \
-  --model-type static_kan \
-  --output-dir artifacts/scoped_smoke_checkpoints
-
-python3 -m train.run_experiment \
-  --config configs/scoped_smoke.yaml \
+  --config configs/scoped_depth_expansion_probe.yaml \
   --model-type hyperkan \
-  --output-dir artifacts/scoped_smoke_checkpoints
-
-python3 -m train.run_experiment \
-  --config configs/scoped_medium.yaml \
-  --model-type static_kan \
-  --output-dir artifacts/scoped_medium_checkpoints
-
-python3 -m train.run_experiment \
-  --config configs/scoped_medium.yaml \
-  --model-type hyperkan \
-  --output-dir artifacts/scoped_medium_checkpoints
-
-python3 -m train.run_experiment \
-  --config configs/scoped_diverse.yaml \
-  --model-type static_kan \
-  --output-dir artifacts/scoped_diverse_checkpoints
-
-python3 -m train.run_experiment \
-  --config configs/scoped_diverse.yaml \
-  --model-type hyperkan \
-  --output-dir artifacts/scoped_diverse_checkpoints
-
-python3 -m train.run_experiment \
-  --config configs/scoped_structural_probe.yaml \
-  --model-type static_kan \
-  --output-dir artifacts/scoped_structural_probe_checkpoints
-
-python3 -m train.run_experiment \
-  --config configs/scoped_structural_probe.yaml \
-  --model-type hyperkan \
-  --output-dir artifacts/scoped_structural_probe_checkpoints
-
-python3 -m train.run_experiment \
-  --config configs/scoped_structural_probe_hyper_local.yaml \
-  --model-type hyperkan \
-  --output-dir artifacts/scoped_structural_probe_localized_checkpoints
-
-python3 -m train.run_experiment \
-  --config configs/scoped_structural_probe_hyper_sitefirst.yaml \
-  --model-type hyperkan \
-  --output-dir artifacts/scoped_structural_probe_sitefirst_checkpoints
+  --output-dir artifacts/scoped_depth_expansion_probe_checkpoints
 ```
 
-Run scoped eval:
+Run the three official held-out inference conditions:
 
 ```bash
 python3 -m eval.run_scoped_smoke_eval \
-  --dataset artifacts/scoped_smoke/test.parquet \
-  --checkpoint artifacts/scoped_smoke_checkpoints/static_kan/best.pt \
-  --action-vocab artifacts/scoped_smoke/scoped_action_vocab.json \
-  --output artifacts/scoped_smoke_checkpoints/static_kan/scoped_smoke_eval.json \
+  --dataset artifacts/scoped_depth_expansion_probe/test.parquet \
+  --checkpoint artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_5.pt \
+  --action-vocab artifacts/scoped_depth_expansion_probe/scoped_action_vocab.json \
+  --output artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/test_beam4_default.json \
   --beam-width 4 \
-  --max-steps 4
+  --max-steps 7 \
+  --value-weight 0.2
 
 python3 -m eval.run_scoped_smoke_eval \
-  --dataset artifacts/scoped_medium/test.parquet \
-  --checkpoint artifacts/scoped_medium_checkpoints/hyperkan/best.pt \
-  --action-vocab artifacts/scoped_medium/scoped_action_vocab.json \
-  --output artifacts/scoped_medium_checkpoints/hyperkan/scoped_medium_eval.json \
+  --dataset artifacts/scoped_depth_expansion_probe/test.parquet \
+  --checkpoint artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_5.pt \
+  --action-vocab artifacts/scoped_depth_expansion_probe/scoped_action_vocab.json \
+  --output artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/test_beam4_root2.json \
   --beam-width 4 \
-  --max-steps 4
-
-python3 -m eval.run_scoped_smoke_eval \
-  --dataset artifacts/scoped_diverse/test.parquet \
-  --checkpoint artifacts/scoped_diverse_checkpoints/static_kan/best.pt \
-  --action-vocab artifacts/scoped_diverse/scoped_action_vocab.json \
-  --output artifacts/scoped_diverse_checkpoints/static_kan/scoped_diverse_eval.json \
-  --beam-width 4 \
-  --max-steps 4
-
-python3 -m eval.run_scoped_smoke_eval \
-  --dataset artifacts/scoped_diverse/test.parquet \
-  --checkpoint artifacts/scoped_diverse_checkpoints/hyperkan/best.pt \
-  --action-vocab artifacts/scoped_diverse/scoped_action_vocab.json \
-  --output artifacts/scoped_diverse_checkpoints/hyperkan/scoped_diverse_eval.json \
-  --beam-width 4 \
-  --max-steps 4
-
-python3 -m eval.run_scoped_smoke_eval \
-  --dataset artifacts/scoped_structural_probe/test.parquet \
-  --checkpoint artifacts/scoped_structural_probe_checkpoints/static_kan/best.pt \
-  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
-  --output artifacts/scoped_structural_probe_checkpoints/static_kan/test_beam4.json \
-  --beam-width 4 \
-  --max-steps 5
-
-python3 -m eval.run_scoped_smoke_eval \
-  --dataset artifacts/scoped_structural_probe/test.parquet \
-  --checkpoint artifacts/scoped_structural_probe_checkpoints/hyperkan/best.pt \
-  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
-  --output artifacts/scoped_structural_probe_checkpoints/hyperkan/test_beam4.json \
-  --beam-width 4 \
-  --max-steps 5
-
-python3 -m eval.run_scoped_smoke_eval \
-  --dataset artifacts/scoped_structural_probe/test.parquet \
-  --checkpoint artifacts/scoped_structural_probe_search_checkpoints/hyperkan/best_search.pt \
-  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
-  --output artifacts/scoped_structural_probe_search_checkpoints/hyperkan/test_beam4_root2.json \
-  --beam-width 4 \
-  --max-steps 5 \
+  --max-steps 7 \
+  --value-weight 0.2 \
   --root-action-penalty 2.0
+
+python3 -m eval.run_scoped_smoke_eval \
+  --dataset artifacts/scoped_depth_expansion_probe/test.parquet \
+  --checkpoint artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_5.pt \
+  --action-vocab artifacts/scoped_depth_expansion_probe/scoped_action_vocab.json \
+  --output artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/test_beam4_root2_frontier.json \
+  --beam-width 4 \
+  --max-steps 7 \
+  --value-weight 0.2 \
+  --root-action-penalty 2.0 \
+  --frontier-bonus 0.5 \
+  --frontier-bonus-steps 3 \
+  --frontier-bonus-mode hidden_cancel_access
 ```
 
-Select checkpoints by scoped search metric:
+Run the branch-specific diagnostic failure-slice analysis. The official aggregate evals are the `test_beam4_*.json` files above; these diagnostic runs replay the path enough to inspect early hidden-branch access.
 
 ```bash
-python3 scripts/select_scoped_checkpoint.py \
-  --checkpoint-dir artifacts/scoped_structural_probe_checkpoints/static_kan \
-  --dataset artifacts/scoped_structural_probe/val.parquet \
-  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
+python3 scripts/analyze_penalty_rescue_paths.py \
+  --dataset artifacts/scoped_depth_expansion_probe/test.parquet \
+  --checkpoint artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_5.pt \
+  --action-vocab artifacts/scoped_depth_expansion_probe/scoped_action_vocab.json \
+  --output artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/depth7_root2_path_analysis.json \
   --beam-width 4 \
-  --max-steps 5 \
-  --output artifacts/scoped_structural_probe_checkpoints/static_kan/search_selection.json \
-  --copy-best-to artifacts/scoped_structural_probe_checkpoints/static_kan/best_search.pt
+  --max-steps 7 \
+  --root-penalty 2.0
 
-python3 scripts/select_scoped_checkpoint.py \
-  --checkpoint-dir artifacts/scoped_structural_probe_localized_checkpoints/hyperkan \
-  --dataset artifacts/scoped_structural_probe/val.parquet \
-  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
+python3 scripts/analyze_penalty_rescue_paths.py \
+  --dataset artifacts/scoped_depth_expansion_probe/test.parquet \
+  --checkpoint artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/epoch_5.pt \
+  --action-vocab artifacts/scoped_depth_expansion_probe/scoped_action_vocab.json \
+  --output artifacts/scoped_depth_expansion_probe_checkpoints/hyperkan/hyperkan/depth7_root2_frontier_path_analysis.json \
   --beam-width 4 \
-  --max-steps 5 \
-  --include-best-pt \
-  --output artifacts/scoped_structural_probe_localized_checkpoints/hyperkan/search_selection_val_beam4.json \
-  --copy-best-to artifacts/scoped_structural_probe_localized_checkpoints/hyperkan/best_search.pt
-
-python3 scripts/select_scoped_checkpoint.py \
-  --checkpoint-dir artifacts/scoped_structural_probe_sitefirst_checkpoints/hyperkan \
-  --dataset artifacts/scoped_structural_probe/val.parquet \
-  --action-vocab artifacts/scoped_structural_probe/scoped_action_vocab.json \
-  --beam-width 4 \
-  --max-steps 5 \
-  --include-best-pt \
-  --output artifacts/scoped_structural_probe_sitefirst_checkpoints/hyperkan/search_selection_val_beam4.json \
-  --copy-best-to artifacts/scoped_structural_probe_sitefirst_checkpoints/hyperkan/best_search.pt
+  --max-steps 7 \
+  --root-penalty 2.0 \
+  --frontier-bonus 0.5 \
+  --frontier-bonus-steps 3 \
+  --frontier-bonus-mode hidden_cancel_access
 ```
 
 For the original global benchmark and historical plots, see:
