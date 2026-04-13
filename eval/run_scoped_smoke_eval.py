@@ -34,6 +34,7 @@ def evaluate_dataset(
     learned_frontier_weight: float,
     learned_frontier_steps: int,
     device: torch.device,
+    limit_attempts: int = 0,
 ) -> dict[str, object]:
     solved = 0
     solved_steps = 0
@@ -47,6 +48,8 @@ def evaluate_dataset(
     for row in frame.itertuples(index=False):
         if row.distance_to_goal == 0:
             continue
+        if limit_attempts and attempts >= limit_attempts:
+            break
         attempts += 1
         family = getattr(row, "expr_family", "unknown")
         per_family[family]["attempts"] += 1
@@ -135,6 +138,7 @@ def main() -> None:
     parser.add_argument("--frontier-bonus-mode", choices=("none", "hidden_cancel_access", "hidden_site_access"), default="none")
     parser.add_argument("--learned-frontier-weight", type=float, default=0.0)
     parser.add_argument("--learned-frontier-steps", type=int, default=0)
+    parser.add_argument("--limit-attempts", type=int, default=0)
     args = parser.parse_args()
 
     payload = torch.load(args.checkpoint, map_location="cpu")
@@ -179,6 +183,7 @@ def main() -> None:
         learned_frontier_weight=float(args.learned_frontier_weight),
         learned_frontier_steps=int(args.learned_frontier_steps),
         device=device,
+        limit_attempts=int(args.limit_attempts),
     )
     metrics["root_action_penalty"] = float(args.root_action_penalty)
     metrics["root_action_penalty_mode"] = str(args.root_action_penalty_mode)
@@ -189,6 +194,7 @@ def main() -> None:
     metrics["frontier_bonus_mode"] = str(args.frontier_bonus_mode)
     metrics["learned_frontier_weight"] = float(args.learned_frontier_weight)
     metrics["learned_frontier_steps"] = int(args.learned_frontier_steps)
+    metrics["limit_attempts"] = int(args.limit_attempts)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     print(json.dumps(metrics, indent=2))

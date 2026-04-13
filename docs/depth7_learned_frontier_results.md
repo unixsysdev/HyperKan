@@ -47,3 +47,35 @@ All results below use beam width 4 and max steps 7 on `artifacts/scoped_depth7_f
 This first check answers a narrow question: depth-7 is trainable when depth-7 examples are present in the training split.  It does not yet show that the learned frontier head improves search, because default inference already solves all 7 in-family depth-7 test rows.
 
 The learned-frontier inference score preserves the depth-7 solves but hurts overall solve rate and expansions at weight 0.5.  The next useful experiment is therefore a harder split or curriculum setting where the default policy does not already saturate the depth-7 rows, then a smaller learned-frontier weight sweep such as 0.05, 0.1, and 0.25.
+
+## Transfer Diagnostic
+
+The in-family split above is too easy, so the next check uses a harder curriculum/transfer split:
+
+- Raw dataset: `artifacts/scoped_depth7_frontier_transfer_raw/`
+- Frontier-target dataset: `artifacts/scoped_depth7_frontier_transfer/`
+- Train/validation families: `trig_merge`, `hidden_cancel`, `apart_normalize`, `mixed_trig_hidden`
+- Test family: `mixed_trig_hidden_apart`
+- Rows: 300 total, 170 train, 34 validation, 96 test
+- Frontier positives: 30 train, 6 validation, 36 test
+
+The model trains cleanly here too:
+
+- train frontier loss: 0.569 -> 0.053
+- validation frontier loss: 0.427 -> 0.078
+
+Full held-out depth-7 beam evaluation is slow on this split because failed beams expand heavily.  The first diagnostic slice uses the first 12 non-terminal held-out depth-7 attempts:
+
+| Condition | Solves | Mean expansions |
+| --- | ---: | ---: |
+| Default | 0/12 | 257.17 |
+| Root penalty 2.0 | 0/12 | 312.17 |
+| Root penalty 2.0 + heuristic frontier reranker 0.5 | 0/12 | 317.33 |
+| Learned frontier 0.05, first 4 steps | 0/12 | 260.42 |
+| Learned frontier 0.1, first 4 steps | 0/12 | 258.42 |
+| Learned frontier 0.25, first 4 steps | 0/12 | 278.58 |
+| Root penalty 2.0 + learned frontier 0.1, first 4 steps | 0/12 | 316.67 |
+
+This is a stronger scientific checkpoint than the in-family run, and it is negative so far.  The learned frontier head learns the moderate-depth target but does not transfer into solved depth-7 held-out rows on this diagnostic slice.  Small learned-frontier weights are mostly neutral at 0.05 and 0.1, while 0.25 starts to increase expansions.  Root penalty and the heuristic reranker also do not solve the first 12 transfer rows for this trained model.
+
+The current conclusion remains: the auxiliary head is technically wired and learnable, but this implementation has not yet improved the depth-7 transfer problem.
