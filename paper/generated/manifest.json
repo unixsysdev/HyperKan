@@ -7,6 +7,7 @@
     "paper/generated/figures/greedy_vs_beam.png",
     "paper/generated/figures/hyperkan_same_state_diff_goals.png",
     "paper/generated/figures/spline_comparison.png",
+    "paper/generated/figures/root_collapse_failed_trajectory.png",
     "paper/generated/figures/trajectory_failed_all.png",
     "paper/generated/figures/trajectory_solved_all.png",
     "paper/generated/figures/trajectory_static_kan_only.png"

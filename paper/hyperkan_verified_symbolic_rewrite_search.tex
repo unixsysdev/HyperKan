@@ -333,14 +333,15 @@ An earlier hidden-action bonus reduced beam expansions but did not improve solve
   \caption{Solved only by \staticKAN{} under the shallow global benchmark.}
 \end{subfigure}
 
-\vspace{0.6em}
-\begin{subfigure}[t]{0.75\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{trajectory_failed_all.png}
-  \caption{Failed by all models. The explored graph is broad but does not reach the exact target.}
-\end{subfigure}
-\caption{Representative verified rewrite trajectories from the global benchmark. Green paths show successful beam trajectories; gray edges indicate explored dead branches. These examples illustrate why exact target form and search frontier management matter even at shallow depth.}
+\caption{Representative successful verified rewrite trajectories from the global benchmark. Green paths show successful beam trajectories; gray edges indicate explored branches. These examples illustrate why exact target form and search frontier management matter even at shallow depth.}
 \label{fig:trajectory-examples}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.8\linewidth]{root_collapse_failed_trajectory.png}
+\caption{Representative failed rewrite trajectory. This standalone failure graph is the former third panel of Figure~\ref{fig:trajectory-examples}; gray edges indicate explored dead branches that do not reach the exact target.}
+\label{fig:failed-trajectory-standalone}
 \end{figure}
 
 \FloatBarrier
