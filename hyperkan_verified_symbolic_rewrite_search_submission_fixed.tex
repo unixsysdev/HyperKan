@@ -51,7 +51,7 @@
 \begin{abstract}
 We present a controlled mechanistic benchmark study of learned heuristics for formally verified symbolic rewrite search in algebraic reasoning. Our starting point is a global-action benchmark in which a model predicts one of six whole-expression \sympy{} rewrites (\texttt{expand}, \texttt{factor}, \texttt{cancel}, \texttt{apart}, \texttt{together}, \texttt{trigsimp}) toward an exact target form, and a search loop verifies success by executing those rewrites symbolically. On this benchmark, a \staticKAN{} head outperforms an \mlp{} baseline, while an initial goal-conditioned \hyperkan{} underperforms and only becomes competitive after reducing hypernetwork capacity. Exact graph mining of the benchmark reveals a deeper issue: whole-expression rewrite semantics make composition shallow, so apparent difficulty collapses under global transformations.
 
-To address this, we introduce a scoped-action benchmark in which actions are pairs of the form $(u,o)$, where $u$ is a deterministic subtree location and $o$ is one of the original rewrite families. Guided scoped datasets validate that the end-to-end pipeline is trainable, but only a structural held-out-family probe produces real compositional pressure. On this probe, both \staticKAN{} and recovered \hyperkan{} solve seen families but fail completely on a held-out mixed composition family by default, revealing a root-action collapse failure mode. A simple inference-side localization bias substantially rescues \hyperkan{}, and a frontier-aware reranker improves held-out mixed-family beam solve rate further, indicating that early hidden-branch access is a key mechanism for compositional success. A deeper depth-7 expansion then exposes a clear failure boundary: the moderate-depth rescue does not carry over cleanly to deeper compositions. Additional bounded diagnostics show that learned frontier supervision and a frontier-head-only RL controller do not internalize this deeper transfer behavior.
+To address this, we introduce a scoped-action benchmark in which actions are pairs of the form $(u,o)$, where $u$ is a deterministic subtree location and $o$ is one of the original rewrite families. Guided scoped datasets validate that the end-to-end pipeline is trainable, but only a structural held-out-family probe produces real compositional pressure. On this probe, both \staticKAN{} and recovered \hyperkan{} solve seen families but fail completely on a held-out mixed composition family by default, revealing a root-action collapse failure mode. A simple inference-side localization bias substantially rescues \hyperkan{}, and a frontier-aware reranker improves held-out mixed-family beam solve rate further, indicating that early hidden-branch access is a key mechanism for compositional success. A lightweight Transformer-encoder diagnostic also fails by default on the held-out mixed family, suggesting that the failure is not confined to the original recurrent encoder. A deeper depth-7 expansion then exposes a clear failure boundary: the moderate-depth rescue does not carry over cleanly to deeper compositions. Additional bounded diagnostics show that learned frontier supervision and a frontier-head-only RL controller do not internalize this deeper transfer behavior.
 
 These controlled results support four bounded conclusions. First, benchmark semantics and action granularity can dominate apparent reasoning difficulty in this verified symbolic search setting. Second, supervised validation loss is an unreliable proxy for search performance. Third, moderate compositional gains can be obtained through inference-time frontier shaping, but current training objectives do not internalize that behavior. Fourth, the current mechanism has a measurable depth boundary rather than scaling smoothly with chain length. We do not claim that \hyperkan{} wins universally, that root-collapse is universal across neural architectures, or that the resulting system solves symbolic reasoning.
 \end{abstract}
@@ -298,24 +298,27 @@ Straightforward training-time fixes do not internalize this behavior. A small \t
 
 \subsection{Early-frontier reranker}
 
-The strongest positive result comes from making the mechanism explicit. We add a frontier-aware inference adjustment that rewards early access to the hidden branch while keeping the root penalty. Table~\ref{tab:structural-rescue} summarizes the moderate-depth structural-probe result.
+The strongest positive result comes from making the mechanism explicit. We add a frontier-aware inference adjustment that rewards early access to the hidden branch while keeping the root penalty. Table~\ref{tab:structural-rescue} summarizes the moderate-depth structural-probe result and includes a lightweight Transformer-encoder diagnostic.
 
 \begin{table}[t]
 \centering
-\caption{Held-out \texttt{mixed\_trig\_hidden} structural-probe results. The frontier reranker is the best moderate-depth result but remains an inference-side intervention.}
+\caption{Held-out \texttt{mixed\_trig\_hidden} structural-probe results. The Transformer row is a bounded diagnostic, not a tuned architecture study. The frontier reranker is the best moderate-depth result but remains an inference-side intervention.}
 \label{tab:structural-rescue}
-\begin{tabular}{lrrr}
+\small
+\begin{tabular}{llccc}
 \toprule
-Condition & Validation beam-4 & Greedy & Beam-4 \\
+Model & Encoder & Default & Root penalty & Root + frontier \\
 \midrule
-\staticKAN{} default & --- & 0/60 & 0/60 \\
-\staticKAN{} + root penalty 2.0 & --- & 0/60 & 0/60 \\
-Recovered \hyperkan{} default & 16/16 & 0/60 & 0/60 \\
-Recovered \hyperkan{} + root penalty 2.0 & 16/16 & 24/60 & 36/60 \\
-Recovered \hyperkan{} + root penalty 2.0 + frontier reranker & 14/16 & 36/60 & 48/60 \\
+\mlp{} & BiGRU & 0/60 & 0/60 & 0/60 \\
+\staticKAN{} & BiGRU & 0/60 & 0/60 & 0/60 \\
+Recovered \hyperkan{} & BiGRU & 0/60 & 36/60 & 48/60 \\
+Transformer-\mlp{} & Transformer & 0/60 & 3/60 & 24/60 \\
 \bottomrule
 \end{tabular}
+\normalsize
 \end{table}
+
+To test whether the observed root-collapse was merely a recurrent-encoder artifact, we evaluated a lightweight Transformer encoder under the same scoped benchmark and inference conditions. It also failed completely by default on the held-out mixed family (0/60), improved only marginally under root penalty (3/60), and required the same frontier-aware inference shaping to recover moderate-depth performance (24/60). This suggests that the failure is not specific to the original recurrent encoder, although broader architectural coverage remains future work.
 
 An earlier hidden-action bonus reduced beam expansions but did not improve solve count and hurt seen-family validation. The later frontier-state reranker improves solve count at moderate depth. This should not be read as a fully internalized learned solution. It is an inference-side intervention that changes the early frontier enough for hidden-branch states to survive beam pruning.
 
@@ -343,7 +346,7 @@ An earlier hidden-action bonus reduced beam expansions but did not improve solve
 \FloatBarrier
 \section{Depth-7 Expansion: A Clear Failure Boundary}
 
-To test whether the moderate-depth rescue scales, we add a deeper held-out family, \texttt{mixed\_trig\_hidden\_apart}, built from three structural blocks with a guided chain of length 7:
+To test whether the moderate-depth rescue scales, we add a deeper held-out family, \url{mixed_trig_hidden_apart}, built from three structural blocks with a guided chain of length 7:
 \[
 \begin{aligned}
 \texttt{expr@1::trigsimp}
@@ -389,6 +392,8 @@ Root penalty 2.0 + frontier reranker & 9/12 & 0/12 & 9/12 & 0/12 & 0/12 & 0/12 &
 \end{table}
 
 The reranker reaches a hidden site early on 10/84 rows, but reaches hidden cancel within the first 3 actions on 0/84 rows. It reshapes part of the frontier without converting that into deeper hidden-branch solves. This depth-7 probe is therefore a genuine failure boundary. The moderate-depth rescue is real, but it does not carry over cleanly to deeper compositions.
+
+The lightweight Transformer-\mlp{} diagnostic is consistent with this boundary: on the first 12 non-terminal held-out \texttt{mixed\_trig\_hidden\_apart} attempts, it solves 0/12 under default search, 0/12 under root penalty, and 0/12 under root penalty plus the heuristic frontier reranker. This is supporting evidence for the depth boundary, not a headline claim about all attention-based encoders.
 
 \section{Internalization Diagnostics: Learned Frontier and RL}
 
@@ -470,7 +475,7 @@ These diagnostics sharpen the interpretation of the depth-7 boundary. The fronti
 
 This work has several important limitations. First, the strongest scoped results still rely on guided single-path labels or guided accepted families rather than fully strict composed shortest-action recovery at dataset scale. Second, the successful rescues are inference-side interventions. They provide mechanism insight, but they are not yet clean end-to-end learned solutions. Third, the benchmark remains highly structured. Although the structural probe is stronger than the guided smoke and medium datasets, it is still a controlled symbolic setting rather than a broad theorem-proving benchmark. Fourth, the depth-7 expansion shows that the current rescue mechanism has a limited regime of validity.
 
-The model-class scope is also limited. We evaluate \mlp{}, \staticKAN{}, and \hyperkan{} policy heads under a shared encoder to isolate policy-head and search-control effects. We do not claim that root-collapse is universal across all neural architectures; testing attention-based encoders and larger sequence models is an important next step. A lightweight Transformer-encoder diagnostic can address this concern only as a bounded check, not as a replacement for a systematic architecture study.
+The model-class scope is also limited. Most experiments evaluate \mlp{}, \staticKAN{}, and \hyperkan{} policy heads under a shared BiGRU encoder to isolate policy-head and search-control effects. We add one lightweight Transformer-\mlp{} diagnostic to test whether the main held-out collapse is confined to the recurrent encoder. We do not claim that root-collapse is universal across all neural architectures; broader attention-based encoders and larger sequence models remain important future work.
 
 The public repository includes dataset builders, training configurations, evaluation scripts, checkpoint-selection utilities, and the figure-generation code used in this paper. Reproduction instructions are given from repository root rather than a machine-specific path. The core paper story is therefore reproducible from the released code and artifacts, even though the repository also contains ongoing exploratory branches and diagnostics.
 
@@ -529,6 +534,7 @@ Setting & Best condition & Outcome\\
 \midrule
 Global benchmark & \staticKAN{} & 163/274 (59.5\%)\\
 Moderate-depth mixed-family scoped benchmark & Recovered \hyperkan{} + root penalty 2.0 + frontier reranker & 48/60 beam, 36/60 greedy\\
+Transformer diagnostic & Transformer-\mlp{} + root penalty 2.0 + frontier reranker & 24/60 beam; default 0/60\\
 Moderate-depth mechanism & Early hidden-branch access & all 36 solved beam rows reach hidden cancel within 3 actions\\
 Depth-7 scoped expansion & Recovered \hyperkan{} + root penalty 2.0 & 18/84 beam\\
 \bottomrule
