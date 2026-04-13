@@ -1,0 +1,30 @@
+{
+  "benchmark_mode": "scoped_actions",
+  "label_mode": "guided_single_path",
+  "samples": 48,
+  "split_mode": "heldout_test_family",
+  "families": [
+    "trig_merge",
+    "hidden_cancel",
+    "apart_normalize",
+    "mixed_trig_hidden"
+  ],
+  "rows": 204,
+  "train": 110,
+  "val": 22,
+  "test": 72,
+  "action_vocab": {
+    "add_slice@root[0:2]::together": 0,
+    "denominator@root::factor": 1,
+    "expr@0::trigsimp": 2,
+    "expr@1::expand": 3,
+    "expr@2::cancel": 4,
+    "expr@root::apart": 5,
+    "expr@root::cancel": 6,
+    "expr@root::expand": 7,
+    "expr@root::together": 8,
+    "expr@root::trigsimp": 9,
+    "numerator@2::factor": 10,
+    "numerator@root::factor": 11
+  }
+}
