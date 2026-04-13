@@ -2,13 +2,15 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from functools import lru_cache
 from hashlib import sha1
 from math import log
 from pathlib import Path
 
+import sympy
 import torch
 
-from data_gen.canonicalize import structural_string
+from data_gen.canonicalize import parse_expression, structural_string
 from data_gen.scoped_actions import apply_scoped_action_unchecked
 from tokenizer.srepr_tokenizer import SReprTokenizer
 
@@ -73,6 +75,31 @@ def is_root_action_id(action_id: str) -> bool:
     return site_id in {"expr@root", "numerator@root", "denominator@root"}
 
 
+@lru_cache(maxsize=200_000)
+def should_apply_conditional_root_penalty(expression: str, mode: str) -> bool:
+    if mode == "always":
+        return True
+    if mode == "mixed_signatures":
+        expr = parse_expression(expression)
+        addends = sympy.Add.make_args(expr)
+        if len(addends) < 2:
+            return False
+        has_trig_addend = any(addend.has(sympy.sin) or addend.has(sympy.cos) for addend in addends)
+        has_hidden_factor_addend = False
+        for addend in addends:
+            if addend.has(sympy.sin) or addend.has(sympy.cos):
+                continue
+            _, denominator = sympy.fraction(addend)
+            if denominator == 1:
+                continue
+            denominator_factors = sympy.Mul.make_args(denominator)
+            if len(denominator_factors) >= 2:
+                has_hidden_factor_addend = True
+                break
+        return has_trig_addend and has_hidden_factor_addend
+    raise ValueError(f"Unknown root penalty mode: {mode}")
+
+
 def run_scoped_beam_search(
     model: torch.nn.Module,
     tokenizer: SReprTokenizer,
@@ -86,6 +113,7 @@ def run_scoped_beam_search(
     revisit_penalty: float = 1.5,
     policy_temperature: float = 1.0,
     root_action_penalty: float = 0.0,
+    root_action_penalty_mode: str = "always",
     device: torch.device | None = None,
 ) -> dict[str, object]:
     if device is None:
@@ -119,7 +147,11 @@ def run_scoped_beam_search(
             with torch.no_grad():
                 outputs = model(state_ids, state_lengths, goal_ids, goal_lengths)
             logits = outputs["logits"][0].detach().clone()
-            if root_action_penalty:
+            apply_penalty = root_action_penalty and should_apply_conditional_root_penalty(
+                node.expression,
+                root_action_penalty_mode,
+            )
+            if apply_penalty:
                 for action_idx, action_id in enumerate(action_vocab):
                     if is_root_action_id(action_id):
                         logits[action_idx] -= float(root_action_penalty)

@@ -317,6 +317,17 @@ Second training-time localization fix (site-first factorized head, also negative
 
 Interpretation: the factorized site/op head improved efficiency on seen families but did not fix the held-out compositional failure or even alter the root-action bias on the mixed family. So the next intervention should not be "more site-first loss of the same kind"; it needs a stronger mechanism for localized subgoal choice or subgoal switching.
 
+State-conditional localization inference (also negative):
+
+- Added an official conditional root-penalty mode in scoped search/eval that only downweights root actions on states matching a simple mixed-signature heuristic: a root `Add` with both a trig addend and a separate factorized rational addend.
+- This preserves seen-family behavior for recovered HyperKAN:
+- validation beam 4, root penalty `2.0`, `mixed_signatures` mode: `16/16`
+- mean expansions: `29.31`
+- But it does **not** reproduce the held-out mixed-family rescue:
+- held-out `mixed_trig_hidden`, root penalty `2.0`, `mixed_signatures` mode: `0/60` greedy, `0/60` beam
+
+So the best mixed-family result is still the simpler always-on inference penalty on recovered HyperKAN (`24/60` greedy, `36/60` beam at penalty `2.0`). This conditional heuristic is too weak: it avoids hurting seen families, but it does not trigger the compositional rescue.
+
 ## One Guided Scoped Trajectory
 
 <details>
@@ -376,6 +387,7 @@ Proven:
 - The structural scoped probe is non-saturated and exposes a real held-out composition gap.
 - Root-penalized localization-aware inference is a meaningful official eval condition on the scoped structural probe.
 - A factorized site/op HyperKAN head improves seen-family efficiency but still fails `0/60` on held-out mixed composition and preserves the same root-action bias.
+- A simple state-conditional localization heuristic preserves seen-family behavior but still fails `0/60` on held-out mixed composition.
 
 Not yet proven:
 
@@ -386,6 +398,7 @@ Not yet proven:
 - That scoped performance transfers to held-out mixed composition once search-based selection is used.
 - That a simple training-time `expr@root` avoidance loss can replace inference-time localization bias.
 - That a basic factorized site/op head is sufficient to teach mixed-family localization or compositional subgoal choice.
+- That a simple mixed-signature conditional inference rule can replace the stronger always-on localization bias.
 
 ## Next Steps
 
@@ -394,6 +407,7 @@ Not yet proven:
 - Test localization-biased search or site-first decoding as the next minimal intervention.
 - Replace the failed root-avoidance auxiliary loss with a stronger localization mechanism, likely site-first decoding or a more explicit site-selection objective.
 - Move past simple site-first factorization and test a mechanism that can change subgoal sequencing, not just the action parametrization.
+- Move past simple conditional penalties and test an explicit subgoal-progress signal or another mechanism that can change the default ranking on mixed compositions.
 - Add more structurally different scoped families, not just action-order variants or more rows.
 - Restore strict composed verification.
 - Recover shortest-action ties for accepted scoped rows.
