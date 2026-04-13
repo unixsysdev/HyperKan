@@ -1,0 +1,49 @@
+# Depth-7 Learned Frontier First Check
+
+Branch: `feature/depth7-learned-frontier`
+
+This check adds an optional HyperKAN frontier head trained from guided short-horizon labels.  The first run is an in-family mechanism check, not a held-out-family generalization claim: the random split includes `mixed_trig_hidden_apart` rows in train/validation/test so the model can see depth-7 examples during training.
+
+## Dataset
+
+- Raw dataset: `artifacts/scoped_depth7_frontier_infamily_raw/`
+- Frontier-target dataset: `artifacts/scoped_depth7_frontier_infamily/`
+- Families: `trig_merge`, `hidden_cancel`, `apart_normalize`, `mixed_trig_hidden`, `mixed_trig_hidden_apart`
+- Rows: 300 total, 215 train, 42 validation, 43 test
+- Action vocabulary: 19 actions
+- Frontier target: guided action reaches the inferred non-root hidden-cancel action within the next 3 guided actions
+- Frontier positives: 54 train, 9 validation, 9 test
+
+## Training
+
+Command:
+
+```bash
+PYTHONPATH=. LD_LIBRARY_PATH=/opt/rocm/lib:/opt/rocm/lib64:$LD_LIBRARY_PATH \
+  python3 train/run_experiment.py \
+  --config configs/scoped_depth7_frontier_infamily.yaml \
+  --model-type hyperkan \
+  --output-dir artifacts/scoped_depth7_frontier_infamily_checkpoints
+```
+
+The 5-epoch run finished cleanly on ROCm.  The frontier loss was learnable:
+
+- train frontier loss: 0.464 -> 0.063
+- validation frontier loss: 0.267 -> 0.058
+
+## Test Results
+
+All results below use beam width 4 and max steps 7 on `artifacts/scoped_depth7_frontier_infamily/test.parquet`.
+
+| Condition | Overall solves | `mixed_trig_hidden_apart` solves | Mean expansions |
+| --- | ---: | ---: | ---: |
+| Default | 30/34 | 7/7 | 84.44 |
+| Root penalty 2.0 | 27/34 | 7/7 | 100.82 |
+| Learned frontier 0.5, first 4 steps | 25/34 | 7/7 | 115.97 |
+| Root penalty 2.0 + learned frontier 0.5, first 4 steps | 24/34 | 7/7 | 125.06 |
+
+## Interpretation
+
+This first check answers a narrow question: depth-7 is trainable when depth-7 examples are present in the training split.  It does not yet show that the learned frontier head improves search, because default inference already solves all 7 in-family depth-7 test rows.
+
+The learned-frontier inference score preserves the depth-7 solves but hurts overall solve rate and expansions at weight 0.5.  The next useful experiment is therefore a harder split or curriculum setting where the default policy does not already saturate the depth-7 rows, then a smaller learned-frontier weight sweep such as 0.05, 0.1, and 0.25.

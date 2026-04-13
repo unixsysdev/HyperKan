@@ -99,6 +99,7 @@ def main() -> None:
     tokenizer = SReprTokenizer.load(tokenizer_path)
     config["model"]["vocab_size"] = tokenizer.vocab_size
     config["model"]["pad_id"] = tokenizer.pad_id
+    config["model"]["num_actions"] = len(load_scoped_action_vocab(config["data"]["action_vocab_path"]))
     expr_root_action_mask = build_expr_root_action_mask(config["data"]["action_vocab_path"])
     action_site_membership = None
     action_op_membership = None
@@ -157,6 +158,7 @@ def main() -> None:
             action_op_membership=action_op_membership,
             site_loss_weight=float(config["train"].get("site_loss_weight", 0.0)),
             op_loss_weight=float(config["train"].get("op_loss_weight", 0.0)),
+            frontier_loss_weight=float(config["train"].get("frontier_loss_weight", 0.0)),
         )
         val_metrics = run_epoch(
             model,
@@ -173,6 +175,7 @@ def main() -> None:
             action_op_membership=action_op_membership,
             site_loss_weight=float(config["train"].get("site_loss_weight", 0.0)),
             op_loss_weight=float(config["train"].get("op_loss_weight", 0.0)),
+            frontier_loss_weight=float(config["train"].get("frontier_loss_weight", 0.0)),
         )
         record = {"epoch": epoch, "train": train_metrics, "val": val_metrics}
         history.append(record)

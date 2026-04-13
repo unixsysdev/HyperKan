@@ -42,5 +42,6 @@ def create_model(model_type: str, config: dict[str, Any]):
             num_ops=model_cfg.get("num_ops"),
             action_to_site_idx=model_cfg.get("action_to_site_idx"),
             action_to_op_idx=model_cfg.get("action_to_op_idx"),
+            use_frontier_head=bool(model_cfg.get("use_frontier_head", False)),
         )
     raise ValueError(f"Unknown model type: {model_type}")

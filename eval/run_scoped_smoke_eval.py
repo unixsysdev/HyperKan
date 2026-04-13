@@ -31,6 +31,8 @@ def evaluate_dataset(
     frontier_bonus: float,
     frontier_bonus_steps: int,
     frontier_bonus_mode: str,
+    learned_frontier_weight: float,
+    learned_frontier_steps: int,
     device: torch.device,
 ) -> dict[str, object]:
     solved = 0
@@ -67,6 +69,8 @@ def evaluate_dataset(
             frontier_bonus=frontier_bonus,
             frontier_bonus_steps=frontier_bonus_steps,
             frontier_bonus_mode=frontier_bonus_mode,
+            learned_frontier_weight=learned_frontier_weight,
+            learned_frontier_steps=learned_frontier_steps,
             device=device,
         )
         expansions = len(outcome.get("explored", ()))
@@ -129,6 +133,8 @@ def main() -> None:
     parser.add_argument("--frontier-bonus", type=float, default=0.0)
     parser.add_argument("--frontier-bonus-steps", type=int, default=0)
     parser.add_argument("--frontier-bonus-mode", choices=("none", "hidden_cancel_access", "hidden_site_access"), default="none")
+    parser.add_argument("--learned-frontier-weight", type=float, default=0.0)
+    parser.add_argument("--learned-frontier-steps", type=int, default=0)
     args = parser.parse_args()
 
     payload = torch.load(args.checkpoint, map_location="cpu")
@@ -170,6 +176,8 @@ def main() -> None:
         frontier_bonus=float(args.frontier_bonus),
         frontier_bonus_steps=int(args.frontier_bonus_steps),
         frontier_bonus_mode=str(args.frontier_bonus_mode),
+        learned_frontier_weight=float(args.learned_frontier_weight),
+        learned_frontier_steps=int(args.learned_frontier_steps),
         device=device,
     )
     metrics["root_action_penalty"] = float(args.root_action_penalty)
@@ -179,6 +187,8 @@ def main() -> None:
     metrics["frontier_bonus"] = float(args.frontier_bonus)
     metrics["frontier_bonus_steps"] = int(args.frontier_bonus_steps)
     metrics["frontier_bonus_mode"] = str(args.frontier_bonus_mode)
+    metrics["learned_frontier_weight"] = float(args.learned_frontier_weight)
+    metrics["learned_frontier_steps"] = int(args.learned_frontier_steps)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     print(json.dumps(metrics, indent=2))

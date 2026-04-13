@@ -43,6 +43,8 @@ def evaluate_checkpoint(
     frontier_bonus: float | None,
     frontier_bonus_steps: int | None,
     frontier_bonus_mode: str,
+    learned_frontier_weight: float | None,
+    learned_frontier_steps: int | None,
 ) -> dict[str, object]:
     payload = torch.load(checkpoint_path, map_location="cpu")
     config = payload["config"]
@@ -84,6 +86,8 @@ def evaluate_checkpoint(
         frontier_bonus=float(frontier_bonus or 0.0),
         frontier_bonus_steps=int(frontier_bonus_steps or 0),
         frontier_bonus_mode=frontier_bonus_mode,
+        learned_frontier_weight=float(learned_frontier_weight or 0.0),
+        learned_frontier_steps=int(learned_frontier_steps or 0),
         device=device,
     )
 
@@ -116,6 +120,8 @@ def main() -> None:
     parser.add_argument("--frontier-bonus", type=float, default=0.0)
     parser.add_argument("--frontier-bonus-steps", type=int, default=0)
     parser.add_argument("--frontier-bonus-mode", choices=("none", "hidden_cancel_access", "hidden_site_access"), default="none")
+    parser.add_argument("--learned-frontier-weight", type=float, default=0.0)
+    parser.add_argument("--learned-frontier-steps", type=int, default=0)
     args = parser.parse_args()
 
     checkpoints = sorted(args.checkpoint_dir.glob("epoch_*.pt"))
@@ -144,6 +150,8 @@ def main() -> None:
             frontier_bonus=args.frontier_bonus,
             frontier_bonus_steps=args.frontier_bonus_steps,
             frontier_bonus_mode=args.frontier_bonus_mode,
+            learned_frontier_weight=args.learned_frontier_weight,
+            learned_frontier_steps=args.learned_frontier_steps,
         )
         for checkpoint_path in checkpoints
     ]
@@ -162,6 +170,8 @@ def main() -> None:
         "frontier_bonus": args.frontier_bonus,
         "frontier_bonus_steps": args.frontier_bonus_steps,
         "frontier_bonus_mode": args.frontier_bonus_mode,
+        "learned_frontier_weight": args.learned_frontier_weight,
+        "learned_frontier_steps": args.learned_frontier_steps,
         "best": best,
         "results": ranked,
     }
