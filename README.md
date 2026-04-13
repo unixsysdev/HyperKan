@@ -7,8 +7,8 @@ This repo trains policy/value models for verified symbolic rewrite search. The o
 | Result | Best condition | Outcome |
 |---|---|---|
 | Global benchmark | Static KAN | `163/274` (`59.5%`) |
-| Mixed-family scoped benchmark | Recovered HyperKAN + root penalty `2.0` | `36/60` beam, `24/60` greedy |
-| Key mechanism | Early hidden-branch access | solved beam rows: `36/36` reach `expr@2::cancel` within first 3 actions; unsolved: `12/24` |
+| Mixed-family scoped benchmark | Recovered HyperKAN + root penalty `2.0` + frontier reranker | `48/60` beam, `36/60` greedy |
+| Key mechanism | Early frontier shaping / subgoal sequencing | reranker changes first action on all `60` mixed-family rows and raises held-out beam solves from `36/60` to `48/60` |
 
 ## What This Project Is
 
@@ -238,19 +238,28 @@ Headline result:
 - Failure mode: root-collapse.
   - Static KAN top-1 first action: `expr@root::together`
   - HyperKAN top-1 first action: `expr@root::expand`
-- Best mixed-family rescue:
+- First mixed-family rescue:
   - Static KAN + root penalty `2.0`: still `0/60`
   - Recovered HyperKAN + root penalty `2.0`: `24/60` greedy, `36/60` beam
-- Measured mechanism:
+- Best current mixed-family result on this branch:
+  - Recovered HyperKAN + root penalty `2.0` + frontier reranker: `36/60` greedy, `48/60` beam
+  - mixed-family beam expansions drop from `66.67` to `59.23`
+  - seen-family validation falls from `16/16` to `14/16`, so this is a specialized compositional eval mode, not the new default
+- Measured mechanism under the root-penalty rescue:
   - solved beam rows reaching `expr@2::cancel` within first 3 actions: `36/36`
   - unsolved beam rows reaching `expr@2::cancel` within first 3 actions: `12/24`
+- Measured mechanism under the frontier reranker:
+  - first action changes on all `60` mixed-family rows
+  - held-out mixed-family beam solves rise from `36/60` to `48/60`
+  - solved rows split across both blocks rather than collapsing to one early path, which points to sequencing / frontier shaping rather than first-step localization alone
 - Training-time localization fixes did not replace the inference rescue.
-- A first sequencing-aware bonus reduced beam expansions but did not improve solve rate.
+- A sequencing-aware reranker is now the strongest compositional inference result on the project so far.
 
 The detailed structural-probe chain now lives in:
 
 - [docs/scoped_structural_results.md](docs/scoped_structural_results.md)
 - [docs/early_frontier_hypothesis.md](docs/early_frontier_hypothesis.md)
+- [docs/early_frontier_reranker_results.md](docs/early_frontier_reranker_results.md)
 
 ## One Guided Scoped Trajectory
 
@@ -316,6 +325,7 @@ Proven:
 - A simple state-conditional localization heuristic preserves seen-family behavior but still fails `0/60` on held-out mixed composition.
 - The unconditional rescue on recovered HyperKAN changes the early search frontier, but solved and unsolved rows still share the same penalized top-1 action.
 - Early hidden-branch access within the first 3 actions is a real discriminator between solved and unsolved mixed-family beam cases.
+- A sequencing-aware frontier reranker is the strongest held-out mixed-family inference condition so far: `48/60` beam, `36/60` greedy.
 
 Not yet proven:
 
@@ -329,6 +339,7 @@ Not yet proven:
 - That a simple mixed-signature conditional inference rule can replace the stronger always-on localization bias.
 - That the unconditional rescue can be explained by first-step site choice alone.
 - That a simple hidden-branch bonus can improve solve count beyond the unconditional-penalty baseline without hurting seen families.
+- That the frontier-reranker gain can be preserved on deeper scoped families without the seen-family validation cost.
 
 ## Next Steps
 
