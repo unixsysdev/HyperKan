@@ -263,6 +263,39 @@ goal:
 
 Under root-penalized beam search, the solved depth-expansion rows all take only the one-action shortcut `expr@1::apart`. The model does not traverse the full seven-action chain, and the frontier reranker does not fix that.
 
+## Learned Frontier Diagnostic
+
+This local branch also tests whether the heuristic frontier reranker can be replaced by a learned auxiliary frontier head. The head predicts a short-horizon guided frontier target: whether the current guided action reaches the inferred hidden-cancel action within the next 3 guided steps.
+
+This is a negative diagnostic, not a replacement for the main paper result.
+
+What it shows:
+
+- The auxiliary frontier label is learnable.
+- The model/head/loss/search wiring works.
+- Depth-7 is trainable in-family when `mixed_trig_hidden_apart` rows are present in training.
+- The learned frontier score does not rescue held-out depth-7 transfer in the current setup.
+
+In the easy in-family check, default beam already solves all depth-7 test rows:
+
+| Condition | Overall | `mixed_trig_hidden_apart` |
+|---|---:|---:|
+| Default | `30/34` | `7/7` |
+| Learned frontier `0.5`, first 4 steps | `25/34` | `7/7` |
+
+That split is too easy to prove search improvement. A harder curriculum/transfer diagnostic trains on `trig_merge`, `hidden_cancel`, `apart_normalize`, and moderate-depth `mixed_trig_hidden`, then tests on held-out `mixed_trig_hidden_apart`. On the first 12 non-terminal held-out depth-7 attempts:
+
+| Condition | Solves | Mean expansions |
+|---|---:|---:|
+| Default | `0/12` | `257.17` |
+| Root penalty `2.0` | `0/12` | `312.17` |
+| Root penalty `2.0` + heuristic frontier reranker | `0/12` | `317.33` |
+| Learned frontier `0.05`, first 4 steps | `0/12` | `260.42` |
+| Learned frontier `0.1`, first 4 steps | `0/12` | `258.42` |
+| Learned frontier `0.25`, first 4 steps | `0/12` | `278.58` |
+
+Conclusion: the learned frontier head can fit the local supervision target, but this target is not enough to solve the depth-7 transfer problem. This result should stay as a negative appendix-style diagnostic. The main story remains the moderate-depth frontier-reranker rescue and the depth-7 failure boundary.
+
 ## What Is Proven vs Not Yet Proven
 
 Proven:
@@ -280,6 +313,7 @@ Proven:
 - The unconditional rescue on recovered HyperKAN changes the early search frontier, but solved and unsolved rows still share the same penalized top-1 action.
 - Early hidden-branch access within the first 3 actions is a real discriminator between solved and unsolved mixed-family beam cases.
 - The depth-7 scoped expansion exposes a limit of the current inference-side rescue: root penalty still gives a shallow partial rescue, but the frontier reranker does not improve solve rate.
+- A learned auxiliary frontier head can fit the local short-horizon label, but the current label/score does not rescue the initial depth-7 transfer diagnostic.
 
 Not yet proven:
 
@@ -293,11 +327,12 @@ Not yet proven:
 - That the unconditional rescue can be explained by first-step site choice alone.
 - That a simple hidden-branch bonus can improve solve count beyond the unconditional-penalty baseline without hurting seen families.
 - That the current frontier reranker transfers from moderate-depth mixed composition to full depth-7 traversal.
+- That learned frontier supervision, as currently defined, improves held-out depth-7 compositional transfer.
 
 ## Next Steps
 
 - Restore stricter composed verification and shortest-action tie recovery.
-- Turn the depth-7 failure slice into a search-aligned training target or learned reranker experiment.
+- If continuing this line, make the learned frontier target more search-aligned than local hidden-cancel reachability.
 - Add broader structurally distinct held-out families, not just more rows from the same templates.
 - Re-compare recovered HyperKAN vs Static KAN after the deeper-family failure mechanism is better controlled.
 
