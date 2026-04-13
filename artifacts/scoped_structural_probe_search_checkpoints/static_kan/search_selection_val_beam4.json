@@ -1,0 +1,281 @@
+{
+  "selection_metric": "solve_rate_then_low_expansions",
+  "dataset": "artifacts/scoped_structural_probe/val.parquet",
+  "beam_width": 4,
+  "max_steps": 5,
+  "best": {
+    "checkpoint": "artifacts/scoped_structural_probe_search_checkpoints/static_kan/epoch_5.pt",
+    "epoch": 5,
+    "model_type": "static_kan",
+    "metrics": {
+      "attempts": 16,
+      "solved": 16,
+      "solve_rate": 1.0,
+      "mean_solved_steps": 1.625,
+      "mean_expansions": 26.125,
+      "mean_solved_expansions": 26.125,
+      "per_family": {
+        "apart_normalize": {
+          "attempts": 4,
+          "solved": 4,
+          "solve_rate": 1.0,
+          "mean_solved_steps": 1.0,
+          "mean_expansions": 12.5,
+          "mean_solved_expansions": 12.5
+        },
+        "hidden_cancel": {
+          "attempts": 6,
+          "solved": 6,
+          "solve_rate": 1.0,
+          "mean_solved_steps": 1.6666666666666667,
+          "mean_expansions": 29.666666666666668,
+          "mean_solved_expansions": 29.666666666666668
+        },
+        "trig_merge": {
+          "attempts": 6,
+          "solved": 6,
+          "solve_rate": 1.0,
+          "mean_solved_steps": 2.0,
+          "mean_expansions": 31.666666666666668,
+          "mean_solved_expansions": 31.666666666666668
+        }
+      }
+    }
+  },
+  "results": [
+    {
+      "checkpoint": "artifacts/scoped_structural_probe_search_checkpoints/static_kan/epoch_5.pt",
+      "epoch": 5,
+      "model_type": "static_kan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 16,
+        "solve_rate": 1.0,
+        "mean_solved_steps": 1.625,
+        "mean_expansions": 26.125,
+        "mean_solved_expansions": 26.125,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 12.5,
+            "mean_solved_expansions": 12.5
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.6666666666666667,
+            "mean_expansions": 29.666666666666668,
+            "mean_solved_expansions": 29.666666666666668
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 2.0,
+            "mean_expansions": 31.666666666666668,
+            "mean_solved_expansions": 31.666666666666668
+          }
+        }
+      }
+    },
+    {
+      "checkpoint": "artifacts/scoped_structural_probe_search_checkpoints/static_kan/best.pt",
+      "epoch": 5,
+      "model_type": "static_kan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 16,
+        "solve_rate": 1.0,
+        "mean_solved_steps": 1.625,
+        "mean_expansions": 26.125,
+        "mean_solved_expansions": 26.125,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 12.5,
+            "mean_solved_expansions": 12.5
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.6666666666666667,
+            "mean_expansions": 29.666666666666668,
+            "mean_solved_expansions": 29.666666666666668
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 2.0,
+            "mean_expansions": 31.666666666666668,
+            "mean_solved_expansions": 31.666666666666668
+          }
+        }
+      }
+    },
+    {
+      "checkpoint": "artifacts/scoped_structural_probe_search_checkpoints/static_kan/epoch_4.pt",
+      "epoch": 4,
+      "model_type": "static_kan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 16,
+        "solve_rate": 1.0,
+        "mean_solved_steps": 1.625,
+        "mean_expansions": 27.375,
+        "mean_solved_expansions": 27.375,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 12.0,
+            "mean_solved_expansions": 12.0
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.6666666666666667,
+            "mean_expansions": 29.666666666666668,
+            "mean_solved_expansions": 29.666666666666668
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 2.0,
+            "mean_expansions": 35.333333333333336,
+            "mean_solved_expansions": 35.333333333333336
+          }
+        }
+      }
+    },
+    {
+      "checkpoint": "artifacts/scoped_structural_probe_search_checkpoints/static_kan/epoch_3.pt",
+      "epoch": 3,
+      "model_type": "static_kan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 14,
+        "solve_rate": 0.875,
+        "mean_solved_steps": 1.4285714285714286,
+        "mean_expansions": 32.625,
+        "mean_solved_expansions": 21.5,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 21.0,
+            "mean_solved_expansions": 21.0
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 6,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.6666666666666667,
+            "mean_expansions": 25.333333333333332,
+            "mean_solved_expansions": 25.333333333333332
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 4,
+            "solve_rate": 0.6666666666666666,
+            "mean_solved_steps": 1.5,
+            "mean_expansions": 47.666666666666664,
+            "mean_solved_expansions": 16.25
+          }
+        }
+      }
+    },
+    {
+      "checkpoint": "artifacts/scoped_structural_probe_search_checkpoints/static_kan/epoch_2.pt",
+      "epoch": 2,
+      "model_type": "static_kan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 11,
+        "solve_rate": 0.6875,
+        "mean_solved_steps": 1.5454545454545454,
+        "mean_expansions": 51.6875,
+        "mean_solved_expansions": 25.818181818181817,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 2,
+            "solve_rate": 0.5,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 66.5,
+            "mean_solved_expansions": 28.0
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 5,
+            "solve_rate": 0.8333333333333334,
+            "mean_solved_steps": 1.8,
+            "mean_expansions": 46.333333333333336,
+            "mean_solved_expansions": 32.6
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 4,
+            "solve_rate": 0.6666666666666666,
+            "mean_solved_steps": 1.5,
+            "mean_expansions": 47.166666666666664,
+            "mean_solved_expansions": 16.25
+          }
+        }
+      }
+    },
+    {
+      "checkpoint": "artifacts/scoped_structural_probe_search_checkpoints/static_kan/epoch_1.pt",
+      "epoch": 1,
+      "model_type": "static_kan",
+      "metrics": {
+        "attempts": 16,
+        "solved": 10,
+        "solve_rate": 0.625,
+        "mean_solved_steps": 1.2,
+        "mean_expansions": 54.0625,
+        "mean_solved_expansions": 18.3,
+        "per_family": {
+          "apart_normalize": {
+            "attempts": 4,
+            "solved": 4,
+            "solve_rate": 1.0,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 8.5,
+            "mean_solved_expansions": 8.5
+          },
+          "hidden_cancel": {
+            "attempts": 6,
+            "solved": 2,
+            "solve_rate": 0.3333333333333333,
+            "mean_solved_steps": 1.0,
+            "mean_expansions": 81.33333333333333,
+            "mean_solved_expansions": 15.0
+          },
+          "trig_merge": {
+            "attempts": 6,
+            "solved": 4,
+            "solve_rate": 0.6666666666666666,
+            "mean_solved_steps": 1.5,
+            "mean_expansions": 57.166666666666664,
+            "mean_solved_expansions": 29.75
+          }
+        }
+      }
+    }
+  ]
+}

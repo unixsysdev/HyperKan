@@ -244,7 +244,22 @@ The current trainer now saves epoch checkpoints, and the repo now includes a sea
 
 - [scripts/select_scoped_checkpoint.py](scripts/select_scoped_checkpoint.py)
 
-That selector was added after the first structural probe run. The numbers above still come from validation-loss-selected `best.pt` checkpoints, so the next structural pass should use search-based model selection directly.
+That selector was added after the first structural probe run. A rerun with epoch checkpointing and search-based selection is now also available under `artifacts/scoped_structural_probe_search_checkpoints/`.
+
+Search-selected rerun:
+
+- Static KAN selected `epoch_5`
+- HyperKAN selected `epoch_2` instead of the loss-selected `best.pt`
+- Search selection did **not** rescue held-out composition.
+- Static KAN: `0/60` on `mixed_trig_hidden` for both beam 1 and beam 4
+- HyperKAN: `0/60` on `mixed_trig_hidden` for both beam 1 and beam 4
+
+The failure mode is now clearer. On held-out mixed-family states, the selected checkpoints default to whole-expression actions instead of local subgoal actions:
+
+- Static KAN top-1 first action: always `expr@root::together`
+- HyperKAN top-1 first action: always `expr@root::expand`
+
+So the current limitation is not just lack of beam width. The learned heuristics are not localizing onto the independent subproblems inside the mixed family.
 
 ## One Guided Scoped Trajectory
 
