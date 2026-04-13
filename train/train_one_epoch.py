@@ -24,6 +24,7 @@ class Batch:
     goal_lengths: Tensor
     action_targets: Tensor
     value_targets: Tensor
+    frontier_targets: Tensor | None = None
 
 
 class RewriteDataset(Dataset[dict[str, Any]]):
@@ -54,6 +55,8 @@ def build_collate_fn(tokenizer: SReprTokenizer, max_length: int):
         goal_lengths = []
         action_targets = []
         value_targets = []
+        frontier_targets = []
+        has_frontier_targets = all("frontier_targets" in row for row in rows)
 
         for row in rows:
             encoded = tokenizer.encode_pair(row["state_str"], row["goal_str"], max_length=max_length)
@@ -63,6 +66,8 @@ def build_collate_fn(tokenizer: SReprTokenizer, max_length: int):
             goal_lengths.append(encoded.goal_length)
             action_targets.append(row["valid_shortest_actions"])
             value_targets.append(row["distance_to_goal"])
+            if has_frontier_targets:
+                frontier_targets.append(row["frontier_targets"])
 
         return Batch(
             state_ids=torch.tensor(state_ids, dtype=torch.long),
@@ -71,6 +76,9 @@ def build_collate_fn(tokenizer: SReprTokenizer, max_length: int):
             goal_lengths=torch.tensor(goal_lengths, dtype=torch.long),
             action_targets=torch.tensor(np.asarray(action_targets), dtype=torch.float32),
             value_targets=torch.tensor(value_targets, dtype=torch.float32),
+            frontier_targets=(
+                torch.tensor(np.asarray(frontier_targets), dtype=torch.float32) if has_frontier_targets else None
+            ),
         )
 
     return collate
@@ -101,6 +109,7 @@ def move_batch(batch: Batch, device: torch.device) -> Batch:
         goal_lengths=batch.goal_lengths.to(device),
         action_targets=batch.action_targets.to(device),
         value_targets=batch.value_targets.to(device),
+        frontier_targets=batch.frontier_targets.to(device) if batch.frontier_targets is not None else None,
     )
 
 
@@ -119,6 +128,7 @@ def run_epoch(
     action_op_membership: Tensor | None = None,
     site_loss_weight: float = 0.0,
     op_loss_weight: float = 0.0,
+    frontier_loss_weight: float = 0.0,
 ) -> dict[str, float]:
     training = optimizer is not None
     model.train(training)
@@ -146,6 +156,9 @@ def run_epoch(
             action_op_membership=action_op_membership,
             site_loss_weight=site_loss_weight,
             op_loss_weight=op_loss_weight,
+            frontier_logits=outputs.get("frontier_logits") if isinstance(outputs, dict) else None,
+            frontier_targets=batch.frontier_targets,
+            frontier_loss_weight=frontier_loss_weight,
         )
         if training:
             optimizer.zero_grad(set_to_none=True)

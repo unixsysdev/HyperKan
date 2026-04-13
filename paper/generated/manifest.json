@@ -4,6 +4,11 @@
     "paper/generated/figures/model_comparison.png",
     "paper/generated/figures/solve_rate_by_depth.png",
     "paper/generated/figures/solve_rate_by_family.png",
-    "paper/generated/figures/greedy_vs_beam.png"
+    "paper/generated/figures/greedy_vs_beam.png",
+    "paper/generated/figures/hyperkan_same_state_diff_goals.png",
+    "paper/generated/figures/spline_comparison.png",
+    "paper/generated/figures/trajectory_failed_all.png",
+    "paper/generated/figures/trajectory_solved_all.png",
+    "paper/generated/figures/trajectory_static_kan_only.png"
   ]
 }

@@ -140,6 +140,8 @@ def run_scoped_beam_search(
     frontier_bonus: float = 0.0,
     frontier_bonus_steps: int = 0,
     frontier_bonus_mode: str = "none",
+    learned_frontier_weight: float = 0.0,
+    learned_frontier_steps: int = 0,
     device: torch.device | None = None,
 ) -> dict[str, object]:
     if device is None:
@@ -199,6 +201,14 @@ def run_scoped_beam_search(
                     score += float(early_hidden_bonus)
                 if frontier_bonus and len(node.steps) < int(frontier_bonus_steps) and state_has_hidden_access(next_expr, frontier_bonus_mode):
                     score += float(frontier_bonus)
+                if (
+                    learned_frontier_weight
+                    and len(node.steps) < int(learned_frontier_steps)
+                    and isinstance(outputs, dict)
+                    and "frontier_logits" in outputs
+                ):
+                    frontier_prob = torch.sigmoid(outputs["frontier_logits"][0, action_idx]).item()
+                    score += float(learned_frontier_weight) * log(float(frontier_prob) + 1e-8)
                 visited = node.visited
                 if next_hash in visited:
                     score -= revisit_penalty

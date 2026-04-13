@@ -48,11 +48,29 @@ This directory is the manifest for the frozen `paper-v1.0` artifact. The large d
 - Summary:
   - `docs/scoped_depth_expansion_results.md`
 
+## Learned Frontier and RL Diagnostics
+
+- Frontier-supervision utilities:
+  - `data_gen/frontier_supervision.py`
+  - `scripts/add_guided_frontier_targets.py`
+  - `scripts/build_frontier_supervision_dataset.py`
+- Frontier transfer configs:
+  - `configs/scoped_depth7_frontier_infamily.yaml`
+  - `configs/scoped_depth7_frontier_transfer.yaml`
+  - `configs/scoped_depth7_frontier_transfer_static.yaml`
+- RL diagnostic script:
+  - `scripts/rl_finetune_frontier_controller.py`
+- Summaries:
+  - `docs/depth7_learned_frontier_results.md`
+  - `docs/rl_frontier_controller_results.md`
+
 ## Paper
 
 - TeX:
   - `paper/hyperkan_verified_symbolic_rewrite_search.tex`
 - PDF:
   - `paper/hyperkan_verified_symbolic_rewrite_search.pdf`
+- Figures:
+  - `paper/figures/`
 - Regenerated table/figure outputs:
   - `paper/generated/`

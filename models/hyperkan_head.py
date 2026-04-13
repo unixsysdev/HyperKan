@@ -29,12 +29,14 @@ class HyperKANPolicy(nn.Module):
         num_ops: int | None = None,
         action_to_site_idx: list[int] | None = None,
         action_to_op_idx: list[int] | None = None,
+        use_frontier_head: bool = False,
     ) -> None:
         super().__init__()
         self.num_templates = num_templates
         self.condition_kan1 = condition_kan1
         self.mixture_temperature = float(mixture_temperature)
         self.site_op_factorized = bool(site_op_factorized)
+        self.use_frontier_head = bool(use_frontier_head)
         self.encoder = SharedBiGRUEncoder(
             vocab_size=vocab_size,
             pad_id=pad_id,
@@ -71,6 +73,16 @@ class HyperKANPolicy(nn.Module):
             nn.GELU(),
             nn.Linear(hidden_dim, 1),
         )
+        self.frontier_head = (
+            nn.Sequential(
+                nn.LayerNorm(kan_hidden_dim),
+                nn.Linear(kan_hidden_dim, kan_hidden_dim),
+                nn.GELU(),
+                nn.Linear(kan_hidden_dim, num_actions),
+            )
+            if self.use_frontier_head
+            else None
+        )
         self.dropout = nn.Dropout(dropout)
 
     def _mixtures(self, goal_embedding: Tensor) -> tuple[Tensor, Tensor]:
@@ -104,6 +116,8 @@ class HyperKANPolicy(nn.Module):
             "goal_embedding": goal_out.pooled,
             "mixture_weights": [mix_1, mix_2],
         }
+        if self.frontier_head is not None:
+            result["frontier_logits"] = self.frontier_head(hidden)
         if self.site_op_factorized:
             site_logits, spline_site = self.site_head(hidden, mixture_weights=mix_2)
             op_logits, spline_op = self.op_head(hidden, mixture_weights=mix_2)

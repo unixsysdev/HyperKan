@@ -27,6 +27,7 @@ def create_model(model_type: str, config: dict[str, Any]):
             kan_hidden_dim=model_cfg["kan_hidden_dim"],
             basis_dim=model_cfg["spline_basis_dim"],
             num_templates=model_cfg["spline_templates"],
+            use_frontier_head=bool(model_cfg.get("use_frontier_head", False)),
         )
     if model_type == "hyperkan":
         return HyperKANPolicy(
@@ -42,5 +43,6 @@ def create_model(model_type: str, config: dict[str, Any]):
             num_ops=model_cfg.get("num_ops"),
             action_to_site_idx=model_cfg.get("action_to_site_idx"),
             action_to_op_idx=model_cfg.get("action_to_op_idx"),
+            use_frontier_head=bool(model_cfg.get("use_frontier_head", False)),
         )
     raise ValueError(f"Unknown model type: {model_type}")

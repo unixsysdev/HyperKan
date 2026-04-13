@@ -65,6 +65,7 @@ class StaticKANPolicy(nn.Module):
         kan_hidden_dim: int = 128,
         basis_dim: int = 8,
         num_templates: int = 4,
+        use_frontier_head: bool = False,
     ) -> None:
         super().__init__()
         self.encoder = SharedBiGRUEncoder(
@@ -79,6 +80,16 @@ class StaticKANPolicy(nn.Module):
         self.pre = nn.Sequential(nn.LayerNorm(fused_dim), nn.Linear(fused_dim, kan_hidden_dim), nn.GELU())
         self.kan_1 = SimpleKANLayer(kan_hidden_dim, kan_hidden_dim, basis_dim=basis_dim, num_templates=num_templates)
         self.kan_2 = SimpleKANLayer(kan_hidden_dim, num_actions, basis_dim=basis_dim, num_templates=num_templates)
+        self.frontier_head = (
+            nn.Sequential(
+                nn.LayerNorm(kan_hidden_dim),
+                nn.Linear(kan_hidden_dim, kan_hidden_dim),
+                nn.GELU(),
+                nn.Linear(kan_hidden_dim, num_actions),
+            )
+            if use_frontier_head
+            else None
+        )
         self.value_head = nn.Sequential(
             nn.LayerNorm(fused_dim),
             nn.Linear(fused_dim, hidden_dim),
@@ -101,10 +112,13 @@ class StaticKANPolicy(nn.Module):
         hidden, spline_1 = self.kan_1(hidden)
         hidden = self.dropout(F.gelu(hidden))
         logits, spline_2 = self.kan_2(hidden)
-        return {
+        result = {
             "logits": logits,
             "value": self.value_head(fused).squeeze(-1),
             "state_embedding": state_out.pooled,
             "goal_embedding": goal_out.pooled,
             "spline_states": [spline_1, spline_2],
         }
+        if self.frontier_head is not None:
+            result["frontier_logits"] = self.frontier_head(hidden)
+        return result
