@@ -307,6 +307,8 @@ The same Static KAN transfer diagnostic gives the same broad conclusion:
 
 Conclusion: the learned frontier head can fit the local supervision target in both recovered HyperKAN and Static KAN, but this target is not enough to solve the depth-7 transfer problem. Static KAN's heuristic reranker gets one shallow solve on this diagnostic slice; the learned frontier score does not. This result should stay as a negative appendix-style diagnostic. The main story remains the moderate-depth frontier-reranker rescue and the depth-7 failure boundary.
 
+A follow-up local branch tests a small RL frontier-controller fine-tune: freeze the supervised recovered HyperKAN policy, update only the auxiliary frontier head with a REINFORCE-style solve/expansion reward, and evaluate on the same 12-row transfer slice. This also remains negative: RL frontier `0.1` gives `0/12` with mean expansions `264.17`, compared with `0/12` and `258.42` for the supervised learned-frontier score. This validates the RL plumbing, but not a depth-7 rescue.
+
 ## What Is Proven vs Not Yet Proven
 
 Proven:
