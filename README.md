@@ -1,5 +1,7 @@
 # Mathy
 
+Current paper artifact: **Scoped Actions Expose Compositional Failures in Verified Symbolic Rewrite Search** (`release/paper-v1`, `paper-v1.0`).
+
 Goal-conditioned HyperKAN for verified algebraic rewriting.
 
 The project is organized around a local-first POC:
