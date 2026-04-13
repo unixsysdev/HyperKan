@@ -1,6 +1,29 @@
 # HyperKan: Verified Symbolic Rewrite Search
 
-This repo trains policy/value models for verified symbolic rewrite search. The original global-action benchmark worked end to end and showed **Static KAN > MLP** on verified solve rate; the initial HyperKAN underperformed, then a reduced-capacity recovered HyperKAN nearly matched Static KAN after ablations. The important follow-up result is that the global SymPy action semantics turned out too shallow for robust depth-4+ composition, so the main branch of the project has moved to **scoped actions**: `action = (site, op)`. Scoped smoke, medium, and diverse guided benchmarks validated the pipeline, but they were too clean to separate models by solve rate. The structural scoped probe is the first benchmark slice with real compositional pressure: seen families are learnable, but default inference fails completely on a held-out mixed composition family. Localization-aware inference rescues recovered HyperKAN at moderate depth, while the depth-7 expansion shows that this rescue does not yet scale cleanly.
+This repository accompanies the paper draft **HyperKAN: Verified Symbolic Rewrite Search with Scoped Actions and Frontier Shaping**. The frozen paper artifact is intended to live under release branch `release/paper-v1` and tag `paper-v1.0`. The repository also contains ongoing research code, but the commands and artifacts in **Reproduce Paper Results** correspond to this frozen paper release.
+
+The paper studies policy/value models for verified symbolic rewrite search. The original global-action benchmark worked end to end and showed **Static KAN > MLP** on verified solve rate; the initial HyperKAN underperformed, then a reduced-capacity recovered HyperKAN nearly matched Static KAN after ablations. The important follow-up result is that global SymPy action semantics turned out too shallow for robust depth-4+ composition. The project therefore moves to **scoped actions**: `action = (site, op)`. Scoped smoke, medium, and diverse guided benchmarks validated the pipeline, but they were too clean to separate models by solve rate. The structural scoped probe is the first benchmark slice with real compositional pressure: seen families are learnable, but default inference fails completely on a held-out mixed composition family. Localization-aware inference rescues recovered HyperKAN at moderate depth, while the depth-7 expansion shows that this rescue does not yet scale cleanly.
+
+## Quick Start
+
+```bash
+git clone https://github.com/unixsysdev/HyperKan.git
+cd HyperKan
+git checkout paper-v1.0
+export REPO=$PWD
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements-lock.txt
+make reproduce-paper
+```
+
+For the exact tested toolbox environment used during release cleanup, see `requirements-frozen.txt`. GPU training/eval was run on ROCm; the paper reproduction target below regenerates summary tables and figures from released artifacts without retraining.
+
+Paper files:
+
+- TeX: [paper/hyperkan_verified_symbolic_rewrite_search.tex](paper/hyperkan_verified_symbolic_rewrite_search.tex)
+- PDF: [paper/hyperkan_verified_symbolic_rewrite_search.pdf](paper/hyperkan_verified_symbolic_rewrite_search.pdf)
+- Curated artifact manifest: [artifacts/released/README.md](artifacts/released/README.md)
 
 ## Current Best Results
 
@@ -301,15 +324,21 @@ Not yet proven:
 - Add broader structurally distinct held-out families, not just more rows from the same templates.
 - Re-compare recovered HyperKAN vs Static KAN after the deeper-family failure mechanism is better controlled.
 
-## Reproduction
+## Reproduce Paper Results
 
-All ROCm training/eval commands should run inside the toolbox:
+The paper release includes a lightweight one-command reproduction target. It reads released eval JSON files and figures, then writes regenerated tables and copied figures to `paper/generated/`.
 
 ```bash
-toolbox run -c llama-rocm-7.2 bash -c 'cd /home/marcel/Work/Mathy && source scripts/toolbox_env.sh && <command>'
+make reproduce-paper
 ```
 
-Historical scoped smoke/medium/diverse commands live in the earlier docs and config files. The current branch-specific build is the depth-expansion structural probe:
+The heavier commands below rebuild or rerun the depth-expansion experiment from repo root. On the ROCm toolbox used for the original runs, the command wrapper was:
+
+```bash
+toolbox run -c llama-rocm-7.2 bash -c 'cd "$REPO" && source scripts/toolbox_env.sh && <command>'
+```
+
+Historical scoped smoke/medium/diverse commands live in the earlier docs and config files. The paper branch-specific build is the depth-expansion structural probe:
 
 ```bash
 python3 scripts/build_scoped_structural_dataset.py \

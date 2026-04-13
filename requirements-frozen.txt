@@ -1,0 +1,10 @@
+# Tested toolbox environment used for the paper-v1 release cleanup.
+# The human-readable conda environment remains in environment.yml.
+matplotlib==3.10.8
+networkx==3.6.1
+numpy==2.4.3
+pandas==3.0.1
+pyarrow==23.0.1
+PyYAML==6.0.3
+sympy==1.14.0
+torch==2.10.0+rocm7.2.1.lw.gitb6dec82d

@@ -13,6 +13,9 @@ build/
 # PNGs tracked only in docs/
 *.png
 !docs/*.png
+!paper/figures/*.png
+!paper/generated/figures/*.png
+!paper/**/*.pdf
 
 # Benchmark outputs (keep local; do not commit)
 artifacts/shallow_benchmark*/

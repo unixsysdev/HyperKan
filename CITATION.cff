@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this artifact, please cite it as below."
+title: "HyperKAN: Verified Symbolic Rewrite Search with Scoped Actions and Frontier Shaping"
+version: "paper-v1.0"
+date-released: "2026-04-13"
+repository-code: "https://github.com/unixsysdev/HyperKan"
+authors:
+  - family-names: "Marcel"
+    given-names: ""
+preferred-citation:
+  type: article
+  title: "HyperKAN: Verified Symbolic Rewrite Search with Scoped Actions and Frontier Shaping"
+  authors:
+    - family-names: "Marcel"
+      given-names: ""
+  year: 2026
